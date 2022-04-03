@@ -1,0 +1,40 @@
+{
+  "name": "pfa-next",
+  "private": true,
+  "scripts": {
+    "dev": "NODE_OPTIONS='--inspect' next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.1.1",
+    "@fortawesome/free-solid-svg-icons": "^6.1.1",
+    "@fortawesome/react-fontawesome": "^0.1.18",
+    "axios": "^0.25.0",
+    "currency-symbol-map": "^5.0.1",
+    "date-fns": "^2.28.0",
+    "formik": "^2.2.9",
+    "immer": "^9.0.12",
+    "next": "^12.1.4",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-hook-form": "^7.26.0",
+    "react-query": "^3.34.19",
+    "sweetalert2": "^11.4.8",
+    "zod": "^3.14.3",
+    "zustand": "^3.7.1"
+  },
+  "devDependencies": {
+    "@types/node": "17.0.14",
+    "@types/react": "17.0.39",
+    "autoprefixer": "^10.4.4",
+    "eslint": "8.8.0",
+    "eslint-config-next": "12.0.10",
+    "postcss": "^8.4.12",
+    "prettier": "^2.6.1",
+    "prettier-plugin-tailwindcss": "^0.1.8",
+    "tailwindcss": "^3.0.23",
+    "typescript": "4.5.5"
+  }
+}

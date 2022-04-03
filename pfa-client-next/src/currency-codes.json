@@ -1,0 +1,130 @@
+[
+  {
+    "code": "AUD",
+    "name": "Australia Dollar"
+  },
+  {
+    "code": "BGN",
+    "name": "Bulgaria Lev"
+  },
+  {
+    "code": "BRL",
+    "name": "Brazil Real"
+  },
+  {
+    "code": "CAD",
+    "name": "Canada Dollar"
+  },
+  {
+    "code": "CHF",
+    "name": "Switzerland Franc"
+  },
+  {
+    "code": "CNY",
+    "name": "China Yuan Renminbi"
+  },
+  {
+    "code": "CZK",
+    "name": "Czech Republic Koruna"
+  },
+  {
+    "code": "DKK",
+    "name": "Denmark Krone"
+  },
+  {
+    "code": "EUR",
+    "name": "Euro Member Countries"
+  },
+  {
+    "code": "GBP",
+    "name": "United Kingdom Pound"
+  },
+  {
+    "code": "HKD",
+    "name": "Hong Kong Dollar"
+  },
+  {
+    "code": "HRK",
+    "name": "Croatia Kuna"
+  },
+  {
+    "code": "HUF",
+    "name": "Hungary Forint"
+  },
+  {
+    "code": "IDR",
+    "name": "Indonesia Rupiah"
+  },
+  {
+    "code": "ILS",
+    "name": "Israel Shekel"
+  },
+  {
+    "code": "INR",
+    "name": "India Rupee"
+  },
+  {
+    "code": "ISK",
+    "name": "Iceland Krona"
+  },
+  {
+    "code": "JPY",
+    "name": "Japan Yen"
+  },
+  {
+    "code": "KRW",
+    "name": "Korea (South) Won"
+  },
+  {
+    "code": "MXN",
+    "name": "Mexico Peso"
+  },
+  {
+    "code": "MYR",
+    "name": "Malaysia Ringgit"
+  },
+  {
+    "code": "NOK",
+    "name": "Norway Krone"
+  },
+  {
+    "code": "NZD",
+    "name": "New Zealand Dollar"
+  },
+  {
+    "code": "PHP",
+    "name": "Philippines Peso"
+  },
+  {
+    "code": "PLN",
+    "name": "Poland Zloty"
+  },
+  {
+    "code": "RON",
+    "name": "Romania New Leu"
+  },
+  {
+    "code": "RUB",
+    "name": "Russia Ruble"
+  },
+  {
+    "code": "SEK",
+    "name": "Sweden Krona"
+  },
+  {
+    "code": "SGD",
+    "name": "Singapore Dollar"
+  },
+  {
+    "code": "THB",
+    "name": "Thailand Baht"
+  },
+  {
+    "code": "USD",
+    "name": "United States Dollar"
+  },
+  {
+    "code": "ZAR",
+    "name": "South Africa Rand"
+  }
+]

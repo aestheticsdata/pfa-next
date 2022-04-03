@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200&family=Smooch+Sans:wght@100;200;500&family=Ubuntu:wght@300;400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* hack to remove in Chrome, input colors */
+/* https://webagility.com/posts/the-ultimate-list-of-hacks-for-chromes-forced-yellow-background-on-autocompleted-inputs */
+/* https://stackoverflow.com/questions/34551637/css-webkit-transition-not-working-on-input-type */
+/* https://github.com/styled-components/styled-components/issues/492 */
+input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus, input:-webkit-autofill:active {
+  -webkit-transition-delay: 9999s;
+}
