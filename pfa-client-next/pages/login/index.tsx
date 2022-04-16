@@ -2,19 +2,21 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import Layout from "@src/components/shared/Layout";
 import SharedLoginForm from "@src/components/shared/sharedLoginForm/sharedLoginForm";
-import { loginService } from "@auth/loginService";
+import useLoginService from "@auth/useLoginService";
 import type { LoginValues } from "@src/components/shared/sharedLoginForm/interfaces";
 import { useAuthStore } from "@auth/store/authStore";
+import { useUserStore } from "@auth/store/userStore";
 
 const Login = () => {
   const router = useRouter();
   const authStore = useAuthStore();
+  const userStore = useUserStore();
+  const { loginService } = useLoginService();
 
   const onSubmit = async (values: LoginValues) => {
-    console.log("on submit, values", values);
     const result = await loginService(values.email, values.password);
-    console.log("result", result);
     await authStore.setToken(result.token);
+    await userStore.setUser(result.user);
     router.push("/");
   };
 

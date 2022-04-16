@@ -2,19 +2,21 @@ import axios from "axios";
 import _ from "lodash";
 import Swal from "sweetalert2";
 import { useRouter } from "next/router";
-
-// import { intl } from '../index';
-// import messages from './messages';
+import { useAuthStore } from "@auth/store/authStore";
 
 const useRequestHelper = () => {
   const router = useRouter();
+  const token = useAuthStore((state) => state.token);
+
   const getRequestURL = (url) =>
-    window.location.host.search("pfa") !== -1 ? `api${url}` : url;
+    window.location.host.search("pfa") !== -1
+      ? `api${url}`
+      : `${process.env.NEXT_PUBLIC_REMOTE_HOST_FROM_LOCALHOST}${url}`;
 
   const privateRequest = (url, options, config) => {
     const tokenBearer = {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("pfa-token")}`,
+        Authorization: `Bearer ${token}`,
       },
     };
 
@@ -28,16 +30,14 @@ const useRequestHelper = () => {
       (err) => {
         if (err.response.status && err.response.status === 401) {
           Swal.fire({
-            title: "expired token",
-            // title: intl.formatMessage({ ...messages.expiredToken }),
-            text: "bla bla",
-            // text: intl.formatMessage({ ...messages.text }),
+            title: "la session a expiré",
+            text: "vous allez être redirigé vers la page d'authentification",
             type: "info",
             grow: "fullscreen",
             showConfirmButton: false,
             timer: 3000,
-            onClose: async () => {
-              await router.push("/logout");
+            willClose: async () => {
+              await router.push("/login");
             },
           });
         }

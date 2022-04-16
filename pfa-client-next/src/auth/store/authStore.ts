@@ -8,7 +8,7 @@ interface AuthType {
 
 export const useAuthStore = create<AuthType>(
   persist(
-    (set, get) => ({
+    (set, _) => ({
       token: null,
       setToken: (t: string | null) => set({ token: t }),
     }),

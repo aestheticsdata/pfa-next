@@ -19,7 +19,9 @@
     "paths": {
       "@pages/*": ["pages/*"],
       "@src/*": ["src/*"],
-      "@auth/*": ["src/auth/*"]
+      "@components/*": ["src/components/*"],
+      "@auth/*": ["src/auth/*"],
+      "@helpers/*": ["src/helpers/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
