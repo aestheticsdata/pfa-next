@@ -10,9 +10,7 @@ import getDate from "date-fns/getDate";
 import getDay from "date-fns/getDay";
 import lastDayOfMonth from "date-fns/lastDayOfMonth";
 import setHours from "date-fns/setHours";
-import format from "date-fns/format";
 
-import { locales } from "@helpers/lang";
 
 export const getWeekDays = (weekStart: Date, date: Date): Date[] => {
   const days: Date[] = [weekStart];
@@ -66,10 +64,4 @@ export const getWeekRange = (date: Date): WeekRange => {
   }
 
   return dateRange;
-};
-
-export const getFormattedDate = (date: Date, lang: string): string => {
-  return format(date, locales[lang].formatString, {
-    locale: locales[lang][lang],
-  });
 };

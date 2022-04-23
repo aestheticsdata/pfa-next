@@ -15,8 +15,8 @@ const NavBar = () => {
       </div>
       {token ? (
         <div className="flex space-x-5 font-ubuntu">
-          <Link href="/">Spendings</Link>
-          <Link href="/categories">Categories</Link>
+          <Link href="/" passHref><div className="outline-hidden">Spendings</div></Link>
+          <Link href="/categories" passHref><div className="outline-hidden">Categories</div></Link>
           {isCalendarVisible && <DatePickerWrapper />}
         </div>
       ) : (

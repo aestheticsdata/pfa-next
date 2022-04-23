@@ -25,7 +25,7 @@ const useDatePickerState = () => {
     // const dateISO = formatISO(date, { representation: "date" });
     // history.push("?currentDate=" + dateISO);
     const weekRange = getWeekRange(date);
-    const dateRange = getWeekDays(weekRange.from, date);
+    const dateRange: Date[] = getWeekDays(weekRange.from, date);
     setFrom(weekRange.from);
     setTo(weekRange.to);
     setRange(dateRange);

@@ -6,6 +6,9 @@ module.exports = {
         login: "0 1px 5px 1px rgb(150, 150, 150)",
         dashboard: "1px 4px 21px 6px rgba(0,0,0,0.54)",
       },
+      fontSize: {
+        "xxs": ".7rem",
+      },
       fontFamily: {
         smooch: ["Smooch Sans", "sans-serif"], // imported in styles/global.css
         poppins: ["Poppins", "sans-serif"],
