@@ -5,9 +5,11 @@ module.exports = {
       boxShadow: {
         login: "0 1px 5px 1px rgb(150, 150, 150)",
         dashboard: "1px 4px 21px 6px rgba(0,0,0,0.54)",
+        charttooltip: "0 1px 10px 1px rgba(100, 100, 100, 0.6)",
       },
       fontSize: {
         "xxs": ".7rem",
+        "tiny": ".5rem",
       },
       fontFamily: {
         smooch: ["Smooch Sans", "sans-serif"], // imported in styles/global.css

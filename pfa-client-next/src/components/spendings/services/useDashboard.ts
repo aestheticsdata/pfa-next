@@ -2,12 +2,14 @@ import useRequestHelper from "@src/helpers/useRequestHelper";
 import startOfMonth from "date-fns/startOfMonth";
 import { useUserStore } from "@auth/store/userStore";
 import useDatePickerWrapperStore from "@components/datePickerWrapper/store";
-import { useQuery, UseQueryResult } from "react-query";
+import { useQuery, useMutation, useQueryClient, UseMutationResult } from "react-query";
 import { QUERY_OPTIONS } from "@components/spendings/config/constants";
+import type { UseQueryResult } from "react-query";
+import { endOfMonth } from "date-fns";
 
 
-interface DashBoard {
-  ID: string
+export interface DashBoard {
+  ID: string;
   dateFrom: string;
   dateTo: string;
   initialAmount: string;
@@ -19,12 +21,18 @@ export interface DashBoardData {
   data: DashBoard;
 }
 
+interface UseDashboard {
+  get: UseQueryResult<DashBoardData>;
+  mutation: any;
+}
 
-const useDashboard = (): UseQueryResult<DashBoardData> => {
+
+const useDashboard = (): UseDashboard => {
   const { privateRequest } = useRequestHelper();
   const userID = useUserStore((state) => state.user!.id);
   const { from } = useDatePickerWrapperStore();
   const monthBeginning = startOfMonth(from!);
+  const queryClient = useQueryClient();
 
   const getDashboard = async () => {
     return privateRequest(
@@ -32,11 +40,107 @@ const useDashboard = (): UseQueryResult<DashBoardData> => {
     );
   };
 
-  return useQuery(["dashboard", monthBeginning], getDashboard, {
+  const setInitialSalary = async (amount: string) => {
+    return privateRequest(
+      '/dashboard', {
+        method: 'POST',
+        data: {
+          userID,
+          amount,
+          start: startOfMonth(from!),
+          end: endOfMonth(from!),
+        }
+      }
+    )
+  }
+
+  const updateInitialSalary = async (dashboardID: string, amount: string) => {
+    return privateRequest(
+      `/dashboard/${dashboardID}`, {
+        method: 'PUT',
+        data: {
+          userID,
+          amount,
+        },
+      }
+    )
+  }
+
+  const get = useQuery(["dashboard", monthBeginning], getDashboard, {
     retry: false,
     enabled: !!from,
     ...QUERY_OPTIONS,
   });
+
+  const mutation = useMutation(({dashboardID, initialAmount}) => {
+    if (dashboardID) {
+      console.log("oui on est bien ici");
+      return updateInitialSalary(dashboardID, initialAmount);
+    } else {
+      return setInitialSalary(initialAmount);
+    }
+  }, {
+    onSuccess: async () => {
+      console.log("onSuccess before invalidate");
+      await queryClient.invalidateQueries(["dashboard", monthBeginning]);
+    }
+  });
+
+  return {
+    get,
+    mutation,
+  }
 };
 
 export default useDashboard;
+
+/*
+
+ const onSubmit = (values, { setSubmitting }) => {
+    const formattedMonth = {
+      start: format(startOfMonth(dateRange.from), 'yyyy-MM-dd'),
+      end: format(endOfMonth(dateRange.to), 'yyyy-MM-dd'),
+    };
+    dashboardID ?
+      dispatch(updateInitialAmountAction(dashboardID, user.id, values.initialAmount))
+      :
+      dispatch(setInitialAmountAction(user.id, values.initialAmount, formattedMonth));
+    setIsInputVisible(false);
+    setSubmitting(false);
+  };
+
+
+  function* onSetInitialAmount(payload) {
+  try {
+    const res = yield call(privateRequest, '/dashboard', {
+      method: 'POST',
+      data: {
+        userID: payload.userID,
+        amount: payload.amount,
+        ...payload.month,
+      }
+    });
+    displayPopup({ text: intl.formatMessage({ ...messages.initialAmountSetSuccess }) });
+    yield monthlyStatHelper(res, payload);
+  } catch (err) {
+    console.log('Error setting initial amount', err);
+  }
+}
+
+function* onUpdateInitialAmount(payload) {
+  try {
+    const res = yield call(privateRequest, `/dashboard/${payload.dashboardID}`, {
+      method: 'PUT',
+      data: {
+        userID: payload.userID,
+        amount: payload.amount,
+      },
+    });
+    displayPopup({ text: intl.formatMessage({ ...messages.initialAmountSetSuccess }) });
+    yield monthlyStatHelper(res, payload);
+  } catch (err) {
+    console.log('Error setting initial amount', err);
+  }
+}
+
+ */

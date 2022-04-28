@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useAuthStore } from "@auth/store/authStore";
 import DatePickerWrapper from "@components/datePickerWrapper/DatePickerWrapper";
 import useGlobalStore from "@components/shared/globalStore";
+import sharedText from "@components//shared/config/text";
 
 const NavBar = () => {
   const token = useAuthStore((state) => state.token);
@@ -15,15 +16,15 @@ const NavBar = () => {
       </div>
       {token ? (
         <div className="flex space-x-5 font-ubuntu">
-          <Link href="/" passHref><div className="outline-hidden">Spendings</div></Link>
-          <Link href="/categories" passHref><div className="outline-hidden">Categories</div></Link>
+          <Link href="/" passHref><div className="outline-hidden p-1 hover:cursor-pointer hover:bg-spendingItemHover hover:text-blueNavy hover:rounded">{sharedText.navBar.spendings}</div></Link>
+          <Link href="/categories" passHref><div className="outline-hidden p-1 hover:cursor-pointer hover:bg-spendingItemHover hover:text-blueNavy hover:rounded">{sharedText.navBar.categories}</div></Link>
           {isCalendarVisible && <DatePickerWrapper />}
         </div>
       ) : (
         <div className="flex space-x-5 font-ubuntu">
-          <Link href="/login">Login</Link>
-          <Link href="/signup">SignUp</Link>
-          <Link href="/about">About</Link>
+          <Link href="/login">{sharedText.navBar.login}</Link>
+          <Link href="/signup">{sharedText.navBar.signup}</Link>
+          <Link href="/about">{sharedText.navBar.about}</Link>
         </div>
       )}
     </div>

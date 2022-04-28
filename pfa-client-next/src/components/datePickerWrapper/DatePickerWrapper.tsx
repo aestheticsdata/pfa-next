@@ -46,7 +46,7 @@ const DatePickerWrapper = () => {
   }, []);
 
   return (
-    <div ref={ref} className="bg-grey3 relative">
+    <div ref={ref} className="bg-grey3 relative m-1">
       <div
         className="border border-datePickerWrapper text-datePickerWrapper bg-datePickerWrapperBackground rounded px-2 select-none cursor-pointer"
         onClick={toggleCalendar}

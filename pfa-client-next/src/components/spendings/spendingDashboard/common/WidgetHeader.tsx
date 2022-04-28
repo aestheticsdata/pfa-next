@@ -6,25 +6,30 @@ import format from "date-fns/format";
 import fr from "date-fns/locale/fr";
 
 
-const WidgetHeader = ({ title, periodType }) => {
+interface WidgetHeaderProps {
+  title: string;
+  periodType: string;
+  center?: boolean;
+}
+
+const WidgetHeader = ({ title, periodType, center = false }: WidgetHeaderProps) => {
   const { to, from } = useDatePickerStore();
 
   return (
-    <div className="flex flex-col w-5/6 border-b border-b-grey2 items-start text-xs py-2">
-      <div className="font-ubuntu font-bold">
+    <div className={`flex flex-col w-5/6 border-b border-b-grey2 ${center ? "items-center" : "items-start"} text-xs py-2`}>
+      <div className="font-bold uppercase">
         {title}
       </div>
       <div className="uppercase">
         {
           periodType === MONTHLY && from && to ?
             <>
-              <span className="month">{getMonth(to)}</span>
-              <span className="year">{getYear(to)}</span>
+              {format(to, "MMMM", { locale: fr })} {getYear(to)}
             </>
             :
             <>
-              {format(new Date(from), "dd MMM yyyy", { locale: fr })} –{" "}
-              {format(new Date(to), "dd MMM yyyy", { locale: fr })}
+              {format(new Date(from as Date), "dd MMM yyyy", { locale: fr })} –{" "}
+              {format(new Date(to as Date), "dd MMM yyyy", { locale: fr })}
             </>
 
         }

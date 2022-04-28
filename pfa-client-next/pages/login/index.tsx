@@ -22,7 +22,7 @@ const Login = () => {
 
   return (
     <Layout>
-      <div className="flex w-96 flex-col items-center space-y-8 rounded bg-gradient-to-br from-teal-300 to-sky-500 py-3 font-smooch shadow-lg">
+      <div className="flex w-96 flex-col items-center space-y-8 rounded bg-gradient-to-br from-teal-300 to-sky-500 py-3 font-smooch shadow-lg mt-4">
         <SharedLoginForm
           onSubmit={onSubmit}
           buttonTitle="login"
@@ -32,9 +32,6 @@ const Login = () => {
         />
         <div className="text-formsGlobalColor hover:text-generalWarningBackground hover:underline">
           <Link href="/forgotPassword">
-            {/*<FormattedMessage*/}
-            {/*  {...messages.forgotPassword}*/}
-            {/*/>*/}
             forgot password ?
           </Link>
         </div>

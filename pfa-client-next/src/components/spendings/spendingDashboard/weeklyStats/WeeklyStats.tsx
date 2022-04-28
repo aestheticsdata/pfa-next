@@ -16,28 +16,33 @@ import WidgetHeader from "@components/spendings/spendingDashboard/common/WidgetH
 import { WEEKLY } from "@components/spendings/spendingDashboard/common/widgetHeaderConstants";
 import useWeeklyStats from "@components/spendings/services/useWeeklyStats";
 import { accurateFixed } from "@helpers/mathExprEval";
-import { UseQueryResult } from "react-query";
 import useDashboard from "@components/spendings/services/useDashboard";
 import { useForm } from "react-hook-form";
 import useDatePickerWrapperStore from "@components/datePickerWrapper/store";
 import useWeeklyStatsHelper from "@components/spendings/spendingDashboard/weeklyStats/helpers/useWeeklyStatsHelper";
+import spendingsText from "@components/spendings/config/text";
 import type { KeyboardEvent } from "react";
 
+interface InitialCeiling {
+  initialCeiling: string;
+}
 
 const WeeklyStats = () => {
   const { makeSlices, makeRange, isCurrentWeek} = useWeeklyStatsHelper();
   const { from } = useDatePickerWrapperStore();
   const [isInputVisible, setIsInputVisible] = useState<boolean>(false);
-  const { data: weeklyStats } = useWeeklyStats();
-  const { data: dashboard } = useDashboard();
-  const { register, handleSubmit, setFocus } = useForm();
-  const [initialCeiling, setInitialCeiling] = useState<number | null>(null);
+  const { get: { data: weeklyStats }, mutation } = useWeeklyStats();
+  const { get: { data: dashboard } } = useDashboard();
+  const { register, handleSubmit, setFocus } = useForm<InitialCeiling>();
+  const [initialCeiling, setInitialCeiling] = useState<number>(0);
   const [weeklySlices, setWeeklySlices] = useState<any>();
   const [averageWeeklyStatsAmount, setAverageWeeklyStatsAmount] = useState(0);
   const CEILING_WARN_LIMIT = 50;
 
   useEffect(() => {
-    dashboard && setInitialCeiling(+dashboard.data.initialCeiling);
+    console.log("dashboard", dashboard);
+    dashboard?.data ? setInitialCeiling(+dashboard?.data?.initialCeiling) : setInitialCeiling(0);
+    console.log("initialCeiling", initialCeiling);
   }, [dashboard]);
 
   useEffect(() => {
@@ -50,10 +55,11 @@ const WeeklyStats = () => {
       console.log("weeklyStats", weeklyStats);
       // filter(Boolean) removes 0 from array
       const zeroedOutWeeklyStats = weeklyStats!.data.filter(Boolean);
+      console.log("zeroedOutWeeklyStats", zeroedOutWeeklyStats);
       setAverageWeeklyStatsAmount(
         accurateFixed(
           zeroedOutWeeklyStats
-            .reduce((acc, curr) => acc + curr, 0)
+            .reduce((acc: number, curr: number) => acc + curr, 0)
           / zeroedOutWeeklyStats.length,
           1
         )
@@ -61,55 +67,58 @@ const WeeklyStats = () => {
     }
   }, [weeklyStats]);
 
-  const onSubmit = () => {
+  const onSubmit = (value: InitialCeiling) => {
     setIsInputVisible(false);
-    console.log("onsubmit");
+    mutation.mutate(value.initialCeiling);
   }
 
   useEffect(() => {
-    isInputVisible && setFocus("initialCeiling", { shouldSelect: true});
+    isInputVisible && setFocus("initialCeiling", { shouldSelect: true });
   }, [setFocus, isInputVisible]);
 
   return (
-    <div className="flex flex-col items-center w-[320px] h-[265px] border border-white bg-grey0 rounded uppercase gap-y-3 text-xs">
+    <div className="flex flex-col shrink-0 items-center w-[320px] h-[265px] border border-white bg-grey0 rounded gap-y-3 text-xs">
       <WidgetHeader
-        title="totaux par période"
+        title={spendingsText.dashboard.weeklyStats.headerTitle}
         periodType={WEEKLY}
       />
-      <div className="flex uppercase select-none justify-start w-5/6 gap-x-2">
+      <div className="flex uppercase select-none justify-start w-5/6 gap-x-1">
         <div className="text-xs border-b">
-          PLAFOND HEBDOMADAIRE :
+          {spendingsText.dashboard.weeklyStats.weeklyCeiling} :
         </div>
 
         <div
           className={`${!isInputVisible ? "visible" : "hidden"}`}
           onClick={() => {setIsInputVisible(true)}}
         >
-          <div className="text-initialAmount font-bold hover:bg-initialAmountHover hover:cursor-pointer">{initialCeiling ?? 0} €</div>
+          <div className="text-initialAmount font-bold hover:bg-initialAmountHover hover:cursor-pointer hover:rounded">
+            {initialCeiling ?? 0} €
+          </div>
         </div>
 
-        {
-          initialCeiling && (
-            <div className={`${isInputVisible ? "visible" : "hidden"}`}>
-              <form
-                onBlur={() => setIsInputVisible(false)}
-                onSubmit={handleSubmit(onSubmit)}
-              >
+        <div className={`${isInputVisible ? "visible" : "hidden"}`}>
+          <form
+            onBlur={() => setIsInputVisible(false)}
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            {
+              initialCeiling && (
                 <input
                   className="w-10 outline-0 bg-transparent border-b border-b-black"
                   onKeyDown={(e: KeyboardEvent) => {e.key === "Escape" && setIsInputVisible(false)}}
                   defaultValue={initialCeiling}
                   {...register("initialCeiling")}
                 />
-              </form>
-            </div>
-          )
-        }
+              )
+            }
+          </form>
+        </div>
+
       </div>
 
-      <div className="flex flex-col w-5/6 text-sm">
+      <div className="flex flex-col justify-center w-5/6 text-sm gap-y-1 h-1/2">
         {
-          weeklyStats?.data.length > 0 && initialCeiling ?
+          weeklyStats?.data.length > 0 ?
             weeklyStats!.data.map((weekSliceValue: number, i: number) => {
               const ceilingDiff = weekSliceValue - initialCeiling;
               return (
@@ -167,11 +176,9 @@ const WeeklyStats = () => {
         }
       </div>
 
-      <div className="text-xxs">
-        dépenses moyennes hebdomadaires :
-        <span className="font-bold">
-            {Number(averageWeeklyStatsAmount).toFixed(1)} €
-          </span>
+      <div className="flex uppercase select-none justify-center w-full gap-x-1 text-xxs">
+        <div>{spendingsText.dashboard.weeklyStats.weeklySpendings} : </div>
+        <div className="font-bold">{Number(averageWeeklyStatsAmount).toFixed(1)} €</div>
       </div>
     </div>
   );
