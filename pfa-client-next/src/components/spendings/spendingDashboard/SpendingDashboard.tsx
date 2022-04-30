@@ -21,12 +21,12 @@ const SpendingDashboard = ({
   const user = useUserStore((state) => state.user);
 
   return (
-    <div className="hidden md:flex justify-around items-center w-full h-72 bg-grey2 z-300 fixed border-t-2 border-b-2 border-t-grey1 border-b-grey1 shadow-dashboard">
+    <div className="hidden md:flex justify-around mt-14 items-center w-full h-72 bg-grey2 z-30 fixed border-t-2 border-b-2 border-t-grey1 border-b-grey1 shadow-dashboard">
       <WeeklyStats />
       <MonthlyBudget />
       <MonthlyCharts />
       <WeeklyCharts />
-      <div className="recurring-spendings-container">
+      {/*<div className="w-[360px]">*/}
         <SpendingDayItem
           spendingsByDay={recurring}
           total={0}
@@ -35,7 +35,7 @@ const SpendingDashboard = ({
           recurringType
           month={month}
         />
-      </div>
+      {/*</div>*/}
     </div>
   )
 }

@@ -118,7 +118,7 @@ const WeeklyStats = () => {
 
       <div className="flex flex-col justify-center w-5/6 text-sm gap-y-1 h-1/2">
         {
-          weeklyStats?.data.length > 0 ?
+          weeklyStats?.data.length > 0 && weeklySlices?.length > 0 ?
             weeklyStats!.data.map((weekSliceValue: number, i: number) => {
               const ceilingDiff = weekSliceValue - initialCeiling;
               return (

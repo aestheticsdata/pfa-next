@@ -33,7 +33,6 @@ const Charts = ({ title, periodType }) => {
   }, [charts]);
 
   const getWidth = value => {
-    console.log("maxv", maxv);
     let width;
     if (maxv !== 0) {
       width = (value * widthOfContainer) / maxv;

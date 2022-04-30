@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 import { useRouter } from "next/router";
 import { useAuthStore } from "@auth/store/authStore";
 
+
 const useRequestHelper = () => {
   const router = useRouter();
   const token = useAuthStore((state) => state.token);
@@ -28,19 +29,7 @@ const useRequestHelper = () => {
     axiosInstance.interceptors.response.use(
       (response) => response,
       (err) => {
-        if (err.response.status && err.response.status === 401) {
-          Swal.fire({
-            title: "la session a expiré",
-            text: "vous allez être redirigé vers la page d'authentification",
-            type: "info",
-            grow: "fullscreen",
-            showConfirmButton: false,
-            timer: 3000,
-            willClose: async () => {
-              await router.push("/login");
-            },
-          });
-        }
+        if (err.response.status && err.response.status === 401) { router.push("/login") }
         // see https://stackoverflow.com/questions/56954527/handling-a-promise-reject-in-axios-interceptor
         // see https://stackoverflow.com/questions/49886315/axios-interceptors-response-undefined
         // see https://github.com/axios/axios#interceptors

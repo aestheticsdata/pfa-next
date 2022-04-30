@@ -14,8 +14,9 @@ type PFA = AppProps & {
   };
 };
 
-function PFA_App({ Component, pageProps: { session, ...pageProps } }: PFA) {
+const PFA_App = ({ Component, pageProps: { session, ...pageProps } }: PFA) => {
   const [queryClient] = useState(() => new QueryClient());
+
   return (
     <QueryClientProvider client={queryClient}>
       {

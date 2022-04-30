@@ -1,14 +1,46 @@
+import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
+import getDate from "date-fns/getDate";
+import { parseISO } from "date-fns";
 import useRequestHelper from "@helpers/useRequestHelper";
 import { useUserStore } from "@auth/store/userStore";
 import useDatePickerWrapperStore from "@components/datePickerWrapper/store";
-import { useQuery } from "react-query";
 import { QUERY_OPTIONS } from "@components/spendings/config/constants";
 
 
 const useSpendings = () => {
+  const tempArr = [];
+  tempArr.total = 0;
+  const spendingsPlaceholder = new Array(7).fill(tempArr);
+  const [spendings, setSpendings] = useState(spendingsPlaceholder);
   const { privateRequest } = useRequestHelper();
   const userID = useUserStore((state) => state.user!.id);
-  const { from, to } = useDatePickerWrapperStore();
+  const { from, to, range } = useDatePickerWrapperStore();
+
+  // transform an array of object into an array of array<Object> aggregated
+  // by same date
+  // const aggregateSpendingByDate = (spendings, range, exchangeRates, baseCurrency) => {
+  const aggregateSpendingByDate = (spendings, range) => {
+    const spendingsFinal = [...spendingsPlaceholder];
+
+    for (let j = 0, r = range.length; j < r; j += 1) {
+      const arr: any = [];
+      arr.total = 0;
+      arr.date = getDate(range[j]);
+      spendingsFinal[j] = arr;
+    }
+
+    for (let i = 0, l = spendings.length; i < l; i += 1 ) {
+      for (let k = 0, ll = spendingsFinal.length; k < ll; k += 1) {
+        if (getDate(parseISO(spendings[i].date)) === spendingsFinal[k].date) {
+          spendingsFinal[k].push(spendings[i]);
+          spendingsFinal[k].total += parseFloat(spendings[i].amount);
+        }
+      }
+    }
+
+    return spendingsFinal;
+  };
 
   const getSpendings = async () => {
     try {
@@ -20,7 +52,7 @@ const useSpendings = () => {
     }
   };
 
-   return useQuery(["spendings", from, to], getSpendings, {
+   const { data, isLoading } =  useQuery(["spendings", from, to], getSpendings, {
     retry: false,
     // date store is available when coming from login because DatePicker
     // mounts before Spendings
@@ -31,6 +63,15 @@ const useSpendings = () => {
     enabled: !!from,
     ...QUERY_OPTIONS,
   });
+
+   useEffect(() => {
+     data && range && setSpendings(aggregateSpendingByDate(data.data, range));
+   }, [data, range]);
+
+   return {
+     spendings,
+     isLoading,
+   };
 }
 
 export default useSpendings;

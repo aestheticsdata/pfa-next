@@ -10,7 +10,7 @@ const NavBar = () => {
   const { isCalendarVisible } = useGlobalStore();
 
   return (
-    <div className="flex h-14 w-screen items-center justify-start bg-blueNavy text-white z-50">
+    <div className="flex fixed h-14 w-screen items-center justify-start bg-blueNavy text-white z-50">
       <div className="mx-4 mt-2">
         <Image src="/money-svgrepo-com.svg" alt="logo" width="40" height="40" />
       </div>

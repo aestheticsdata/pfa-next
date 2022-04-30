@@ -14,6 +14,7 @@ const useDatePickerState = () => {
   const { setFrom, setTo, setRange } = useDatePickerWrapperStore();
 
   const toggleCalendar = () => {
+    console.log("wtf");
     setIsCalendarVisible(!isCalendarVisible);
   };
 

@@ -9,17 +9,18 @@ import useReccurings from "@components/spendings/services/useReccurings";
 import useInitialAmount from "@components/spendings/services/useInitialAmount";
 import useCategories from "@components/spendings/services/useCategories";
 import type { MonthRange } from "@components/spendings/interfaces/spendingDashboardTypes";
+import SpendingDayItem from "@components/spendings/spendingDayItem/SpendingDayItem";
 
 
 const Spendings = () => {
   const [month, setMonth] = useState<MonthRange>();
-  const { from, to } = useDatePickerWrapperStore();
+  const { from, to, range } = useDatePickerWrapperStore();
 
-  const { data: spendings, isLoading: isSpendingsLoading } = useSpendings();
+  const { spendings, isLoading: isSpendingsLoading } = useSpendings();
 
   const { data: categories } = useCategories();
 
-  const { data: dashboard } = useDashboard();
+  const { get: { data: dashboard } } = useDashboard();
 
   const { data: recurrings } = useReccurings();
 
@@ -34,16 +35,32 @@ const Spendings = () => {
     }
   }, [from, to]);
 
+  useEffect(() => {
+    console.log("spendings", spendings);
+  }, [spendings]);
+
   return (
     <>
       {
         month &&
-          <div className="w-full">
+          <div className="flex justify-center">
             <SpendingDashboard
               recurring={recurrings}
               month={month}
               isLoading={isSpendingsLoading}
             />
+            <div className="flex flex-wrap justify-start relative md:mt-96 pl-1 w-full md:w-11/12">
+              {
+                spendings.map((spending: any, i:number) =>
+                  <SpendingDayItem
+                    key={i}
+                    spendingsByDay={spending}
+                    date={range![i]}
+                    isLoading={isSpendingsLoading}
+                  />
+                )
+              }
+            </div>
           </div>
       }
     </>

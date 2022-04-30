@@ -13,6 +13,10 @@ const spendings = {
     monthlyCharts: {
       headerTitle: "répartition mensuelle",
     }
+  },
+  dayItem: {
+    recurringTitle: "Dépenses fixes",
+    total: "Total",
   }
 };
 
