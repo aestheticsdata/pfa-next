@@ -7,16 +7,25 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChartBar } from "@fortawesome/free-solid-svg-icons";
 import WidgetHeader from "@components/spendings/spendingDashboard/common/WidgetHeader";
 import useCharts from "@components/spendings/services/useCharts";
+import { MONTHLY, WEEKLY } from "@components/spendings/spendingDashboard/common/widgetHeaderConstants";
 
+
+type periodType = typeof MONTHLY | typeof WEEKLY;
+
+interface ChartsProps {
+  title: string;
+  periodType: periodType;
+}
 
 const getMaxValue = data => Math.max(...data.map(category => +category.value));
-const getTotal = data => data.reduce((acc, curr) => acc + curr.value, 0);
+const getTotal = data => data.reduce((acc: number, curr) => acc + curr.value, 0);
 
-const widthOfContainer = 240; // 300 - (border width * 2)
+const widthOfContainer = 290; // 300 - (border width * 2)
 
 
 
-const Charts = ({ title, periodType }) => {
+const Charts = ({ title, periodType }: ChartsProps) => {
+  console.log("periodType", periodType);
   const [maxv, setMaxv] = useState(0);
   const [total, setTotal] = useState(0);
   const [isTooltipVisible, setIsTooltipVisible] = useState(false);

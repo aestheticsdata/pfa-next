@@ -15,10 +15,10 @@ interface SpendingItemHeaderProps {
 const SpendingItemHeader = ({ date, recurringType, isToday, addSpending, addSpendingEnabled }: SpendingItemHeaderProps) => {
   return (
     <div className="header flex h-10 justify-around items-center">
-      {(date !== null || recurringType) && (
+      {(!!date || recurringType) && (
         !recurringType
           ?
-          <div className={`flex w-full font-poppins uppercase ${isToday ? "bg-datePickerWrapper" : "bg-grey1"} text-black justify-center font-bold text-sm items-center border border-grey2 rounded w-5/6`}>
+          <div className={`flex w-full font-poppins uppercase ${isToday ? "bg-datePickerWrapper" : "bg-grey01"} text-blueNavy justify-center font-bold text-sm items-center border border-grey2 rounded w-5/6 h-6`}>
             <div>{format(date, "dd MMM yyyy", { locale: fr })}</div>
           </div>
           :

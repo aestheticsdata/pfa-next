@@ -1,16 +1,14 @@
 import {useEffect, useState} from 'react';
-import { FormattedMessage, FormattedNumber } from 'react-intl';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt, faTrashAlt, faFileInvoice } from '@fortawesome/free-solid-svg-icons';
 
-import StyledSpendingItem from './StyledSpendingItem';
-import InvoiceModal from "@components/spendings/invoiceModal/InvoiceModal";
+// import StyledSpendingItem from './StyledSpendingItem';
+// import InvoiceModal from "@components/spendings/invoiceModal/InvoiceModal";
 
 import getCategoryComponent from '@components/common/Category';
 
-import messages from '../../messages';
-import cssSizes from "@src/css-sizes";
+// import cssSizes from "@src/css-sizes";
 
 
 const SpendingItem = ({
@@ -18,19 +16,21 @@ const SpendingItem = ({
   editCallback,
   deleteCallback,
   toggleAddSpending,
+  isRecurring,
 }) => {
-  const [hover, setHover] = useState(false);
+  const [isHover, setIsHover] = useState(false);
   const [isDeleteConfirmVisible, setIsDeleteConfirmVisible] = useState(false);
-  const [isInvoiceModalVisible, setIsInvoiceModalVisible] = useState(false);
+  // const [isInvoiceModalVisible, setIsInvoiceModalVisible] = useState(false);
 
-  const isMobile = window.matchMedia(`(max-width: ${cssSizes.responsiveMaxWidth}px)`).matches;
+  // const isMobile = window.matchMedia(`(max-width: ${cssSizes.responsiveMaxWidth}px)`).matches;
+  const isMobile = false;
 
   useEffect(() => {
-    isMobile && setHover(true);
+    isMobile && setIsHover(true);
   }, []);
 
-  const onMouseOver = () => { !isMobile && setHover(true) };
-  const onMouseLeave = () => { !isMobile && setHover(false) };
+  const onMouseOver = () => { !isMobile && setIsHover(true) };
+  const onMouseLeave = () => { !isMobile && setIsHover(false) };
   const openEditModal = () => editCallback(spending);
 
   const hideConfirm = () => {
@@ -42,14 +42,14 @@ const SpendingItem = ({
     return (
       <div className="confirm-delete-popin">
         <span className="title">
-          <FormattedMessage { ...messages.confirmDeleteTitle} />
+          Confirmer l effacement ?
         </span>
         <div className="button-container">
           <button
             className="cancel-button"
             onClick={() => hideConfirm()}
           >
-            <FormattedMessage { ...messages.confirmDeleteCancelButton } />
+            Annuler
           </button>
           <button
             className="confirm-button"
@@ -59,7 +59,7 @@ const SpendingItem = ({
                 deleteCallback(item.ID, item.itemType);
               }
             }>
-            <FormattedMessage { ...messages.confirmDeleteConfirmButton} />
+            Effacer
           </button>
         </div>
       </div>
@@ -67,74 +67,100 @@ const SpendingItem = ({
   };
 
   return (
-    <StyledSpendingItem>
+    // <StyledSpendingItem>
       <div
-        className="spending-item-container"
+        className="flex justify-center cursor-default select-none"
         onMouseOver={onMouseOver}
         onMouseLeave={onMouseLeave}
       >
-        {
-          isInvoiceModalVisible ?
-            <InvoiceModal
-              handleClickOutside={() => { !isMobile && setHover(false); setIsInvoiceModalVisible(!isInvoiceModalVisible) }}
-              spending={spending}
-            />
-            :
-            null
-        }
+        {/*{*/}
+        {/*  isInvoiceModalVisible ?*/}
+        {/*    <InvoiceModal*/}
+        {/*      handleClickOutside={() => { !isMobile && setHover(false); setIsInvoiceModalVisible(!isInvoiceModalVisible) }}*/}
+        {/*      spending={spending}*/}
+        {/*    />*/}
+        {/*    :*/}
+        {/*    null*/}
+        {/*}*/}
         {
           !isDeleteConfirmVisible ?
-            <div className="spending">
-              <span className="label" title={spending.label}>{spending.label}</span>
-              { spending?.category && getCategoryComponent(spending) }
-              {
-                hover ?
-                  <>
-                    <span
-                      className={`invoice action ${spending.invoicefile && 'isPresent'}`}
-                      title="display invoice"
-                      onClick={() => {setIsInvoiceModalVisible(!isInvoiceModalVisible)}}
-                    >
-                      <FontAwesomeIcon icon={faFileInvoice} />
-                    </span>
-                    <span
-                      className="edit action"
-                      title="edit"
-                      onClick={() => openEditModal()}
-                    >
-                      <FontAwesomeIcon icon={faPencilAlt} />
-                    </span>
-                    <span
-                      className="delete action"
-                      title="delete"
-                      onClick={
-                        () => {
-                          toggleAddSpending();
-                          setIsDeleteConfirmVisible(true);
-                        }
-                      }
-                    >
-                      <FontAwesomeIcon icon={faTrashAlt} />
-                    </span>
-                  </>
+            <div className={`flex justify-between w-[460px] ${isHover && "bg-spendingItemHover"} transition-colors ease-linear duration-200 ${!isRecurring && "mx-4"}`}>
+
+              <div className={`flex items-center ${!isRecurring ? "w-1/3" : "w-1/2"} text-sm font-ubuntu whitespace-nowrap overflow-hidden overflow-y-auto"`} title={spending.label}>
+                {spending.label}
+              </div>
+
+              {!isRecurring && (
+                spending?.category ?
+                  <div className="flex justify-center items-center w-1/3">
+                    <div className="text-xxs uppercase w-3/4">
+                      {spending?.category && getCategoryComponent(spending)}
+                    </div>
+                  </div>
                   :
-                  null
-              }
-              <span className="amount">
-                  {/* eslint-disable  react/style-prop-object */}
-                <FormattedNumber
-                  value={spending.amount}
-                  style="currency"
-                  currency={spending.currency}
-                />
-                </span>
+                  <div className="flex w-1/3"></div>
+                )}
+
+              <div className={`flex justify-around items-center ${!isRecurring ? "w-1/6" : "w-1/4"} text-grey1`}>
+                <div
+                  className={`cursor-pointer ${spending.invoicefile ? "text-invoiceImageIsPresent hover:text-invoiceImageIsPresentHover" : "hover:text-spendingActionHover"}`}
+                  title="display invoice"
+                  // onClick={() => {setIsInvoiceModalVisible(!isInvoiceModalVisible)}}
+                >
+                  <FontAwesomeIcon icon={faFileInvoice} />
+                </div>
+                <div
+                  className="cursor-pointer hover:text-spendingActionHover"
+                  title="edit"
+                  onClick={() => openEditModal()}
+                >
+                  <FontAwesomeIcon icon={faPencilAlt} />
+                </div>
+                <div
+                  className="cursor-pointer hover:text-spendingActionHover"
+                  title="delete"
+                  onClick={
+                    () => {
+                      toggleAddSpending();
+                      setIsDeleteConfirmVisible(true);
+                    }
+                  }
+                >
+                  <FontAwesomeIcon icon={faTrashAlt} />
+                </div>
+              </div>
+
+              <div className={`flex justify-end ${!isRecurring ? "w-1/6" : "w-1/4"} text-sm items-center`}>{Number(spending.amount).toFixed(2)} €</div>
+
             </div>
             :
             confirmDeletePopin(spending, deleteCallback)
         }
       </div>
-    </StyledSpendingItem>
+    // </StyledSpendingItem>
   )
 }
 
 export default SpendingItem;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

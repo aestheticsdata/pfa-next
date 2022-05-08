@@ -8,9 +8,9 @@ const WeeklyCharts = () => {
   const { to } = useDatePickerWrapperStore();
   return (
     to && (
-      <div className="flex flex-col items-center border border-white bg-grey0 rounded w-[300px] h-[265px] gap-y-2">
+      <div className="flex flex-col items-center border border-white bg-grey0 rounded w-[340px] h-[265px] gap-y-2">
         <Charts
-          title={dashboardText.dashboard.monthlyCharts.headerTitle}
+          title={dashboardText.dashboard.weeklyCharts.headerTitle}
           periodType={WEEKLY}
         />
       </div>

@@ -21,12 +21,11 @@ const Login = () => {
   };
 
   return (
-    <Layout>
-      <div className="flex w-96 flex-col items-center space-y-8 rounded bg-gradient-to-br from-teal-300 to-sky-500 py-3 font-smooch shadow-lg mt-4">
+    <Layout isLogin>
+      <div className="flex flex-col items-center w-96 space-y-8 mt-28 rounded bg-gradient-to-br from-teal-300 to-sky-500 py-3 font-smooch shadow-lg">
         <SharedLoginForm
           onSubmit={onSubmit}
           buttonTitle="login"
-          // buttonTitle={intl.formatMessage({ ...messages.buttonLabel })}
           displayEmailField
           displayPasswordField
         />

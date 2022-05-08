@@ -9,10 +9,7 @@ import { QUERY_OPTIONS } from "@components/spendings/config/constants";
 
 
 const useSpendings = () => {
-  const tempArr = [];
-  tempArr.total = 0;
-  const spendingsPlaceholder = new Array(7).fill(tempArr);
-  const [spendings, setSpendings] = useState(spendingsPlaceholder);
+  const [spendings, setSpendings] = useState();
   const { privateRequest } = useRequestHelper();
   const userID = useUserStore((state) => state.user!.id);
   const { from, to, range } = useDatePickerWrapperStore();
@@ -21,6 +18,10 @@ const useSpendings = () => {
   // by same date
   // const aggregateSpendingByDate = (spendings, range, exchangeRates, baseCurrency) => {
   const aggregateSpendingByDate = (spendings, range) => {
+    const tempArr = [];
+    tempArr.total = 0;
+    const spendingsPlaceholder = new Array(range.length).fill(tempArr);
+    console.log("range", range);
     const spendingsFinal = [...spendingsPlaceholder];
 
     for (let j = 0, r = range.length; j < r; j += 1) {
@@ -29,7 +30,7 @@ const useSpendings = () => {
       arr.date = getDate(range[j]);
       spendingsFinal[j] = arr;
     }
-
+console.log("spendingsFinal", spendingsFinal);
     for (let i = 0, l = spendings.length; i < l; i += 1 ) {
       for (let k = 0, ll = spendingsFinal.length; k < ll; k += 1) {
         if (getDate(parseISO(spendings[i].date)) === spendingsFinal[k].date) {
@@ -65,7 +66,8 @@ const useSpendings = () => {
   });
 
    useEffect(() => {
-     data && range && setSpendings(aggregateSpendingByDate(data.data, range));
+     console.log("data.data", data?.data);
+     data?.data && range && setSpendings(aggregateSpendingByDate(data.data, range));
    }, [data, range]);
 
    return {
@@ -75,3 +77,23 @@ const useSpendings = () => {
 }
 
 export default useSpendings;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

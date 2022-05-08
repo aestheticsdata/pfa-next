@@ -43,7 +43,7 @@ const MonthlyBudget = () => {
 
   return (
     to && (
-      <div className="flex flex-col shrink-0 items-center border border-white bg-grey0 rounded w-[250px] h-[265px] gap-y-4">
+      <div className="flex flex-col shrink-0 items-center border border-white bg-grey0 rounded w-[180px] h-[265px] gap-y-4">
 
         <div className="flex flex-col items-center text-xs font-bold border-b border-b-black w-5/6 py-2">
           <div className="uppercase">{format(to, "MMMM", { locale: fr })}</div>
@@ -80,11 +80,11 @@ const MonthlyBudget = () => {
           }
         </div>
 
-        <div className={`flex flex-col w-full items-center text-xs bg-remainingAmountAlpha border-l-8 border-l-remainingAmount pr-4 justify-around h-12 ${remaining < 0 && 'warning'}`}>
+        <div className={`flex flex-col w-full items-center text-xs border-l-8 border-l-remainingAmount pr-4 justify-around h-12 ${remaining >= 0 ? "bg-remainingAmountAlpha" : "bg-generalWarningBackground"}`}>
           <div className="uppercase text-xs">
             {monthlyText.dashboard.monthlyBudget.remaining}
           </div>
-          <div className={`text-remainingAmount font-bold ${remaining < 0 && 'warning'}`}>
+          <div className={`text-remainingAmount font-bold ${remaining < 0 && "text-generalWarning"}`}>
             {remaining} €
           </div>
         </div>

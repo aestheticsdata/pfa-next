@@ -1,8 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;700&family=Smooch+Sans:wght@100;200;500&family=Ubuntu:wght@300;400;500;700&display=swap');
 
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@layer base {
+  html {
+    @apply bg-grey1;
+  }
+}
 
 
 /* hack to remove in Chrome, input colors */
@@ -33,20 +41,20 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
 
 .DayPicker-Day--selectedRange {
   background-color: #fff7ba !important;
-  border-top-color: #FFEB3B;
-  border-bottom-color: #FFEB3B;
-  border-left-color: #fff7ba;
-  border-right-color: #fff7ba;
+  /*border-top-color: #FFEB3B;*/
+  /*border-bottom-color: #FFEB3B;*/
+  /*border-left-color: #fff7ba;*/
+  /*border-right-color: #fff7ba;*/
 }
 
 .DayPicker-Day--selectedRangeStart {
   background-color: #FFEB3B !important;
-  border-left: 1px solid #FFEB3B;
+  /*border-left: 1px solid #FFEB3B;*/
 }
 
 .DayPicker-Day--selectedRangeEnd {
   background-color: #FFEB3B !important;
-  border-right: 1px solid #FFEB3B;
+  /*border-right: 1px solid #FFEB3B;*/
 }
 
 .DayPicker-Day--selectedRange:not(.DayPicker-Day--outside).DayPicker-Day--selected,

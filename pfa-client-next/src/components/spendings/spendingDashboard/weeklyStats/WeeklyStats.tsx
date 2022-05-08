@@ -40,9 +40,7 @@ const WeeklyStats = () => {
   const CEILING_WARN_LIMIT = 50;
 
   useEffect(() => {
-    console.log("dashboard", dashboard);
     dashboard?.data ? setInitialCeiling(+dashboard?.data?.initialCeiling) : setInitialCeiling(0);
-    console.log("initialCeiling", initialCeiling);
   }, [dashboard]);
 
   useEffect(() => {
@@ -50,12 +48,9 @@ const WeeklyStats = () => {
   }, [from]);
 
   useEffect(() => {
-    console.log("weeklyStats", weeklyStats);
     if (weeklyStats?.data.length > 0) {
-      console.log("weeklyStats", weeklyStats);
       // filter(Boolean) removes 0 from array
       const zeroedOutWeeklyStats = weeklyStats!.data.filter(Boolean);
-      console.log("zeroedOutWeeklyStats", zeroedOutWeeklyStats);
       setAverageWeeklyStatsAmount(
         accurateFixed(
           zeroedOutWeeklyStats
@@ -77,13 +72,13 @@ const WeeklyStats = () => {
   }, [setFocus, isInputVisible]);
 
   return (
-    <div className="flex flex-col shrink-0 items-center w-[320px] h-[265px] border border-white bg-grey0 rounded gap-y-3 text-xs">
+    <div className="flex flex-col shrink-0 items-center w-[320px] h-[265px] border border-grey3 bg-black text-white rounded gap-y-3 text-xs">
       <WidgetHeader
         title={spendingsText.dashboard.weeklyStats.headerTitle}
         periodType={WEEKLY}
       />
       <div className="flex uppercase select-none justify-start w-5/6 gap-x-1">
-        <div className="text-xs border-b">
+        <div className="text-xs">
           {spendingsText.dashboard.weeklyStats.weeklyCeiling} :
         </div>
 
@@ -91,7 +86,7 @@ const WeeklyStats = () => {
           className={`${!isInputVisible ? "visible" : "hidden"}`}
           onClick={() => {setIsInputVisible(true)}}
         >
-          <div className="text-initialAmount font-bold hover:bg-initialAmountHover hover:cursor-pointer hover:rounded">
+          <div className="text-initialAmountWeekly font-bold px-1 hover:bg-initialAmountHover hover:text-spendingActionHover hover:cursor-pointer hover:rounded">
             {initialCeiling ?? 0} €
           </div>
         </div>
@@ -104,7 +99,7 @@ const WeeklyStats = () => {
             {
               initialCeiling && (
                 <input
-                  className="w-10 outline-0 bg-transparent border-b border-b-black"
+                  className="w-10 px-1 outline-0 bg-transparent border-b border-b-white"
                   onKeyDown={(e: KeyboardEvent) => {e.key === "Escape" && setIsInputVisible(false)}}
                   defaultValue={initialCeiling}
                   {...register("initialCeiling")}
@@ -124,7 +119,7 @@ const WeeklyStats = () => {
               return (
                 <div
                   key={i}
-                  className={`flex justify-between items-center ${isCurrentWeek(weeklySlices[i], from) ? "font-bold" : ""}`}
+                  className={`flex justify-between items-center ${isCurrentWeek(weeklySlices[i], from) && "font-bold bg-grey3 rounded"}`}
                 >
                   {isCurrentWeek(weeklySlices[i], from)}
                   <div className="flex w-4/12 gap-x-2">
@@ -152,7 +147,7 @@ const WeeklyStats = () => {
                     <div>
                       {
                         ceilingDiff > 0 ?
-                          <div className={`${ceilingDiff > CEILING_WARN_LIMIT ? "text-ceilingExcess": "text-ceilingWarn"}`}>
+                          <div className={`${ceilingDiff > CEILING_WARN_LIMIT ? "text-ceilingExcess bg-generalWarningBackground px-1 rounded": "text-ceilingWarn"}`}>
                             +
                             {Number(ceilingDiff).toFixed(2)} €
                           </div>

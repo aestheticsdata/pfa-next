@@ -8,10 +8,13 @@ const spendings = {
     monthlyBudget: {
       initialAmount: "Montant initial",
       remaining: "Restant",
-      total: "Total",
+      total: "Total du mois",
     },
     monthlyCharts: {
       headerTitle: "répartition mensuelle",
+    },
+    weeklyCharts: {
+      headerTitle: "répartition hebdomadaire",
     }
   },
   dayItem: {

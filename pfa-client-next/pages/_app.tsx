@@ -18,6 +18,7 @@ const PFA_App = ({ Component, pageProps: { session, ...pageProps } }: PFA) => {
   const [queryClient] = useState(() => new QueryClient());
 
   return (
+    <div className="bg-grey1">
     <QueryClientProvider client={queryClient}>
       {
         Component.auth ? (
@@ -30,6 +31,7 @@ const PFA_App = ({ Component, pageProps: { session, ...pageProps } }: PFA) => {
       }
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
+    </div>
   );
 }
 

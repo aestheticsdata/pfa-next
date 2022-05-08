@@ -1,6 +1,18 @@
 import adjustFontColor from "@components/shared/helpers/adjustColor";
 
-const Tooltip = ({ tooltipPos, categoryInfos }) => {
+interface categoryInfos {
+  value: number;
+  label: string;
+  bgcolor: string;
+}
+
+interface TooltipProps {
+  tooltipPos: { x: number, y: number };
+  categoryInfos: categoryInfos;
+}
+
+
+const Tooltip = ({ tooltipPos, categoryInfos }: TooltipProps) => {
   return (
     <div
       className="flex flex-col absolute w-[100px] h-[50px] bg-grey1 rounded border border-grey0 text-xs shadow-charttooltip"

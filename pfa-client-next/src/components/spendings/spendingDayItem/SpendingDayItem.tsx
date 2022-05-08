@@ -9,9 +9,20 @@ import SpendingItemHeader from "@components/spendings/spendingDayItem/SpendingIt
 import useClickSort from "@components/spendings/helpers/useClickSort";
 import { SpendingCompoundType } from "@components/spendings/types";
 import spendingsText from "@components/spendings/config/text";
+import SpendingsListContainer from "@components/spendings/spendingsListContainer/SpendingListContainer";
+
+interface SpendingDayItemProps {
+  spendingsByDay: any;
+  deleteSpending: () => {};
+  isLoading: boolean;
+  date: Date;
+  recurringType: boolean;
+  user: any;
+  month: any;
+}
 
 
-const SpendingDayItem = ({ spendingsByDay, total, isLoading, user, recurringType = false, month, date }) => {
+const SpendingDayItem = ({ spendingsByDay, deleteSpending, isLoading, date, recurringType = false, user, month = null }: SpendingDayItemProps) => {
   const isToday = getDayOfYear(date) === getDayOfYear(Date.now());
   const {
     onClickSort,
@@ -23,9 +34,14 @@ const SpendingDayItem = ({ spendingsByDay, total, isLoading, user, recurringType
     setSpendingsByDaySorted(spendingsByDay);
   }, [spendingsByDay]);
 
-  const getRecurringsTotal = (recurrings: SpendingCompoundType) => _.sumBy(recurrings, item => parseFloat(item.amount));
-  // const getRecurringsTotal = (recurrings: SpendingCompoundType) => recurrings.reduce((acc, curr) => {acc = acc + Number(curr.amount).toFixed(2); return acc}, 0);
-  // const getRecurringsTotal = () => {};
+  const getRecurringsTotal = (recurrings: SpendingCompoundType) => {
+    if (recurrings?.data?.length > 0) {
+      return recurrings.data.reduce((acc, curr) => {
+        acc = acc + Number(curr.amount);
+        return acc;
+      }, 0);
+    }
+  }
 
 
   const {
@@ -39,10 +55,11 @@ const SpendingDayItem = ({ spendingsByDay, total, isLoading, user, recurringType
     editSpending,
   } = useSpendingDayItem();
 
+
   return (
-    <div className={`rounded bg-grey0 border ${isToday ? "border-datePickerWrapper" : "border-grey2"} ${
+    <div className={`rounded bg-spendingDayBackground border ${isToday ? "border-datePickerWrapper" : "border-grey2"} ${
       recurringType
-        ? "md:w-[370px] h-[265px]"
+        ? "md:w-[400px] h-[265px]"
         : "md:w-[490px] h-[300px] m-2"
     }`}>
       <div className="flex flex-col">
@@ -62,13 +79,23 @@ const SpendingDayItem = ({ spendingsByDay, total, isLoading, user, recurringType
               <div className="total-amount font-bold">
                 {recurringType
                   ?
-                  <div>{getRecurringsTotal(spendingsByDaySorted)} €</div>
+                  <div>{Number(getRecurringsTotal(spendingsByDaySorted)).toFixed(2)} €</div>
                   :
                   <div>{Number(spendingsByDaySorted.total).toFixed(2)} €</div>
                 }
               </div>
             </div>
           }
+        </div>
+        <div className="flex flex-col mt-2">
+          <SpendingsListContainer
+            spendingsByDaySorted={spendingsByDaySorted}
+            deleteSpending={deleteSpending}
+            toggleAddSpending={toggleAddSpending}
+            editSpending={editSpending}
+            isLoading={isLoading}
+            recurringType={recurringType}
+          />
         </div>
       </div>
     </div>

@@ -26,7 +26,6 @@ const SpendingDashboard = ({
       <MonthlyBudget />
       <MonthlyCharts />
       <WeeklyCharts />
-      {/*<div className="w-[360px]">*/}
         <SpendingDayItem
           spendingsByDay={recurring}
           total={0}
@@ -35,7 +34,6 @@ const SpendingDashboard = ({
           recurringType
           month={month}
         />
-      {/*</div>*/}
     </div>
   )
 }

@@ -43,15 +43,15 @@ const Spendings = () => {
     <>
       {
         month &&
-          <div className="flex justify-center">
-            <SpendingDashboard
-              recurring={recurrings}
-              month={month}
-              isLoading={isSpendingsLoading}
-            />
-            <div className="flex flex-wrap justify-start relative md:mt-96 pl-1 w-full md:w-11/12">
-              {
-                spendings.map((spending: any, i:number) =>
+        <>
+          <SpendingDashboard
+            recurring={recurrings}
+            month={month}
+            isLoading={isSpendingsLoading}
+          />
+          <div className="flex justify-center w-full">
+            <div className="flex flex-wrap justify-start md:mt-96 pl-1 w-11/12">
+              {spendings?.map((spending: any, i:number) =>
                   <SpendingDayItem
                     key={i}
                     spendingsByDay={spending}
@@ -62,6 +62,7 @@ const Spendings = () => {
               }
             </div>
           </div>
+        </>
       }
     </>
   );

@@ -41,7 +41,7 @@ export type SpendingCompoundType = SpendingType[] & {
 export type SpendingsType = Array<SpendingCompoundType>;
 
 interface SpendingsPartial {
-  spendingsByDay: SpendingCompoundType;
+  spendingsByDaySorted: SpendingCompoundType;
   deleteSpending: (itemID: string, itemType: string) => void;
   isLoading: boolean;
 }
