@@ -5,6 +5,8 @@ import DatePickerWrapper from "@components/datePickerWrapper/DatePickerWrapper";
 import useGlobalStore from "@components/shared/globalStore";
 import sharedText from "@components//shared/config/text";
 
+const getPathName = (path: string) => (location.pathname === path) && "bg-spendingItemHover text-blueNavy rounded";
+
 const NavBar = () => {
   const token = useAuthStore((state) => state.token);
   const { isCalendarVisible } = useGlobalStore();
@@ -16,8 +18,8 @@ const NavBar = () => {
       </div>
       {token ? (
         <div className="flex space-x-5 font-ubuntu">
-          <Link href="/" passHref><div className="outline-hidden p-1 hover:cursor-pointer hover:bg-spendingItemHover hover:text-blueNavy hover:rounded">{sharedText.navBar.spendings}</div></Link>
-          <Link href="/categories" passHref><div className="outline-hidden p-1 hover:cursor-pointer hover:bg-spendingItemHover hover:text-blueNavy hover:rounded">{sharedText.navBar.categories}</div></Link>
+          <Link href="/" passHref><div className={`outline-hidden p-1 ${getPathName("/")} hover:cursor-pointer hover:bg-spendingItemHover hover:text-blueNavy hover:rounded`}>{sharedText.navBar.spendings}</div></Link>
+          <Link href="/categories" passHref><div className={`outline-hidden p-1 ${getPathName("/categories")} hover:cursor-pointer hover:bg-spendingItemHover hover:text-blueNavy hover:rounded`}>{sharedText.navBar.categories}</div></Link>
           {isCalendarVisible && <DatePickerWrapper />}
         </div>
       ) : (
