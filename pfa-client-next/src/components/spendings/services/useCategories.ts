@@ -1,7 +1,7 @@
 import useRequestHelper from "@helpers/useRequestHelper";
 import { useUserStore } from "@auth/store/userStore";
 import { useQuery } from "react-query";
-import { QUERY_OPTIONS } from "@components/spendings/config/constants";
+import { QUERY_KEYS, QUERY_OPTIONS } from "@components/spendings/config/constants";
 
 
 const useCategories = () => {
@@ -16,7 +16,7 @@ const useCategories = () => {
     }
   };
 
-  return useQuery("categories", getCategories, {
+  return useQuery(QUERY_KEYS.CATEGORIES, getCategories, {
     retry: false,
     ...QUERY_OPTIONS,
   });

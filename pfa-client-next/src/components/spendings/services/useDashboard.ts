@@ -1,11 +1,11 @@
+import { useQuery, useMutation, useQueryClient } from "react-query";
 import useRequestHelper from "@src/helpers/useRequestHelper";
 import startOfMonth from "date-fns/startOfMonth";
+import endOfMonth from "date-fns/endOfMonth";
 import { useUserStore } from "@auth/store/userStore";
 import useDatePickerWrapperStore from "@components/datePickerWrapper/store";
-import { useQuery, useMutation, useQueryClient, UseMutationResult } from "react-query";
-import { QUERY_OPTIONS } from "@components/spendings/config/constants";
+import { QUERY_KEYS, QUERY_OPTIONS } from "@components/spendings/config/constants";
 import type { UseQueryResult } from "react-query";
-import { endOfMonth } from "date-fns";
 
 
 export interface DashBoard {
@@ -66,22 +66,20 @@ const useDashboard = (): UseDashboard => {
     )
   }
 
-  const get = useQuery(["dashboard", monthBeginning], getDashboard, {
+  const get = useQuery([QUERY_KEYS.DASHBOARD, monthBeginning], getDashboard, {
     retry: false,
     enabled: !!from,
     ...QUERY_OPTIONS,
   });
 
-  const mutation = useMutation(({dashboardID, initialAmount}) => {
+  const mutation = useMutation(({ dashboardID, initialAmount }) => {
     if (dashboardID) {
-      console.log("oui on est bien ici");
       return updateInitialSalary(dashboardID, initialAmount);
     } else {
       return setInitialSalary(initialAmount);
     }
   }, {
     onSuccess: async () => {
-      console.log("onSuccess before invalidate");
       await queryClient.invalidateQueries(["dashboard", monthBeginning]);
     }
   });

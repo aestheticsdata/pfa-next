@@ -4,7 +4,7 @@ import startOfMonth from "date-fns/startOfMonth";
 import endOfMonth from "date-fns/endOfMonth";
 import useRequestHelper from "@src/helpers/useRequestHelper";
 import { useUserStore } from "@auth/store/userStore";
-import { QUERY_OPTIONS } from "@components/spendings/config/constants";
+import { QUERY_KEYS, QUERY_OPTIONS } from "@components/spendings/config/constants";
 import { MONTHLY } from "@components/spendings/spendingDashboard/common/widgetHeaderConstants";
 import useDatePickerWrapperStore from "@components/datePickerWrapper/store";
 
@@ -30,7 +30,7 @@ const useCharts = (periodType: string) => {
     return privateRequest(`/spendings/charts?userID=${userID}&from=${startDate}&to=${endDate}`);
   }
 
-  return useQuery(["charts", startDate], getCharts, {
+  return useQuery([QUERY_KEYS.CHARTS, startDate], getCharts, {
     retry: false,
     enabled: !!startDate,
     ...QUERY_OPTIONS,

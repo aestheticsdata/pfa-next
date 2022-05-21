@@ -1,6 +1,15 @@
 import commonTexts from "@components/common/config/text";
+import useSpendings from "@components/spendings/services/useSpendings";
+import type { Spending } from "@components/spendings/interfaces/spendingDashboardTypes";
 
-const ConfirmDeletePopin = ({ item, hideConfirm }) => {
+interface ConfirmDeletePopinProps {
+  spending: Spending;
+  hideConfirm: () => void;
+}
+
+const ConfirmDeletePopin = ({ spending, hideConfirm }: ConfirmDeletePopinProps) => {
+  const { deleteSpending } = useSpendings();
+
   return (
     <div className="flex justify-center space-x-4 items-center bg-warningDeleteBackground border border-warningDelete rounded text-xs w-[460px] h-6">
         <div>
@@ -17,7 +26,7 @@ const ConfirmDeletePopin = ({ item, hideConfirm }) => {
           className="border border-grey1 bg-grey0 px-0.5 rounded hover:bg-grey1 hover:text-white"
           onClick={
             () => {
-              // deleteCallback(item.ID, item.itemType);
+              deleteSpending.mutate({ spending });
               hideConfirm();
             }
           }>

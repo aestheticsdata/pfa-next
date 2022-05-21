@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
-import { useQuery } from "react-query";
+import { useQuery, useMutation, useQueryClient } from "react-query";
 import getDate from "date-fns/getDate";
-import { parseISO } from "date-fns";
+import parseISO from "date-fns/parseISO";
+import startOfMonth from "date-fns/startOfMonth";
 import useRequestHelper from "@helpers/useRequestHelper";
 import { useUserStore } from "@auth/store/userStore";
 import useDatePickerWrapperStore from "@components/datePickerWrapper/store";
-import { QUERY_OPTIONS } from "@components/spendings/config/constants";
+import { QUERY_KEYS, QUERY_OPTIONS } from "@components/spendings/config/constants";
+import type { Spending } from "@components/spendings/interfaces/spendingDashboardTypes";
 
 
 const useSpendings = () => {
@@ -13,6 +15,7 @@ const useSpendings = () => {
   const { privateRequest } = useRequestHelper();
   const userID = useUserStore((state) => state.user!.id);
   const { from, to, range } = useDatePickerWrapperStore();
+  const monthBeginning = startOfMonth(from!);
 
   // transform an array of object into an array of array<Object> aggregated
   // by same date
@@ -21,7 +24,6 @@ const useSpendings = () => {
     const tempArr = [];
     tempArr.total = 0;
     const spendingsPlaceholder = new Array(range.length).fill(tempArr);
-    console.log("range", range);
     const spendingsFinal = [...spendingsPlaceholder];
 
     for (let j = 0, r = range.length; j < r; j += 1) {
@@ -30,7 +32,7 @@ const useSpendings = () => {
       arr.date = getDate(range[j]);
       spendingsFinal[j] = arr;
     }
-console.log("spendingsFinal", spendingsFinal);
+
     for (let i = 0, l = spendings.length; i < l; i += 1 ) {
       for (let k = 0, ll = spendingsFinal.length; k < ll; k += 1) {
         if (getDate(parseISO(spendings[i].date)) === spendingsFinal[k].date) {
@@ -53,7 +55,7 @@ console.log("spendingsFinal", spendingsFinal);
     }
   };
 
-   const { data, isLoading } =  useQuery(["spendings", from, to], getSpendings, {
+   const { data, isLoading } =  useQuery([QUERY_KEYS.SPENDINGS, from, to], getSpendings, {
     retry: false,
     // date store is available when coming from login because DatePicker
     // mounts before Spendings
@@ -66,34 +68,30 @@ console.log("spendingsFinal", spendingsFinal);
   });
 
    useEffect(() => {
-     console.log("data.data", data?.data);
      data?.data && range && setSpendings(aggregateSpendingByDate(data.data, range));
    }, [data, range]);
+
+  const queryClient = useQueryClient();
+
+   const deleteSpendingService = async (spending: Spending) => {
+     return privateRequest(`/spendings/${spending.ID}`, {method: "DELETE"});
+   }
+
+   const deleteSpending = useMutation(({ spending }: { spending: Spending }) => {
+     return deleteSpendingService(spending);
+   }, {
+     onSuccess: async () => {
+       await queryClient.invalidateQueries([QUERY_KEYS.SPENDINGS, from, to]);
+       await queryClient.invalidateQueries([QUERY_KEYS.WEEKLY_STATS, monthBeginning]);
+     }
+   });
 
    return {
      spendings,
      isLoading,
+     deleteSpending,
    };
 }
 
 export default useSpendings;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

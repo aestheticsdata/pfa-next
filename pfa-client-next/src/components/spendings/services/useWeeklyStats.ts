@@ -2,7 +2,7 @@ import useRequestHelper from "@helpers/useRequestHelper";
 import { useUserStore } from "@auth/store/userStore";
 import useDatePickerWrapperStore from "@components/datePickerWrapper/store";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { QUERY_OPTIONS } from "@components/spendings/config/constants";
+import { QUERY_KEYS, QUERY_OPTIONS } from "@components/spendings/config/constants";
 import startOfMonth from "date-fns/startOfMonth";
 import useDashboard from "@components/spendings/services/useDashboard";
 import { endOfMonth } from "date-fns";
@@ -40,7 +40,7 @@ const useWeeklyStats = () => {
     }
   }
 
-  const get = useQuery(["weeklyStats", monthBeginning], getWeeklyStats, {
+  const get = useQuery([QUERY_KEYS.WEEKLY_STATS, monthBeginning], getWeeklyStats, {
     retry: false,
     enabled: !!from,
     ...QUERY_OPTIONS,
