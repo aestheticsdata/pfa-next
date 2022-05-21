@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt, faTrashAlt, faFileInvoice } from '@fortawesome/free-solid-svg-icons';
@@ -9,6 +9,8 @@ import { faPencilAlt, faTrashAlt, faFileInvoice } from '@fortawesome/free-solid-
 import getCategoryComponent from '@components/common/Category';
 
 // import cssSizes from "@src/css-sizes";
+
+import ConfirmDeletePopin from "@components/common/deletePopin";
 
 
 const SpendingItem = ({
@@ -36,34 +38,7 @@ const SpendingItem = ({
   const hideConfirm = () => {
     toggleAddSpending();
     setIsDeleteConfirmVisible(false);
-  };
-
-  const confirmDeletePopin = (item, deleteCallback) => {
-    return (
-      <div className="confirm-delete-popin">
-        <span className="title">
-          Confirmer l effacement ?
-        </span>
-        <div className="button-container">
-          <button
-            className="cancel-button"
-            onClick={() => hideConfirm()}
-          >
-            Annuler
-          </button>
-          <button
-            className="confirm-button"
-            onClick={
-              () => {
-                hideConfirm();
-                deleteCallback(item.ID, item.itemType);
-              }
-            }>
-            Effacer
-          </button>
-        </div>
-      </div>
-    );
+    setIsHover(false);
   };
 
   return (
@@ -87,7 +62,7 @@ const SpendingItem = ({
             <div className={`flex justify-between w-[460px] ${isHover && "bg-spendingItemHover"} transition-colors ease-linear duration-200 ${!isRecurring && "mx-4"}`}>
 
               <div className={`flex items-center ${!isRecurring ? "w-1/3" : "w-1/2"} text-sm font-ubuntu whitespace-nowrap overflow-hidden overflow-y-auto"`} title={spending.label}>
-                {spending.label}
+                {spending.label.length > 20 ? `${spending.label.slice(0,20)}...` : spending.label}
               </div>
 
               {!isRecurring && (
@@ -134,7 +109,7 @@ const SpendingItem = ({
 
             </div>
             :
-            confirmDeletePopin(spending, deleteCallback)
+            <ConfirmDeletePopin item={spending} hideConfirm={hideConfirm} />
         }
       </div>
     // </StyledSpendingItem>

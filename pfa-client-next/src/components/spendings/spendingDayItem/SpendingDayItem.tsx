@@ -41,7 +41,6 @@ const SpendingDayItem = ({ spendingsByDay, deleteSpending, isLoading, date, recu
         return acc;
       }, 0);
     }
-    return 0;
   }
 
 
