@@ -79,7 +79,7 @@ const SpendingDayItem = ({ spendingsByDay, deleteSpending, isLoading, date, recu
               <div className="total-amount font-bold">
                 {recurringType
                   ?
-                  <div>{Number(getRecurringsTotal(spendingsByDaySorted)).toFixed(2)} €</div>
+                  <div>{Number(getRecurringsTotal(spendingsByDaySorted) || 0).toFixed(2)} €</div>
                   :
                   <div>{Number(spendingsByDaySorted.total).toFixed(2)} €</div>
                 }
