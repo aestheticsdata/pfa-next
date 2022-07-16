@@ -25,7 +25,6 @@ const widthOfContainer = 290; // 300 - (border width * 2)
 
 
 const Charts = ({ title, periodType }: ChartsProps) => {
-  console.log("periodType", periodType);
   const [maxv, setMaxv] = useState(0);
   const [total, setTotal] = useState(0);
   const [isTooltipVisible, setIsTooltipVisible] = useState(false);

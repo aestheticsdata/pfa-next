@@ -1,11 +1,14 @@
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import useRequestHelper from "@src/helpers/useRequestHelper";
+import formatISO from "date-fns/formatISO";
+import parseISO from "date-fns/parseISO";
 import startOfMonth from "date-fns/startOfMonth";
 import endOfMonth from "date-fns/endOfMonth";
 import { useUserStore } from "@auth/store/userStore";
 import useDatePickerWrapperStore from "@components/datePickerWrapper/store";
 import { QUERY_KEYS, QUERY_OPTIONS } from "@components/spendings/config/constants";
 import type { UseQueryResult } from "react-query";
+import { start } from "repl";
 
 
 export interface DashBoard {
@@ -47,8 +50,8 @@ const useDashboard = (): UseDashboard => {
         data: {
           userID,
           amount,
-          start: startOfMonth(from!),
-          end: endOfMonth(from!),
+          start: formatISO(startOfMonth(from!), { representation: "date" }),
+          end: formatISO(endOfMonth(from!), { representation: "date" }),
         }
       }
     )

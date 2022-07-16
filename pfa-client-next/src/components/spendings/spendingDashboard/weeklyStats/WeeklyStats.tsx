@@ -33,7 +33,7 @@ const WeeklyStats = () => {
   const [isInputVisible, setIsInputVisible] = useState<boolean>(false);
   const { get: { data: weeklyStats }, mutation } = useWeeklyStats();
   const { get: { data: dashboard } } = useDashboard();
-  const { register, handleSubmit, setFocus } = useForm<InitialCeiling>();
+  const { register, handleSubmit, setFocus, reset } = useForm<InitialCeiling>();
   const [initialCeiling, setInitialCeiling] = useState<number>(0);
   const [weeklySlices, setWeeklySlices] = useState<any>();
   const [averageWeeklyStatsAmount, setAverageWeeklyStatsAmount] = useState(0);
@@ -42,6 +42,10 @@ const WeeklyStats = () => {
   useEffect(() => {
     dashboard?.data ? setInitialCeiling(+dashboard?.data?.initialCeiling) : setInitialCeiling(0);
   }, [dashboard]);
+
+  useEffect(() => {
+    reset();
+  }, [initialCeiling]);
 
   useEffect(() => {
     from && setWeeklySlices(makeSlices(makeRange(from)));
@@ -68,7 +72,7 @@ const WeeklyStats = () => {
   }
 
   useEffect(() => {
-    isInputVisible && setFocus("initialCeiling", { shouldSelect: true });
+    initialCeiling && isInputVisible && setFocus("initialCeiling", { shouldSelect: true });
   }, [setFocus, isInputVisible]);
 
   return (
@@ -84,9 +88,9 @@ const WeeklyStats = () => {
 
         <div
           className={`${!isInputVisible ? "visible" : "hidden"}`}
-          onClick={() => {setIsInputVisible(true)}}
+          onClick={() => {dashboard?.data?.initialAmount && setIsInputVisible(true)}}
         >
-          <div className="text-initialAmountWeekly font-bold px-1 hover:bg-initialAmountHover hover:text-spendingActionHover hover:cursor-pointer hover:rounded">
+          <div className={`text-initialAmountWeekly font-bold px-1 ${dashboard?.data?.initialAmount ? "hover:bg-initialAmountHover hover:text-spendingActionHover hover:cursor-pointer hover:rounded" : "cursor-not-allowed"}`}>
             {initialCeiling ?? 0} €
           </div>
         </div>
@@ -96,16 +100,12 @@ const WeeklyStats = () => {
             onBlur={() => setIsInputVisible(false)}
             onSubmit={handleSubmit(onSubmit)}
           >
-            {
-              initialCeiling && (
-                <input
-                  className="w-10 px-1 outline-0 bg-transparent border-b border-b-white"
-                  onKeyDown={(e: KeyboardEvent) => {e.key === "Escape" && setIsInputVisible(false)}}
-                  defaultValue={initialCeiling}
-                  {...register("initialCeiling")}
-                />
-              )
-            }
+            <input
+              className="w-10 px-1 outline-0 bg-transparent border-b border-b-white"
+              onKeyDown={(e: KeyboardEvent) => {e.key === "Escape" && setIsInputVisible(false)}}
+              defaultValue={initialCeiling}
+              {...register("initialCeiling")}
+            />
           </form>
         </div>
 
@@ -131,18 +131,18 @@ const WeeklyStats = () => {
                   </div>
                   <div className="flex justify-start w-4/12 text-xxs gap-x-1">
                     <div>
-                    {
-                      ceilingDiff > 0 ?
-                        <FontAwesomeIcon
-                          icon={faLongArrowAltUp}
-                          className={`${ceilingDiff > CEILING_WARN_LIMIT ? "text-ceilingExcess border-b-ceilingExcess" : "text-ceilingWarn border-b-ceilingWarn"} border-b`}
-                        />
-                        :
-                        <FontAwesomeIcon
-                          icon={faLongArrowAltDown}
-                          className="text-ceilingOK border-t border-t-ceilingOK"
-                        />
-                    }
+                      {
+                        ceilingDiff > 0 ?
+                          <FontAwesomeIcon
+                            icon={faLongArrowAltUp}
+                            className={`${ceilingDiff > CEILING_WARN_LIMIT ? "text-ceilingExcess border-b-ceilingExcess" : "text-ceilingWarn border-b-ceilingWarn"} border-b`}
+                          />
+                          :
+                          <FontAwesomeIcon
+                            icon={faLongArrowAltDown}
+                            className="text-ceilingOK border-t border-t-ceilingOK"
+                          />
+                      }
                     </div>
                     <div>
                       {

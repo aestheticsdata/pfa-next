@@ -7,9 +7,9 @@ import { faPlusSquare } from '@fortawesome/free-solid-svg-icons';
 import useSpendingDayItem from "@components/spendings/spendingDayItem/spendingItem/helpers/useSpendingDayItem";
 import SpendingItemHeader from "@components/spendings/spendingDayItem/SpendingItemHeader";
 import useClickSort from "@components/spendings/helpers/useClickSort";
-import { SpendingCompoundType } from "@components/spendings/types";
 import spendingsText from "@components/spendings/config/text";
 import SpendingsListContainer from "@components/spendings/spendingsListContainer/SpendingListContainer";
+import type { SpendingCompoundType } from "@components/spendings/types";
 
 interface SpendingDayItemProps {
   spendingsByDay: any;

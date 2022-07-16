@@ -31,7 +31,6 @@ const useWeeklyStatsHelper = () => {
   }
 
   const makeSlices = (ranges: any[]) => ranges.reduce((acc: string[], curr, idx, arr) => {
-    console.log("getSliceDates(idx, arr", typeof getSliceDates(idx, arr));
     acc.push(getSliceDates(idx, arr));
     return acc;
   }, []);

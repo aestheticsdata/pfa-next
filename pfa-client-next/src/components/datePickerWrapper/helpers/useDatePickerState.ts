@@ -1,20 +1,25 @@
 import { useState } from "react";
-import { Days, HoverRange } from "@components/datePickerWrapper/types";
+import { useRouter } from "next/router";
+import formatISO from "date-fns/formatISO";
 import {
   getWeekDays,
   getWeekRange,
 } from "@components/datePickerWrapper/helpers";
 import useDatePickerWrapperStore from "@components/datePickerWrapper/store";
 
+import type { Days, HoverRange } from "@components/datePickerWrapper/types";
+
+
 const useDatePickerState = () => {
   const [isCalendarVisible, setIsCalendarVisible] = useState<boolean>(false);
   const [hoverRange, setHoverRange] = useState<HoverRange>(null);
   const [selectedDays, setSelectedDays] = useState<Days>([]);
 
+  const router = useRouter()
+
   const { setFrom, setTo, setRange } = useDatePickerWrapperStore();
 
   const toggleCalendar = () => {
-    console.log("wtf");
     setIsCalendarVisible(!isCalendarVisible);
   };
 
@@ -23,10 +28,14 @@ const useDatePickerState = () => {
   };
 
   const handleDayChange = (date: Date) => {
-    // const dateISO = formatISO(date, { representation: "date" });
-    // history.push("?currentDate=" + dateISO);
+    const dateISO = formatISO(date, { representation: "date" });
+    router.push({
+      query: { currentDate: dateISO },
+    });
+
     const weekRange = getWeekRange(date);
     const dateRange: Date[] = getWeekDays(weekRange.from, date);
+
     setFrom(weekRange.from);
     setTo(weekRange.to);
     setRange(dateRange);
