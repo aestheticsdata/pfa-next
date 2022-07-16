@@ -17,7 +17,7 @@ const MonthlyBudget = () => {
   const [isInputVisible, setIsInputVisible] = useState<boolean>(false);
   const { get : { data: dashboard }, mutation } = useDashboard();
   const { data: initialAmount } = useInitialAmount();
-  const { register, handleSubmit, setFocus } = useForm<InitialSalary>();
+  const { register, handleSubmit, setFocus, reset } = useForm<InitialSalary>();
   const [remaining, setRemaining] = useState<number>(0);
   const [totalOfMonth, setTotalOfMonth] = useState<number>(0);
 
@@ -27,6 +27,7 @@ const MonthlyBudget = () => {
       const remaining: number = dashboard?.data ? Number(dashboard.data.initialAmount) - totalOfMonth : 0;
       setRemaining(Number(remaining.toFixed(2)));
       setTotalOfMonth(Number(totalOfMonth.toFixed(2)));
+      reset();
     }
   }, [dashboard, initialAmount]);
 
