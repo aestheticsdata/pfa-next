@@ -9,6 +9,8 @@ import SpendingItemHeader from "@components/spendings/spendingDayItem/SpendingIt
 import useClickSort from "@components/spendings/helpers/useClickSort";
 import spendingsText from "@components/spendings/config/text";
 import SpendingsListContainer from "@components/spendings/spendingsListContainer/SpendingListContainer";
+import SpendingSort from "@components/spendings/spendingSort/SpendingSort";
+
 import type { SpendingCompoundType } from "@components/spendings/types";
 
 interface SpendingDayItemProps {
@@ -57,11 +59,13 @@ const SpendingDayItem = ({ spendingsByDay, deleteSpending, isLoading, date, recu
 
 
   return (
-    <div className={`rounded bg-spendingDayBackground border ${isToday ? "border-datePickerWrapper" : "border-grey2"} ${
-      recurringType
+    <div
+      className={`rounded bg-spendingDayBackground border ${isToday ? "border-datePickerWrapper" : "border-grey2"}
+      ${recurringType
         ? "md:w-[400px] h-[265px]"
         : "md:w-[490px] h-[300px] m-2"
-    }`}>
+      }`}
+    >
       <div className="flex flex-col">
         <SpendingItemHeader
           date={date}
@@ -70,9 +74,7 @@ const SpendingDayItem = ({ spendingsByDay, deleteSpending, isLoading, date, recu
           addSpending={addSpending}
           addSpendingEnabled={addSpendingEnabled}
         />
-        <div
-          className="total"
-        >
+        <div>
           {spendingsByDaySorted &&
             <div className="flex justify-center gap-x-2 text-md font-poppins border-b border-b-grey3 mx-3">
               <div className="uppercase">{spendingsText.dayItem.total}</div>
@@ -87,6 +89,10 @@ const SpendingDayItem = ({ spendingsByDay, deleteSpending, isLoading, date, recu
             </div>
           }
         </div>
+        <SpendingSort
+          recurringType={recurringType}
+          onClickSort={onClickSort}
+        />
         <div className="flex flex-col mt-2">
           <SpendingsListContainer
             spendingsByDaySorted={spendingsByDaySorted}

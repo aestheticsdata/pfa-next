@@ -27,7 +27,10 @@ const SpendingItemHeader = ({ date, recurringType, isToday, addSpending, addSpen
           </div>
       )
       }
-      <div className={`select-none cursor-pointer text-grey1 text-xl hover:text-addSpendingHover ${!addSpendingEnabled && "cursor-not-allowed hover:text-grey1"}`} onClick={addSpending}>
+      <div
+        className={`select-none cursor-pointer text-grey1 text-xl hover:text-addSpendingHover ${!addSpendingEnabled && "cursor-not-allowed hover:text-grey1"}`}
+        onClick={addSpending}
+      >
         <FontAwesomeIcon icon={faPlusSquare} />
       </div>
     </div>

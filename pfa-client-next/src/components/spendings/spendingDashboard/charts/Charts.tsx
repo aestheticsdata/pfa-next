@@ -17,30 +17,35 @@ interface ChartsProps {
   periodType: periodType;
 }
 
-const getMaxValue = data => Math.max(...data.map(category => +category.value));
-const getTotal = data => data.reduce((acc: number, curr) => acc + curr.value, 0);
+interface Category {
+  value: number;
+  label: string;
+  bgcolor: `#${string}`;
+}
+
+
+const getMaxValue = (data: Category[]) => Math.max(...data.map(category => +category.value));
+const getTotal = (data: Category[]) => data.reduce((acc, curr) => acc + curr.value, 0);
 
 const widthOfContainer = 290; // 300 - (border width * 2)
-
-
 
 const Charts = ({ title, periodType }: ChartsProps) => {
   const [maxv, setMaxv] = useState(0);
   const [total, setTotal] = useState(0);
   const [isTooltipVisible, setIsTooltipVisible] = useState(false);
   const [tooltipPos, setTooltipPos] = useState({x: 0, y: 0});
-  const [categoryInfos, setCategoryInfos] = useState(null);
+  const [categoryInfos, setCategoryInfos] = useState<Category>();
   const { data: charts } = useCharts(periodType);
 
   useEffect(() => {
     console.log("charts", charts);
     if (charts?.data.length > 0) {
-      setMaxv(getMaxValue(charts.data));
-      setTotal(getTotal(charts.data));
+      setMaxv(getMaxValue(charts!.data));
+      setTotal(getTotal(charts!.data));
     }
   }, [charts]);
 
-  const getWidth = value => {
+  const getWidth = (value: number) => {
     let width;
     if (maxv !== 0) {
       width = (value * widthOfContainer) / maxv;
@@ -68,7 +73,7 @@ const Charts = ({ title, periodType }: ChartsProps) => {
         <div className="flex flex-col gap-y-1">
         {
           maxv !== 0 && charts &&
-            charts.data.map(category => {
+            charts.data.map((category: Category) => {
               return (
                   <div className="flex items-center gap-x-1" key={category.label}>
                       <div
@@ -107,64 +112,3 @@ const Charts = ({ title, periodType }: ChartsProps) => {
 
 export default Charts;
 
-
-/*
-
-const StyledCharts = styled.div`
-  .header {
-    ${header};
-  }
-
-  .spinner {
-    text-align: center;
-    padding-top: 60px;
-  }
-
-  .stats-container {
-    height: 185px;
-    overflow: hidden;
-    overflow-y: auto;
-
-    .charts-icon {
-      display: flex;
-      justify-content: center;
-      font-size: 90px;
-      color: ${colors.grey01};
-      margin-top: 40px;
-    }
-
-    .transition-bar-enter {
-      opacity: 0.01;
-      transform: scaleX(0);
-      transform-origin: left;
-    }
-    .transition-bar-enter-active {
-      opacity: 1;
-      transform: scaleX(1);
-      transition: all 300ms ease-in;
-      transform-origin: left;
-    }
-    .transition-bar-exit {
-      opacity: 1;
-      transform: translate(0, 0);
-    }
-    .transition-bar-exit-active {
-      opacity: 0.01;
-      transform: translate(0, 10px);
-      transition: all 300ms ease-out;
-    }
-
-    .bar-container {
-      display: flex;
-      margin: 5px 0;
-      height: 15px;
-      .percent-value {
-        font-size: 10px;
-        font-weight: 600;
-        margin-left: 4px;
-        line-height: 1.5;
-      }
-    }
-  }
-`;
- */

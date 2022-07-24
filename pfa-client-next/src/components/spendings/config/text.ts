@@ -20,7 +20,12 @@ const spendings = {
   dayItem: {
     recurringTitle: "Dépenses fixes",
     total: "Total",
-  }
+  },
+  sortItem: {
+    label: "Label",
+    category: "Catégories",
+    amount: "Montant",
+  },
 };
 
 export default spendings;

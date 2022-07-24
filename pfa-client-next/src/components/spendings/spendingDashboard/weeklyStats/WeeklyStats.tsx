@@ -173,7 +173,7 @@ const WeeklyStats = () => {
 
       <div className="flex uppercase select-none justify-center w-full gap-x-1 text-xxs">
         <div>{spendingsText.dashboard.weeklyStats.weeklySpendings} : </div>
-        <div className="font-bold">{Number(averageWeeklyStatsAmount).toFixed(1)} €</div>
+        <div className="font-bold">{Number(averageWeeklyStatsAmount || 0).toFixed(1)} €</div>
       </div>
     </div>
   );

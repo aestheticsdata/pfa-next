@@ -1,3 +1,3 @@
-export const SORT_BY_LABEL = "SORT_BY_LABEL";
-export const SORT_BY_CATEGORY = "SORT_BY_CATEGORY";
-export const SORT_BY_AMOUNT = "SORT_BY_AMOUNT";
+export const SORT_BY_LABEL = "label";
+export const SORT_BY_CATEGORY = "category";
+export const SORT_BY_AMOUNT = "amount";
