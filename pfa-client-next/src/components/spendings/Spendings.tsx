@@ -22,7 +22,7 @@ const Spendings = () => {
 
   const { get: { data: dashboard } } = useDashboard();
 
-  const { data: recurrings } = useReccurings();
+  const { recurrings, isLoading: isRecurringsLoading } = useReccurings();
 
   const { data: initialAmount } = useInitialAmount();
 
@@ -47,7 +47,7 @@ const Spendings = () => {
           <SpendingDashboard
             recurring={recurrings}
             month={month}
-            isLoading={isSpendingsLoading}
+            isLoading={isRecurringsLoading}
           />
           <div className="flex justify-center w-full">
             <div className="flex flex-wrap justify-start md:mt-96 pl-1 w-11/12">

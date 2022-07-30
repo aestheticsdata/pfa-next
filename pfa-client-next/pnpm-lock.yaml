@@ -16,6 +16,7 @@ specifiers:
   formik: ^2.2.9
   immer: ^9.0.12
   js-cookie: ^3.0.1
+  lodash: ^4.17.21
   next: ^12.1.4
   postcss: ^8.4.12
   prettier: ^2.6.1
@@ -44,6 +45,7 @@ dependencies:
   formik: 2.2.9_react@17.0.2
   immer: 9.0.14
   js-cookie: 3.0.1
+  lodash: 4.17.21
   next: 12.1.6_sfoxds7t5ydpegc3knd667wn6m
   query-string: 7.1.1
   react: 17.0.2

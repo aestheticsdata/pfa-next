@@ -11,6 +11,7 @@ const useClickSort = () => {
   const [sortOrder, setSortOrder] = useState('asc');
 
   const onClickSort = (name) => {
+    console.log("spendingsByDaySorted", spendingsByDaySorted);
     let tempArr = [];
 
     // array of spending use [].total and [].date, lodash orderBy remove these two keys
