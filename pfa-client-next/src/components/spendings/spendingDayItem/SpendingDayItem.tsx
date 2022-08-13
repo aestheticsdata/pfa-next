@@ -15,17 +15,18 @@ import type { SpendingCompoundType } from "@components/spendings/types";
 
 interface SpendingDayItemProps {
   spendingsByDay: any;
-  deleteSpending: () => {};
+  deleteSpending: any;
   isLoading: boolean;
-  date: Date;
+  date?: Date;
   recurringType: boolean;
   user: any;
   month: any;
+  total: number;
 }
 
 
 const SpendingDayItem = ({ spendingsByDay, deleteSpending, isLoading, date, recurringType = false, user, month = null }: SpendingDayItemProps) => {
-  const isToday = getDayOfYear(date) === getDayOfYear(Date.now());
+  const isToday = getDayOfYear(date!) === getDayOfYear(Date.now());
   const {
     onClickSort,
     spendingsByDaySorted,
@@ -68,7 +69,7 @@ const SpendingDayItem = ({ spendingsByDay, deleteSpending, isLoading, date, recu
     >
       <div className="flex flex-col">
         <SpendingItemHeader
-          date={date}
+          date={date!}
           recurringType={recurringType}
           isToday={isToday}
           addSpending={addSpending}

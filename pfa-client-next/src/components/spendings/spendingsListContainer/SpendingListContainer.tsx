@@ -1,10 +1,10 @@
+import { useEffect, useState } from "react";
 // @ts-nocheck
 import spinner from "@src/assets/Wedges-3s-200px.svg";
 import Image from 'next/image';
 import SpendingItem from "@components/spendings/spendingDayItem/spendingItem/SpendingItem";
 
 import type { SpendingsListContainerType, SpendingType} from "@components/spendings/types";
-import { useEffect, useState } from "react";
 
 
 const SpendingsListContainer = ({

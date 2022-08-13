@@ -7,11 +7,12 @@ import useRequestHelper from "@helpers/useRequestHelper";
 import { useUserStore } from "@auth/store/userStore";
 import useDatePickerWrapperStore from "@components/datePickerWrapper/store";
 import { QUERY_KEYS, QUERY_OPTIONS } from "@components/spendings/config/constants";
+
+import type { SpendingCompoundType } from "@components/spendings/types";
 import type { Spending } from "@components/spendings/interfaces/spendingDashboardTypes";
 
-
 const useSpendings = () => {
-  const [spendings, setSpendings] = useState();
+  const [spendings, setSpendings] = useState<SpendingCompoundType>();
   const { privateRequest } = useRequestHelper();
   const userID = useUserStore((state) => state.user!.id);
   const { from, to, range } = useDatePickerWrapperStore();
@@ -20,7 +21,7 @@ const useSpendings = () => {
   // transform an array of object into an array of array<Object> aggregated
   // by same date
   // const aggregateSpendingByDate = (spendings, range, exchangeRates, baseCurrency) => {
-  const aggregateSpendingByDate = (spendings, range) => {
+  const aggregateSpendingByDate = (spendings: SpendingCompoundType, range): SpendingCompoundType => {
     const tempArr = [];
     tempArr.total = 0;
     const spendingsPlaceholder = new Array(range.length).fill(tempArr);
@@ -55,7 +56,7 @@ const useSpendings = () => {
     }
   };
 
-   const { data, isLoading } =  useQuery([QUERY_KEYS.SPENDINGS, from, to], getSpendings, {
+  const { data, isLoading } =  useQuery([QUERY_KEYS.SPENDINGS, from, to], getSpendings, {
     retry: false,
     // date store is available when coming from login because DatePicker
     // mounts before Spendings
@@ -67,30 +68,30 @@ const useSpendings = () => {
     ...QUERY_OPTIONS,
   });
 
-   useEffect(() => {
-     data?.data && range && setSpendings(aggregateSpendingByDate(data.data, range));
-   }, [data, range]);
+  useEffect(() => {
+    data?.data && range && setSpendings(aggregateSpendingByDate(data.data, range));
+  }, [data, range]);
 
   const queryClient = useQueryClient();
 
-   const deleteSpendingService = async (spending: Spending) => {
-     return privateRequest(`/spendings/${spending.ID}`, {method: "DELETE"});
-   }
+  const deleteSpendingService = async (spending: Spending) => {
+    return privateRequest(`/spendings/${spending.ID}`, {method: "DELETE"});
+  }
 
-   const deleteSpending = useMutation(({ spending }: { spending: Spending }) => {
-     return deleteSpendingService(spending);
-   }, {
-     onSuccess: async () => {
-       await queryClient.invalidateQueries([QUERY_KEYS.SPENDINGS, from, to]);
-       await queryClient.invalidateQueries([QUERY_KEYS.WEEKLY_STATS, monthBeginning]);
-     }
-   });
+  const deleteSpending = useMutation(({ spending }: { spending: Spending }) => {
+    return deleteSpendingService(spending);
+  }, {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries([QUERY_KEYS.SPENDINGS, from, to]);
+      await queryClient.invalidateQueries([QUERY_KEYS.WEEKLY_STATS, monthBeginning]);
+    }
+  });
 
-   return {
-     spendings,
-     isLoading,
-     deleteSpending,
-   };
+  return {
+    spendings,
+    isLoading,
+    deleteSpending,
+  };
 }
 
 export default useSpendings;

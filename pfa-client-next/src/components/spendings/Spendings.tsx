@@ -5,12 +5,11 @@ import useDatePickerWrapperStore from "@components/datePickerWrapper/store";
 import useDashboard from "@components/spendings/services/useDashboard";
 import SpendingDashboard from "@components/spendings/spendingDashboard/SpendingDashboard";
 import useSpendings from "@components/spendings/services/useSpendings";
-import useReccurings from "@components/spendings/services/useReccurings";
 import useInitialAmount from "@components/spendings/services/useInitialAmount";
 import useCategories from "@components/spendings/services/useCategories";
-import type { MonthRange } from "@components/spendings/interfaces/spendingDashboardTypes";
 import SpendingDayItem from "@components/spendings/spendingDayItem/SpendingDayItem";
 
+import type { MonthRange } from "@components/spendings/interfaces/spendingDashboardTypes";
 
 const Spendings = () => {
   const [month, setMonth] = useState<MonthRange>();
@@ -21,8 +20,6 @@ const Spendings = () => {
   const { data: categories } = useCategories();
 
   const { get: { data: dashboard } } = useDashboard();
-
-  const { recurrings, isLoading: isRecurringsLoading } = useReccurings();
 
   const { data: initialAmount } = useInitialAmount();
 
@@ -41,14 +38,9 @@ const Spendings = () => {
 
   return (
     <>
-      {
-        month &&
+      {month &&
         <>
-          <SpendingDashboard
-            recurring={recurrings}
-            month={month}
-            isLoading={isRecurringsLoading}
-          />
+          <SpendingDashboard month={month} />
           <div className="flex justify-center w-full">
             <div className="flex flex-wrap justify-start md:mt-96 pl-1 w-11/12">
               {spendings?.map((spending: any, i:number) =>

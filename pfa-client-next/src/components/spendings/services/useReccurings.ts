@@ -1,10 +1,11 @@
+import { useEffect, useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "react-query";
 import useRequestHelper from "@helpers/useRequestHelper";
 import { useUserStore } from "@auth/store/userStore";
 import useDatePickerWrapperStore from "@components/datePickerWrapper/store";
-import { useQuery } from "react-query";
 import { QUERY_KEYS, QUERY_OPTIONS } from "@components/spendings/config/constants";
 import startOfMonth from "date-fns/startOfMonth";
-import { useEffect, useState } from "react";
+import { Spending } from "@components/spendings/interfaces/spendingDashboardTypes";
 
 
 const useReccurings = () => {
@@ -34,9 +35,24 @@ const useReccurings = () => {
     setRecurrings(data?.data);
   }, [data]);
 
+  const queryClient = useQueryClient();
+
+  const deleteRecurringService = async (recurring: Spending) => {
+    return privateRequest(`/spendings/${recurring.ID}`, {method: "DELETE"});
+  }
+
+  const deleteRecurring = useMutation(({ recurring }: { recurring: Spending }) => {
+    return deleteRecurringService(recurring);
+  }, {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries([QUERY_KEYS.RECURRINGS, from, to]);
+    }
+  });
+
   return {
     recurrings,
     isLoading,
+    deleteRecurring,
   }
 }
 

@@ -44,13 +44,13 @@ interface SpendingsPartial {
   spendingsByDaySorted: SpendingCompoundType;
   deleteSpending: (itemID: string, itemType: string) => void;
   isLoading: boolean;
+  recurringType?: boolean;
 }
 
 export interface SpendingDayItemType extends SpendingsPartial {
   user: User;
   month?: string | null;
   date?: number | Date;
-  recurringType?: boolean;
   total?: number;
 }
 
