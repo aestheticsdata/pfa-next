@@ -1,5 +1,6 @@
 import commonTexts from "@components/common/config/text";
 import useSpendings from "@components/spendings/services/useSpendings";
+
 import type { Spending } from "@components/spendings/interfaces/spendingDashboardTypes";
 
 interface ConfirmDeletePopinProps {

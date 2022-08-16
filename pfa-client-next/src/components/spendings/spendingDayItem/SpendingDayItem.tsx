@@ -10,6 +10,7 @@ import useClickSort from "@components/spendings/helpers/useClickSort";
 import spendingsText from "@components/spendings/config/text";
 import SpendingsListContainer from "@components/spendings/spendingsListContainer/SpendingListContainer";
 import SpendingSort from "@components/spendings/spendingSort/SpendingSort";
+import SpendingModal from "@components/spendings/common/spendingModal/SpendingModal"
 
 import type { SpendingCompoundType } from "@components/spendings/types";
 
@@ -68,6 +69,22 @@ const SpendingDayItem = ({ spendingsByDay, deleteSpending, isLoading, date, recu
       }`}
     >
       <div className="flex flex-col">
+        <div className="spending-modal relative">
+          {
+            isModalVisible ?
+              <SpendingModal
+                date={date}
+                closeModal={closeModal}
+                user={user}
+                spending={spending}
+                recurringType={recurringType}
+                isEditing={isEditing}
+                month={month}
+              />
+              :
+              null
+          }
+        </div>
         <SpendingItemHeader
           date={date!}
           recurringType={recurringType}

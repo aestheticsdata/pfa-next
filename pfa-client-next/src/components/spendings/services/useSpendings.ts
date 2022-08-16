@@ -56,7 +56,7 @@ const useSpendings = () => {
     }
   };
 
-  const { data, isLoading } =  useQuery([QUERY_KEYS.SPENDINGS, from, to], getSpendings, {
+  const { data, isLoading } = useQuery([QUERY_KEYS.SPENDINGS, from, to], getSpendings, {
     retry: false,
     // date store is available when coming from login because DatePicker
     // mounts before Spendings

@@ -25,7 +25,7 @@ const useReccurings = () => {
     }
   }
 
-  const { data, isLoading } =  useQuery([QUERY_KEYS.RECURRINGS, monthBeginning], getRecurrings, {
+  const { data, isLoading } = useQuery([QUERY_KEYS.RECURRINGS, monthBeginning], getRecurrings, {
     retry: false,
     enabled: !!from,
     ...QUERY_OPTIONS,
