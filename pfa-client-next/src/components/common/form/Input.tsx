@@ -9,6 +9,7 @@ interface InputProps<T> {
 const Input = ({ register, registerName, placeHolder }: InputProps<FieldValue<any>>) => {
   return (
     <input
+      autoComplete={registerName === "spendingAmount" ? "off": "on"}
       className="text-inherit py-2 w-full bg-transparent border-b-formsGlobalColor border-b outline-none"
       placeholder={placeHolder}
       {...register(registerName)}

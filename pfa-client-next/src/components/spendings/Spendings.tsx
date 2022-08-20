@@ -6,7 +6,6 @@ import useDashboard from "@components/spendings/services/useDashboard";
 import SpendingDashboard from "@components/spendings/spendingDashboard/SpendingDashboard";
 import useSpendings from "@components/spendings/services/useSpendings";
 import useInitialAmount from "@components/spendings/services/useInitialAmount";
-import useCategories from "@components/spendings/services/useCategories";
 import SpendingDayItem from "@components/spendings/spendingDayItem/SpendingDayItem";
 
 import type { MonthRange } from "@components/spendings/interfaces/spendingDashboardTypes";
@@ -16,8 +15,6 @@ const Spendings = () => {
   const { from, to, range } = useDatePickerWrapperStore();
 
   const { spendings, isLoading: isSpendingsLoading } = useSpendings();
-
-  const { data: categories } = useCategories();
 
   const { get: { data: dashboard } } = useDashboard();
 
