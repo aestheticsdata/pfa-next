@@ -75,7 +75,7 @@ const useSpendings = () => {
   const queryClient = useQueryClient();
 
   const deleteSpendingService = async (spending: Spending) => {
-    return privateRequest(`/spendings/${spending.ID}`, {method: "DELETE"});
+    return privateRequest(`/spendings/${spending.ID}`, { method: "DELETE" });
   }
 
   const deleteSpending = useMutation(({ spending }: { spending: Spending }) => {
@@ -87,10 +87,50 @@ const useSpendings = () => {
     }
   });
 
+  const createSpendingService = async (spending) => {
+    return privateRequest(`/spendings`, {
+      method: 'POST',
+        data: spending,
+    });
+  }
+  const createSpending = useMutation((spending)=> {
+    return createSpendingService(spending);
+  }, {
+    onSuccess: () => {
+      queryClient.invalidateQueries([QUERY_KEYS.SPENDINGS, from, to]);
+      queryClient.invalidateQueries([QUERY_KEYS.WEEKLY_STATS, monthBeginning]);
+      queryClient.invalidateQueries([QUERY_KEYS.CATEGORIES]);
+      queryClient.invalidateQueries([QUERY_KEYS.INITIAL_AMOUNT, monthBeginning]);
+    },
+    onError: (e) => {
+      console.log("error creating spendings : ", e);
+    }
+  });
+
+  /*
+  export function* onCreateSpending(payload) {
+  try {
+    yield call(privateRequest, '/spendings', {
+      method: 'POST',
+      data: payload.spending,
+    });
+    displayPopup({ text: intl.formatMessage({ ...messages.createSuccess }) });
+    const dateRange = yield select(state => state.dateRangeReducer.dateRange);
+    yield put(getSpendings(payload.spending.userID, dateRange));
+    yield put(getCategories());
+    yield put(getWeeklyStats(startOfMonth(dateRange.from)));
+    yield getDashboardAmount();
+  } catch (err) {
+    console.log('error while creating spending', err);
+  }
+}
+  * */
+
   return {
     spendings,
     isLoading,
     deleteSpending,
+    createSpending,
   };
 }
 

@@ -20,13 +20,12 @@ interface SpendingDayItemProps {
   isLoading: boolean;
   date?: Date;
   recurringType: boolean;
-  user: any;
   month: any;
   total: number;
 }
 
 
-const SpendingDayItem = ({ spendingsByDay, deleteSpending, isLoading, date, recurringType = false, user, month = null }: SpendingDayItemProps) => {
+const SpendingDayItem = ({ spendingsByDay, deleteSpending, isLoading, date, recurringType = false, month = null }: SpendingDayItemProps) => {
   const isToday = getDayOfYear(date!) === getDayOfYear(Date.now());
   const {
     onClickSort,
@@ -75,7 +74,6 @@ const SpendingDayItem = ({ spendingsByDay, deleteSpending, isLoading, date, recu
               <SpendingModal
                 date={date}
                 closeModal={closeModal}
-                user={user}
                 spending={spending}
                 recurringType={recurringType}
                 isEditing={isEditing}

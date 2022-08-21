@@ -7,20 +7,11 @@ import { Autocomplete } from "@mui/material";
 import { TextField } from "@mui/material";
 import Button from "@components/common/form/Button";
 import Input from "@components/common/form/Input";
-
-
-// import {
-//   createRecurring,
-//   updateRecurring,
-//   createSpending,
-//   updateSpending,
-//   copyRecurrings,
-// } from '../../actions';
-
-
 import toFixedEval from "@helpers/mathExprEval";
 import useCategories from "@components/spendings/services/useCategories";
 import adjustFontColor from "@components/shared/helpers/adjustColor";
+import { useUserStore } from "@auth/store/userStore";
+import useSpendings from "@components/spendings/services/useSpendings";
 
 const spendingSchema = z.object({
   spendingLabel: z.string().nonempty(),
@@ -34,14 +25,15 @@ type SpendingForm = z.infer<typeof spendingSchema>;
 const SpendingModal = ({
    date,
    closeModal,
-   user,
    spending,
    recurringType,
    isEditing,
    month,
  }) => {
+  const user = useUserStore((state) => state.user);
+  const { createSpending } = useSpendings();
   const { data: categories } = useCategories();
-  console.log("categories", categories);
+
 
   const initialEmptyCategoryState = {
     ID: null,
@@ -52,7 +44,7 @@ const SpendingModal = ({
   let initialCategoryState = spending?.category ?
     {
       ID: spending.categoryID,
-      userID: user.id,
+      userID: user?.id,
       name: spending.category,
       color: spending.color,
     }
@@ -89,29 +81,24 @@ const SpendingModal = ({
     return r+g+b;
   };
 
-  const foo = [
-    {ID: '0b701a00-f4a5-11ec-a316-91bc61c0818b', userID: 'c63c3540-d3a2-11ec-a316-91bc61c0818b', label: 'cadeau', color: '#79c973'},
-    {ID: '0bc67c10-d3a3-11ec-a316-91bc61c0818b', userID: 'c63c3540-d3a2-11ec-a316-91bc61c0818b', label: 'sub', color: '#ec27ae'},
-    {ID: '23aaf860-d3a3-11ec-a316-91bc61c0818b', userID: 'c63c3540-d3a2-11ec-a316-91bc61c0818b', label: 'alimentation', color: '#72599a'},
-    {ID: '8a62ad70-100f-11ed-a316-91bc61c0818b', userID: 'c63c3540-d3a2-11ec-a316-91bc61c0818b', label: 'brasserie', color: '#0ca168'}
-  ]
-
-  const onSubmit = (values ) => {
+  const onSubmit = (values: SpendingForm) => {
     console.log("onSubmit values", values);
-    // const amountEvaluatedExpr = toFixedEval(String(values.amount));
-    // const spendingEdited = {
-    //   // this format date is required to avoid inconsistency
-    //   // when axios convert date in POST request
-    //   // see https://github.com/axios/axios/issues/567
-    //   date: date ? format(date, 'yyyy-MM-dd') : null,
-    //   // ///////////////////////////////////////////////////
-    //   label: values.label,
-    //   amount: amountEvaluatedExpr,
-    //   category: selectedCategory,
-    //   currency: user.baseCurrency,
-    //   userID: user.id,
-    //   id: spending.ID,
-    // };
+    const amountEvaluatedExpr = toFixedEval(String(values.spendingAmount));
+    const spendingEdited = {
+      // this format date is required to avoid inconsistency
+      // when axios convert date in POST request
+      // see https://github.com/axios/axios/issues/567
+      date: date ? format(date, 'yyyy-MM-dd') : null,
+      // ///////////////////////////////////////////////////
+      label: values.spendingLabel,
+      amount: amountEvaluatedExpr,
+      category: selectedCategory,
+      currency: user!.baseCurrency,
+      userID: user!.id,
+      id: spending.ID,
+    };
+
+    console.log("spendingEdited", spendingEdited);
 
     if (isEditing) {
       if (recurringType) {
@@ -127,7 +114,7 @@ const SpendingModal = ({
         };
         // dispatch(createRecurring(spendingEdited, formattedMonth));
       } else {
-        // dispatch(createSpending(spendingEdited));
+        createSpending.mutate(spendingEdited);
       }
     }
 
