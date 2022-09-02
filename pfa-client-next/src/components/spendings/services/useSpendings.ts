@@ -74,6 +74,14 @@ const useSpendings = () => {
 
   const queryClient = useQueryClient();
 
+  const invalidationQueries = () => {
+    queryClient.invalidateQueries([QUERY_KEYS.SPENDINGS, from, to]);
+    queryClient.invalidateQueries([QUERY_KEYS.WEEKLY_STATS, monthBeginning]);
+    queryClient.invalidateQueries([QUERY_KEYS.CATEGORIES]);
+    queryClient.invalidateQueries([QUERY_KEYS.INITIAL_AMOUNT, monthBeginning]);
+    queryClient.invalidateQueries([QUERY_KEYS.CHARTS, monthBeginning]);
+  }
+
   const deleteSpendingService = async (spending: Spending) => {
     return privateRequest(`/spendings/${spending.ID}`, { method: "DELETE" });
   }
@@ -81,49 +89,65 @@ const useSpendings = () => {
   const deleteSpending = useMutation(({ spending }: { spending: Spending }) => {
     return deleteSpendingService(spending);
   }, {
-    onSuccess: async () => {
-      await queryClient.invalidateQueries([QUERY_KEYS.SPENDINGS, from, to]);
-      await queryClient.invalidateQueries([QUERY_KEYS.WEEKLY_STATS, monthBeginning]);
+    onSuccess: () => {
+     invalidationQueries();
     }
   });
 
   const createSpendingService = async (spending) => {
-    return privateRequest(`/spendings`, {
+    return privateRequest("/spendings", {
       method: 'POST',
-        data: spending,
+      data: spending,
     });
   }
-  const createSpending = useMutation((spending)=> {
+  const createSpending = useMutation((spending) => {
     return createSpendingService(spending);
   }, {
     onSuccess: () => {
-      queryClient.invalidateQueries([QUERY_KEYS.SPENDINGS, from, to]);
-      queryClient.invalidateQueries([QUERY_KEYS.WEEKLY_STATS, monthBeginning]);
-      queryClient.invalidateQueries([QUERY_KEYS.CATEGORIES]);
-      queryClient.invalidateQueries([QUERY_KEYS.INITIAL_AMOUNT, monthBeginning]);
+      invalidationQueries();
     },
     onError: (e) => {
       console.log("error creating spendings : ", e);
     }
   });
 
+  const updateSpendingService = async (spending) => {
+    return privateRequest(`/spendings/${spending.id}`, {
+      method: "PUT",
+      data: spending,
+    });
+  };
+
+  const updateSpending = useMutation((spending) => {
+    return updateSpendingService(spending);
+  }, {
+    onSuccess: () => {
+      invalidationQueries();
+    },
+    onError: (e) => {
+      console.log("error updating spending : ", e);
+    }
+  });
+
+
   /*
-  export function* onCreateSpending(payload) {
+  * export function* onUpdateSpending(payload) {
   try {
-    yield call(privateRequest, '/spendings', {
-      method: 'POST',
+    const userID = JSON.parse(localStorage.getItem('pfa-user')).id;
+    yield call(privateRequest, `/spendings/${payload.spending.id}`, {
+      method: 'PUT',
       data: payload.spending,
     });
-    displayPopup({ text: intl.formatMessage({ ...messages.createSuccess }) });
+    displayPopup({ text: intl.formatMessage({ ...messages.updateSuccess }) });
     const dateRange = yield select(state => state.dateRangeReducer.dateRange);
-    yield put(getSpendings(payload.spending.userID, dateRange));
-    yield put(getCategories());
+    yield put(getSpendings(userID, dateRange));
     yield put(getWeeklyStats(startOfMonth(dateRange.from)));
     yield getDashboardAmount();
   } catch (err) {
-    console.log('error while creating spending', err);
+    console.log(err);
   }
 }
+  *
   * */
 
   return {
@@ -131,6 +155,7 @@ const useSpendings = () => {
     isLoading,
     deleteSpending,
     createSpending,
+    updateSpending,
   };
 }
 

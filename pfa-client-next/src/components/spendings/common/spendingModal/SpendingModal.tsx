@@ -9,9 +9,12 @@ import Button from "@components/common/form/Button";
 import Input from "@components/common/form/Input";
 import toFixedEval from "@helpers/mathExprEval";
 import useCategories from "@components/spendings/services/useCategories";
-import adjustFontColor from "@components/shared/helpers/adjustColor";
 import { useUserStore } from "@auth/store/userStore";
 import useSpendings from "@components/spendings/services/useSpendings";
+import AutocompleteItem from "@components/spendings/common/spendingModal/AutocompleteItem";
+import category from "@components/common/Category";
+import Swal from "sweetalert2";
+import update = module
 
 const spendingSchema = z.object({
   spendingLabel: z.string().nonempty(),
@@ -31,7 +34,7 @@ const SpendingModal = ({
    month,
  }) => {
   const user = useUserStore((state) => state.user);
-  const { createSpending } = useSpendings();
+  const { createSpending, updateSpending } = useSpendings();
   const { data: categories } = useCategories();
 
 
@@ -46,7 +49,7 @@ const SpendingModal = ({
       ID: spending.categoryID,
       userID: user?.id,
       name: spending.category,
-      color: spending.color,
+      color: spending.categoryColor,
     }
     :
     initialEmptyCategoryState;
@@ -67,19 +70,39 @@ const SpendingModal = ({
   });
 
   const [selectedCategory, setselectedCategory] = useState(initialCategoryState);
-  // const dispatch = useDispatch();
-  // const categories = useSelector(state => state.spendingsReducer.categories);
-  // const recurrings = useSelector(state => state.spendingsReducer.recurrings);
 
   const getRandomHexColor = () => {
     let r = Math.floor(Math.random()*255).toString(16);
     let g = Math.floor(Math.random()*255).toString(16);
     let b = Math.floor(Math.random()*255).toString(16);
-    r = r.length < 2 ? '0' + r : r;
-    g = g.length < 2 ? '0' + g : g;
-    b = b.length < 2 ? '0' + b : b;
-    return r+g+b;
+    r = r.length < 2 ? "0" + r : r;
+    g = g.length < 2 ? "0" + g : g;
+    b = b.length < 2 ? "0" + b : b;
+    return `${r}${g}${b}`;
   };
+
+  const processCategory = (values: any) => {
+    let tempCategory;
+    if (!values.category) { // it's a category deletion
+      tempCategory = {
+        ID: null,
+        userID: user!.id,
+        name: "",
+        color: false, // if there is a name, it's a new category, else it's a category deletion
+      }
+    } else if ((!selectedCategory?.name || !selectedCategory) && !!values.category) { // so it's a new category. 1) !selectedCategory?.name: pas de catégorie vers une nouvelle catégorie qui n'existe pas encore. 2) !selectedCategory: on passe d'une catégorie qui existe à une nouvelle catégorie qui n'existe pas encore
+      tempCategory = {
+        ID: null,
+        userID: user!.id,
+        name: values.category,
+        color: `#${getRandomHexColor()}` // if there is a name, it's a new category, else it's a category deletion
+      }
+    } else {
+      // changement de catégorie qui existe deja, ou meme categorie inchangee
+      tempCategory = selectedCategory;
+    }
+    return tempCategory;
+  }
 
   const onSubmit = (values: SpendingForm) => {
     console.log("onSubmit values", values);
@@ -92,7 +115,7 @@ const SpendingModal = ({
       // ///////////////////////////////////////////////////
       label: values.spendingLabel,
       amount: amountEvaluatedExpr,
-      category: selectedCategory,
+      category: processCategory(values),
       currency: user!.baseCurrency,
       userID: user!.id,
       id: spending.ID,
@@ -104,7 +127,10 @@ const SpendingModal = ({
       if (recurringType) {
         // dispatch(updateRecurring(spendingEdited));
       } else {
+        console.log("update spending !!!");
+        console.log("spending updated : ", spendingEdited);
         // dispatch(updateSpending(spendingEdited));
+        updateSpending.mutate(spendingEdited);
       }
     } else {
       if (recurringType) {
@@ -138,17 +164,23 @@ const SpendingModal = ({
         <Input
           placeHolder="label"
           register={register}
+          defaultValue={spending.label}
           registerName="spendingLabel"
         />
         <Input
           placeHolder="montant"
           register={register}
+          defaultValue={spending.amount}
           registerName="spendingAmount"
         />
 
         <Autocomplete
           {...field}
           freeSolo
+          isOptionEqualToValue={(option, value) => {
+              return option.ID === value.ID;
+            }
+          }
           autoComplete={true}
           style={{width: "440px"}}
           classes={{
@@ -158,36 +190,7 @@ const SpendingModal = ({
           options={categories?.data || []}
           renderOption={(props, option) => {
             const { name, color } = option;
-            return (
-              <span
-                {...props}
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  padding: "7px 0",
-                  backgroundColor: "white",
-                }}
-                onMouseOver={(e) => {(e.currentTarget as HTMLInputElement).style.backgroundColor = "rgb(220, 220, 220)"}}
-                onMouseOut={(e) => {(e.currentTarget as HTMLInputElement).style.backgroundColor = "white"}}
-              >
-                <span
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    marginLeft: "5px",
-                    backgroundColor: color,
-                    width: "110px",
-                    color: adjustFontColor(color),
-                    borderRadius: "3px",
-                    fontSize: "10px",
-                    padding: "2px 10px",
-                    textTransform: "uppercase",
-                  }}
-                >
-                  {name}
-                </span>
-              </span>
-            )
+            return <AutocompleteItem key={name} props={props} color={color!} name={name} />;
           }}
           renderInput={(params) => (
             <TextField
@@ -198,11 +201,15 @@ const SpendingModal = ({
               helperText={fieldState.error?.message}
             />
           )}
-          onChange={(e, value) => field.onChange(value)}
-          onInputChange={(_, data) => {data && field.onChange(data)} }
+          value={selectedCategory}
+          onChange={
+            (e, value) => {
+              setselectedCategory(value);
+              return field.onChange(value);
+            }
+          }
+          onInputChange={(_, value) => {value && field.onChange(value)}}
         />
-
-
 
         <Button
           type="submit"
