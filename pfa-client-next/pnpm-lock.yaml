@@ -31,7 +31,7 @@ specifiers:
   react-dom: 17.0.2
   react-hook-form: ^7.33.1
   react-query: ^3.34.19
-  sweetalert2: ^11.4.8
+  sweetalert2: ^11.4.14
   tailwindcss: ^3.0.23
   typescript: 4.5.5
   use-onclickoutside: ^0.4.0

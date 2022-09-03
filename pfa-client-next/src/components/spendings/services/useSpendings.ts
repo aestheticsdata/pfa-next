@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "react-query";
 import getDate from "date-fns/getDate";
 import parseISO from "date-fns/parseISO";
 import startOfMonth from "date-fns/startOfMonth";
+import { displayPopup } from "@helpers/swalHelper";
 import useRequestHelper from "@helpers/useRequestHelper";
 import { useUserStore } from "@auth/store/userStore";
 import useDatePickerWrapperStore from "@components/datePickerWrapper/store";
@@ -74,7 +75,9 @@ const useSpendings = () => {
 
   const queryClient = useQueryClient();
 
-  const invalidationQueries = () => {
+  const spendingsActionOnSuccess = (message: string) => {
+    displayPopup({ text: `dépense ${message}`});
+
     queryClient.invalidateQueries([QUERY_KEYS.SPENDINGS, from, to]);
     queryClient.invalidateQueries([QUERY_KEYS.WEEKLY_STATS, monthBeginning]);
     queryClient.invalidateQueries([QUERY_KEYS.CATEGORIES]);
@@ -89,9 +92,7 @@ const useSpendings = () => {
   const deleteSpending = useMutation(({ spending }: { spending: Spending }) => {
     return deleteSpendingService(spending);
   }, {
-    onSuccess: () => {
-     invalidationQueries();
-    }
+    onSuccess: () => { spendingsActionOnSuccess("effacée") }
   });
 
   const createSpendingService = async (spending) => {
@@ -103,9 +104,7 @@ const useSpendings = () => {
   const createSpending = useMutation((spending) => {
     return createSpendingService(spending);
   }, {
-    onSuccess: () => {
-      invalidationQueries();
-    },
+    onSuccess: () => { spendingsActionOnSuccess("créée") },
     onError: (e) => {
       console.log("error creating spendings : ", e);
     }
@@ -121,9 +120,7 @@ const useSpendings = () => {
   const updateSpending = useMutation((spending) => {
     return updateSpendingService(spending);
   }, {
-    onSuccess: () => {
-      invalidationQueries();
-    },
+    onSuccess: () => { spendingsActionOnSuccess("mise à jour") },
     onError: (e) => {
       console.log("error updating spending : ", e);
     }

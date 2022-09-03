@@ -30,7 +30,7 @@
     "react-dom": "17.0.2",
     "react-hook-form": "^7.33.1",
     "react-query": "^3.34.19",
-    "sweetalert2": "^11.4.8",
+    "sweetalert2": "^11.4.14",
     "use-onclickoutside": "^0.4.0",
     "zod": "^3.14.3",
     "zustand": "^3.7.1"
