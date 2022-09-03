@@ -1,15 +1,9 @@
 import { useEffect, useState } from 'react';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt, faTrashAlt, faFileInvoice } from '@fortawesome/free-solid-svg-icons';
-
-// import StyledSpendingItem from './StyledSpendingItem';
-// import InvoiceModal from "@components/spendings/invoiceModal/InvoiceModal";
-
+import InvoiceModal from "@components/spendings/invoiceModal/InvoiceModal";
 import getCategoryComponent from '@components/common/Category';
-
 // import cssSizes from "@src/css-sizes";
-
 import ConfirmDeletePopin from "@components/spendings/common/deletePopin";
 
 
@@ -22,7 +16,7 @@ const SpendingItem = ({
 }) => {
   const [isHover, setIsHover] = useState(false);
   const [isDeleteConfirmVisible, setIsDeleteConfirmVisible] = useState(false);
-  // const [isInvoiceModalVisible, setIsInvoiceModalVisible] = useState(false);
+  const [isInvoiceModalVisible, setIsInvoiceModalVisible] = useState(false);
 
   // const isMobile = window.matchMedia(`(max-width: ${cssSizes.responsiveMaxWidth}px)`).matches;
   const isMobile = false;
@@ -47,15 +41,15 @@ const SpendingItem = ({
       onMouseOver={onMouseOver}
       onMouseLeave={onMouseLeave}
     >
-      {/*{*/}
-      {/*  isInvoiceModalVisible ?*/}
-      {/*    <InvoiceModal*/}
-      {/*      handleClickOutside={() => { !isMobile && setHover(false); setIsInvoiceModalVisible(!isInvoiceModalVisible) }}*/}
-      {/*      spending={spending}*/}
-      {/*    />*/}
-      {/*    :*/}
-      {/*    null*/}
-      {/*}*/}
+      {
+        isInvoiceModalVisible ?
+          <InvoiceModal
+            handleClickOutside={() => { !isMobile && setIsHover(false); setIsInvoiceModalVisible(!isInvoiceModalVisible) }}
+            spending={spending}
+          />
+          :
+          null
+      }
       {
         !isDeleteConfirmVisible ?
           <div className={`flex justify-between w-[460px] ${isHover && "bg-spendingItemHover"} transition-colors ease-linear duration-200 ${!isRecurring && "mx-4"}`}>
@@ -67,7 +61,7 @@ const SpendingItem = ({
             {!isRecurring && (
               spending?.category ?
                 <div className="flex justify-center items-center w-1/3">
-                  <div className="text-xxs uppercase w-3/4">
+                  <div className="w-3/4">
                     {spending?.category && getCategoryComponent(spending)}
                   </div>
                 </div>
@@ -79,7 +73,7 @@ const SpendingItem = ({
               <div
                 className={`cursor-pointer ${spending.invoicefile ? "text-invoiceImageIsPresent hover:text-invoiceImageIsPresentHover" : "hover:text-spendingActionHover"}`}
                 title="display invoice"
-                // onClick={() => {setIsInvoiceModalVisible(!isInvoiceModalVisible)}}
+                onClick={() => {setIsInvoiceModalVisible(!isInvoiceModalVisible)}}
               >
                 <FontAwesomeIcon icon={faFileInvoice} />
               </div>

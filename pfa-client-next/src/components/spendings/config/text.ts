@@ -26,6 +26,14 @@ const spendings = {
     category: "Catégories",
     amount: "Montant",
   },
+  invoiceModal: {
+    noInvoice: "Aucune facture",
+    fileTooBig: "Le fichier est tros gros",
+    chooseFile: "Choisir un fichier",
+    fileTypeWarning: "Seulement des fichiers jpg",
+    send: "Envoyer",
+    delete: "Effacer la facture",
+  }
 };
 
 export default spendings;
