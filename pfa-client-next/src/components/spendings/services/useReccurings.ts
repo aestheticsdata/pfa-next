@@ -82,11 +82,27 @@ const useReccurings = () => {
     onError: ((e) => {console.log("error creating recurring", e)}),
   });
 
+  const updateRecurringService = async (recurring) => {
+    return privateRequest(`/recurrings/${recurring.id}`, {
+      method: "PUT",
+      data: recurring,
+    });
+  };
+
+  const updateRecurring = useMutation((recurring) => {
+    return updateRecurringService(recurring);
+  }, {
+    onSuccess: () => { recurringsActionOnSuccess("mis à jour") },
+    onError: (e) => { console.log("error updating recurring ", e);
+    }
+  });
+
   return {
     recurrings,
     isLoading,
     deleteRecurring,
     createRecurring,
+    updateRecurring,
   }
 }
 

@@ -35,7 +35,7 @@ const SpendingModal = ({
  }) => {
   const user = useUserStore((state) => state.user);
   const { createSpending, updateSpending } = useSpendings();
-  const { createRecurring } = useReccurings();
+  const { createRecurring, updateRecurring } = useReccurings();
   const { data: categories } = useCategories();
 
 
@@ -129,6 +129,7 @@ const SpendingModal = ({
     if (isEditing) {
       if (recurringType) {
         // dispatch(updateRecurring(spendingEdited));
+        updateRecurring.mutate(spendingEdited);
       } else {
         updateSpending.mutate(spendingEdited);
       }
