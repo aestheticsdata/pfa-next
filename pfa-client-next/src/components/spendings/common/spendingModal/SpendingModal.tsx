@@ -90,7 +90,7 @@ const SpendingModal = ({
         ID: null,
         userID: user!.id,
         name: "",
-        color: false, // if there is a name, it's a new category, else it's a category deletion
+        color: null, // if there is a name, it's a new category, else it's a category deletion
       }
     } else if ((!selectedCategory?.name || !selectedCategory) && !!values.category) { // so it's a new category. 1) !selectedCategory?.name: pas de catégorie vers une nouvelle catégorie qui n'existe pas encore. 2) !selectedCategory: on passe d'une catégorie qui existe à une nouvelle catégorie qui n'existe pas encore
       tempCategory = {
@@ -139,7 +139,6 @@ const SpendingModal = ({
           end: format(month.end, 'yyyy-MM-dd'),
         };
         createRecurring.mutate({ spendingEdited, formattedMonth });
-        // dispatch(createRecurring(spendingEdited, formattedMonth));
       } else {
         createSpending.mutate(spendingEdited);
       }

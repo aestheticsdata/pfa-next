@@ -75,14 +75,14 @@ const useSpendings = () => {
 
   const queryClient = useQueryClient();
 
-  const spendingsActionOnSuccess = (message: string) => {
+  const spendingsActionOnSuccess = async (message: string) => {
     displayPopup({ text: `dépense ${message}`});
 
-    queryClient.invalidateQueries([QUERY_KEYS.SPENDINGS, from, to]);
-    queryClient.invalidateQueries([QUERY_KEYS.WEEKLY_STATS, monthBeginning]);
-    queryClient.invalidateQueries([QUERY_KEYS.CATEGORIES]);
-    queryClient.invalidateQueries([QUERY_KEYS.INITIAL_AMOUNT, monthBeginning]);
-    queryClient.invalidateQueries([QUERY_KEYS.CHARTS, monthBeginning]);
+    await queryClient.invalidateQueries([QUERY_KEYS.SPENDINGS, from, to]);
+    await queryClient.invalidateQueries([QUERY_KEYS.WEEKLY_STATS, monthBeginning]);
+    await queryClient.invalidateQueries([QUERY_KEYS.CATEGORIES]);
+    await queryClient.invalidateQueries([QUERY_KEYS.INITIAL_AMOUNT, monthBeginning]);
+    await queryClient.invalidateQueries([QUERY_KEYS.CHARTS, monthBeginning]);
   }
 
   const deleteSpendingService = async (spending: Spending) => {

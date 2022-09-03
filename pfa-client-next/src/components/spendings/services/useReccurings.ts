@@ -82,28 +82,6 @@ const useReccurings = () => {
     onError: ((e) => {console.log("error creating recurring", e)}),
   });
 
-  /*
-  * export function* onCreateRecurring(payload) {
-  try {
-    yield call(privateRequest, '/recurrings', {
-      method: 'POST',
-      data: {
-        ...payload.recurring,
-        ...payload.month,
-      },
-    });
-    displayPopup({ text: intl.formatMessage({ ...messages.createSuccess }) });
-
-    const start = yield select(state => state.dateRangeReducer.dateRange.from);
-    yield put(getRecurring(startOfMonth(start)));
-    yield getDashboardAmount();
-  } catch (err) {
-    console.log('error while creating recurring', err);
-  }
-}
-  *
-  * */
-
   return {
     recurrings,
     isLoading,
