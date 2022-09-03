@@ -38,21 +38,64 @@ const useReccurings = () => {
   const queryClient = useQueryClient();
 
   const deleteRecurringService = async (recurring: Spending) => {
-    return privateRequest(`/spendings/${recurring.ID}`, {method: "DELETE"});
+    return privateRequest(`/recurrings/${recurring.ID}`, {method: "DELETE"});
   }
 
   const deleteRecurring = useMutation(({ recurring }: { recurring: Spending }) => {
     return deleteRecurringService(recurring);
   }, {
     onSuccess: async () => {
-      await queryClient.invalidateQueries([QUERY_KEYS.RECURRINGS, from, to]);
+      await queryClient.invalidateQueries([QUERY_KEYS.RECURRINGS, monthBeginning]);
+      await queryClient.invalidateQueries([QUERY_KEYS.DASHBOARD, monthBeginning]);
     }
   });
+
+  const createRecurringService = async (recurring: Spending, month: any) => {
+    return privateRequest("/recurrings", {
+      method: "POST",
+      data: {
+        ...recurring,
+        ...month,
+      }
+    })
+  };
+
+  const createRecurring = useMutation(({ spendingEdited, formattedMonth }) => {
+    return createRecurringService(spendingEdited, formattedMonth);
+  }, {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries([QUERY_KEYS.RECURRINGS, monthBeginning]);
+      await queryClient.invalidateQueries([QUERY_KEYS.DASHBOARD, monthBeginning]);
+    }
+  });
+
+  /*
+  * export function* onCreateRecurring(payload) {
+  try {
+    yield call(privateRequest, '/recurrings', {
+      method: 'POST',
+      data: {
+        ...payload.recurring,
+        ...payload.month,
+      },
+    });
+    displayPopup({ text: intl.formatMessage({ ...messages.createSuccess }) });
+
+    const start = yield select(state => state.dateRangeReducer.dateRange.from);
+    yield put(getRecurring(startOfMonth(start)));
+    yield getDashboardAmount();
+  } catch (err) {
+    console.log('error while creating recurring', err);
+  }
+}
+  *
+  * */
 
   return {
     recurrings,
     isLoading,
     deleteRecurring,
+    createRecurring,
   }
 }
 

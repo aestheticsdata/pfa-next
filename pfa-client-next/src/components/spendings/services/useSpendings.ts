@@ -129,27 +129,6 @@ const useSpendings = () => {
     }
   });
 
-
-  /*
-  * export function* onUpdateSpending(payload) {
-  try {
-    const userID = JSON.parse(localStorage.getItem('pfa-user')).id;
-    yield call(privateRequest, `/spendings/${payload.spending.id}`, {
-      method: 'PUT',
-      data: payload.spending,
-    });
-    displayPopup({ text: intl.formatMessage({ ...messages.updateSuccess }) });
-    const dateRange = yield select(state => state.dateRangeReducer.dateRange);
-    yield put(getSpendings(userID, dateRange));
-    yield put(getWeeklyStats(startOfMonth(dateRange.from)));
-    yield getDashboardAmount();
-  } catch (err) {
-    console.log(err);
-  }
-}
-  *
-  * */
-
   return {
     spendings,
     isLoading,

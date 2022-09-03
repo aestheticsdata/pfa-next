@@ -108,7 +108,7 @@ const SpendingItem = ({
 
           </div>
           :
-          <ConfirmDeletePopin spending={spending} hideConfirm={hideConfirm} />
+          <ConfirmDeletePopin spending={spending} recurringType={isRecurring} hideConfirm={hideConfirm} />
       }
     </div>
   )

@@ -11,10 +11,10 @@ import toFixedEval from "@helpers/mathExprEval";
 import useCategories from "@components/spendings/services/useCategories";
 import { useUserStore } from "@auth/store/userStore";
 import useSpendings from "@components/spendings/services/useSpendings";
+import useReccurings from "@components/spendings/services/useReccurings";
 import AutocompleteItem from "@components/spendings/common/spendingModal/AutocompleteItem";
 import category from "@components/common/Category";
 import Swal from "sweetalert2";
-import update = module
 
 const spendingSchema = z.object({
   spendingLabel: z.string().nonempty(),
@@ -35,6 +35,7 @@ const SpendingModal = ({
  }) => {
   const user = useUserStore((state) => state.user);
   const { createSpending, updateSpending } = useSpendings();
+  const { createRecurring } = useReccurings();
   const { data: categories } = useCategories();
 
 
@@ -81,8 +82,9 @@ const SpendingModal = ({
     return `${r}${g}${b}`;
   };
 
-  const processCategory = (values: any) => {
+  const processCategory = (values: SpendingForm) => {
     let tempCategory;
+
     if (!values.category) { // it's a category deletion
       tempCategory = {
         ID: null,
@@ -101,6 +103,7 @@ const SpendingModal = ({
       // changement de catégorie qui existe deja, ou meme categorie inchangee
       tempCategory = selectedCategory;
     }
+
     return tempCategory;
   }
 
@@ -127,9 +130,6 @@ const SpendingModal = ({
       if (recurringType) {
         // dispatch(updateRecurring(spendingEdited));
       } else {
-        console.log("update spending !!!");
-        console.log("spending updated : ", spendingEdited);
-        // dispatch(updateSpending(spendingEdited));
         updateSpending.mutate(spendingEdited);
       }
     } else {
@@ -138,6 +138,7 @@ const SpendingModal = ({
           start: format(month.start, 'yyyy-MM-dd'),
           end: format(month.end, 'yyyy-MM-dd'),
         };
+        createRecurring.mutate({ spendingEdited, formattedMonth });
         // dispatch(createRecurring(spendingEdited, formattedMonth));
       } else {
         createSpending.mutate(spendingEdited);
@@ -174,42 +175,44 @@ const SpendingModal = ({
           registerName="spendingAmount"
         />
 
-        <Autocomplete
-          {...field}
-          freeSolo
-          isOptionEqualToValue={(option, value) => {
-              return option.ID === value.ID;
+        {!recurringType &&
+          <Autocomplete
+            {...field}
+            freeSolo
+            isOptionEqualToValue={(option, value) => {
+                return option.ID === value.ID;
+              }
             }
-          }
-          autoComplete={true}
-          style={{width: "440px"}}
-          classes={{
-           root: "backgroundColor: yellow"
-          }}
-          getOptionLabel={(option) => option.name ?? option}
-          options={categories?.data || []}
-          renderOption={(props, option) => {
-            const { name, color } = option;
-            return <AutocompleteItem key={name} props={props} color={color!} name={name} />;
-          }}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Catégorie"
-              inputRef={field.ref}
-              error={fieldState.invalid}
-              helperText={fieldState.error?.message}
-            />
-          )}
-          value={selectedCategory}
-          onChange={
-            (e, value) => {
-              setselectedCategory(value);
-              return field.onChange(value);
+            autoComplete={true}
+            style={{width: "440px"}}
+            classes={{
+             root: "backgroundColor: yellow"
+            }}
+            getOptionLabel={(option) => option.name ?? option}
+            options={categories?.data || []}
+            renderOption={(props, option) => {
+              const { name, color } = option;
+              return <AutocompleteItem key={name} props={props} color={color!} name={name} />;
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Catégorie"
+                inputRef={field.ref}
+                error={fieldState.invalid}
+                helperText={fieldState.error?.message}
+              />
+            )}
+            value={selectedCategory}
+            onChange={
+              (e, value) => {
+                setselectedCategory(value);
+                return field.onChange(value);
+              }
             }
-          }
-          onInputChange={(_, value) => {value && field.onChange(value)}}
-        />
+            onInputChange={(_, value) => {value && field.onChange(value)}}
+          />
+        }
 
         <Button
           type="submit"
