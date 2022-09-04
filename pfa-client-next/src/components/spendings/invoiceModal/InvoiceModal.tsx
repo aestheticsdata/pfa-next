@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileUpload } from "@fortawesome/free-solid-svg-icons";
 import Image from 'next/image';
 import useOnClickOutside from "use-onclickoutside";
+import Button from "@components/common/form/Button";
 import useRequestHelper from "@helpers/useRequestHelper";
 import { useUserStore } from "@auth/store/userStore";
 import InvoiceImageModal from './invoiceImageModal/InvoiceImageModal';
@@ -183,7 +184,7 @@ const InvoiceModal = ({ handleClickOutside, spending }) => {
                 </div>
           }
         </div>
-        <div className="inputfile-container">
+        <div className="inputfile-container flex justify-center items-center flex-col h-[105px]">
           {
             isFileTooBig && (
               <div className="file-too-big">
@@ -206,12 +207,11 @@ const InvoiceModal = ({ handleClickOutside, spending }) => {
                 </div>
               :
               invoiceImage ?
-                <button
-                  className="delete-btn"
+                <Button
+                  type="button"
                   onClick={deleteImage}
-                >
-                  {invoiceModalTexts.delete}
-                </button>
+                  label={invoiceModalTexts.delete}
+                />
                 :
                 <>
                   <input
@@ -222,38 +222,41 @@ const InvoiceModal = ({ handleClickOutside, spending }) => {
                     accept="image/jpeg"
                     onChange={onChange}
                   />
-                  <div className="label-wrapper">
-                    <label htmlFor="invoicefileinputid">
+                  <div className="label-wrapper flex flex-col mt-6 justify-center items-center h-[105px] w-full bg-grey0">
+                    <label htmlFor="invoicefileinputid" className="flex justify-center text-grey2 w-11/12">
                       {
                         invoicefile !== '' ?
-                          <div className="input-filename">
-                            {invoicefile.name}
+                          <div className="flex flex-col space-y-4 pt-2 relative font-semibold text-lg h-[105px]">
+                            <div>{invoicefile.name}</div>
+                            {
+                              invoicefile && (
+                                <Button
+                                  type="submit"
+                                  onClick={onSubmit}
+                                  disabled={invoicefile === ''}
+                                  label={invoiceModalTexts.send}
+                                />
+                              )
+                            }
                           </div>
                           :
-                          <div className="choose-file">
-                            <div className="upload-icon">
-                              <FontAwesomeIcon icon={faFileUpload} />
+                          <div className="choose-file w-[230px]">
+                            <div className="upload-icon flex justify-center items-center">
+                              <div className="relative text-6xl hover:cursor-pointer hover:text-addSpendingHover">
+                                <FontAwesomeIcon icon={faFileUpload} />
+                              </div>
                             </div>
-                            <div className="upload-choosefile-label">
-                              {invoiceModalTexts.chooseFile}
-                            </div>
-                            <div className="onlyformat">
-                              {invoiceModalTexts.fileTypeWarning}
+                            <div className="flex flex-col">
+                              <div className="flex justify-center font-semibold">
+                                {invoiceModalTexts.chooseFile}
+                              </div>
+                              <div className="flex justify-center text-xxs">
+                                {invoiceModalTexts.fileTypeWarning}
+                              </div>
                             </div>
                           </div>
                       }
                     </label>
-                    {
-                      invoicefile && (
-                        <button
-                          className="upload-submit-btn"
-                          onClick={onSubmit}
-                          disabled={invoicefile === ''}
-                        >
-                          {invoiceModalTexts.send}
-                        </button>
-                      )
-                    }
                   </div>
                 </>
           }

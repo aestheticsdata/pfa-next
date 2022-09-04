@@ -214,18 +214,21 @@ const SpendingModal = ({
           />
         }
 
-        <Button
-          type="submit"
-          disabled={formState.isSubmitting || !formState.isValid}
-          label={isEditing ? "Mettre à jour" : "Créer"}
-          onClick={handleSubmit(onSubmit)}
-        />
-        <Button
-          type="reset"
-          value="Reset"
-          onClick={() => closeModal()}
-          label="annuler"
-        />
+        <div className="flex flex-col space-y-2 w-1/3">
+          <Button
+            type="submit"
+            disabled={formState.isSubmitting || !formState.isValid}
+            label={isEditing ? "Mettre à jour" : "Créer"}
+            fontSize={isEditing ? "text-xxs" : "text-sm"}
+            onClick={handleSubmit(onSubmit)}
+          />
+          <Button
+            type="reset"
+            value="Reset"
+            onClick={() => closeModal()}
+            label="annuler"
+          />
+        </div>
       </form>
     </div>
   )

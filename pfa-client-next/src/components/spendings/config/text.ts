@@ -30,7 +30,7 @@ const spendings = {
     noInvoice: "Aucune facture",
     fileTooBig: "Le fichier est tros gros",
     chooseFile: "Choisir un fichier",
-    fileTypeWarning: "Seulement des fichiers jpg",
+    fileTypeWarning: "(Seulement des fichiers jpg)",
     send: "Envoyer",
     delete: "Effacer la facture",
   }
