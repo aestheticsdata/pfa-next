@@ -195,7 +195,12 @@ const InvoiceModal = ({ handleClickOutside, spending }) => {
           {
             isLoading ?
               isProgress ?
-                <progress id="progressBar" value={progressValue} max="100" style={{width: '300px'}} />
+                <div className="flex flex-col space-y-2 w-[250px]">
+                  <div className="relative text-grey2 font-semibold" style={{left: `${progressValue*2.5}px`}}>{progressValue} %</div>
+                  <div className="rounded h-2.5 bg-white">
+                    <div className="bg-grey1 h-2.5 rounded" style={{width: `${progressValue*2.5}px`}}></div>
+                  </div>
+                </div>
                 :
                 <div className="flex justify-center items-center h-[220px]">
                   <Image
