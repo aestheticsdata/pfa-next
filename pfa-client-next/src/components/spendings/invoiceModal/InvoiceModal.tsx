@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useQueryClient } from "react-query";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileUpload } from "@fortawesome/free-solid-svg-icons";
 import Image from 'next/image';
@@ -10,10 +11,12 @@ import InvoiceImageModal from './invoiceImageModal/InvoiceImageModal';
 import getCategoryComponent from "@components/common/Category";
 import spinner from "@src/assets/Wedges-3s-200px.svg";
 import texts from "@components/spendings/config/text";
+import { QUERY_KEYS } from "@components/spendings/config/constants";
 
 
 const InvoiceModal = ({ handleClickOutside, spending }) => {
   const { privateRequest } = useRequestHelper();
+  const queryClient = useQueryClient();
   const { invoiceModal: invoiceModalTexts } = texts;
   const userID = useUserStore((state) => state.user!.id);
   const fileSizeLimit = 32_097_152;
@@ -43,7 +46,7 @@ const InvoiceModal = ({ handleClickOutside, spending }) => {
       if (res?.data?.msg === 'INVOICE_IMAGE_DELETED') {
         setInvoiceImage(null);
         setInvoicefile('');
-        // dispatch(updateInvoicefileReducerStatus(spending, 'delete'));
+        await queryClient.invalidateQueries([QUERY_KEYS.SPENDINGS]);
         setIsLoading(false);
       }
     } catch (e) {
@@ -70,7 +73,7 @@ const InvoiceModal = ({ handleClickOutside, spending }) => {
         data: payload,
       }, config);
       setInvoiceImage(uploadedImage.data);
-      // dispatch(updateInvoicefileReducerStatus(spending, 'create'));
+      await queryClient.invalidateQueries([QUERY_KEYS.SPENDINGS]);
       setIsLoading(false);
     } catch (e) {
       console.log('error uploading image : ', e);
