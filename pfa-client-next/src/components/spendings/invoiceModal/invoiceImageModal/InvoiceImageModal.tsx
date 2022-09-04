@@ -7,16 +7,17 @@ const InvoiceImageModal = ({ image, closeImage }) => {
   useOnClickOutside(ref, closeImage);
 
   return (
-    <div
-      className="image-container-fullsize"
-    >
-      <img
-        ref={ref}
-        src={image}
-        alt="invoice"
-      />
+    <div className="fixed top-0 left-0 bottom-0 right-0 bg-grey2 z-10">
+      <div className="absolute max-h-screen overflow-y-auto">
+        <img
+          ref={ref}
+          src={image}
+          alt="invoice"
+        />
+      </div>
     </div>
   );
 };
 
 export default InvoiceImageModal;
+

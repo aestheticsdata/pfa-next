@@ -174,7 +174,6 @@ const InvoiceModal = ({ handleClickOutside, spending }) => {
               invoiceImage ?
                 <img
                   src={invoiceImage}
-                  className="invoice-image"
                   width="30%"
                   alt="invoice"
                   onClick={() => {setIsClickOnThumbnail(!isClickOnThumbnail)}}
@@ -187,7 +186,7 @@ const InvoiceModal = ({ handleClickOutside, spending }) => {
                 </div>
           }
         </div>
-        <div className="inputfile-container flex justify-center items-center flex-col h-[105px]">
+        <div className="flex justify-center items-center flex-col h-[105px]">
           {
             isFileTooBig && (
               <div className="file-too-big">
@@ -224,13 +223,12 @@ const InvoiceModal = ({ handleClickOutside, spending }) => {
                 <>
                   <input
                     type="file"
-                    className="invoice-inputfile"
                     id="invoicefileinputid"
                     name="invoicefile"
                     accept="image/jpeg"
                     onChange={onChange}
                   />
-                  <div className="label-wrapper flex flex-col mt-6 justify-center items-center h-[105px] w-full bg-grey0">
+                  <div className="flex flex-col mt-6 justify-center items-center h-[105px] w-full bg-grey0">
                     <label htmlFor="invoicefileinputid" className="flex justify-center text-grey2 w-11/12">
                       {
                         invoicefile !== '' ?
@@ -248,8 +246,8 @@ const InvoiceModal = ({ handleClickOutside, spending }) => {
                             }
                           </div>
                           :
-                          <div className="choose-file w-[230px]">
-                            <div className="upload-icon flex justify-center items-center">
+                          <div className="w-[230px]">
+                            <div className="flex justify-center items-center">
                               <div className="relative text-6xl hover:cursor-pointer hover:text-addSpendingHover">
                                 <FontAwesomeIcon icon={faFileUpload} />
                               </div>
