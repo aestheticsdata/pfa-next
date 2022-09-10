@@ -17,7 +17,7 @@ const NavBar = () => {
       </div>
       {token ? (
         <div className="flex space-x-5 items-center justify-between font-ubuntu w-full">
-          <div className="flex">
+          <div className="flex space-x-4">
             <Link href="/" passHref><div className="outline-hidden p-1 hover:cursor-pointer hover:bg-spendingItemHover hover:text-blueNavy hover:rounded">{sharedText.navBar.spendings}</div></Link>
             <Link href="/categories" passHref><div className="outline-hidden p-1 hover:cursor-pointer hover:bg-spendingItemHover hover:text-blueNavy hover:rounded">{sharedText.navBar.categories}</div></Link>
             {isCalendarVisible && <DatePickerWrapper />}

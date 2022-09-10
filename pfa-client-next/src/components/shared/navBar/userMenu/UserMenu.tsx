@@ -29,7 +29,7 @@ const UserMenu = () => {
   ];
 
   return (
-    <div className="mr-5 cursor-pointer bg-transparent">
+    <div className="mr-8 cursor-pointer bg-transparent">
       <Dropdown>
         <span className="whitespace-nowrap block overflow-hidden text-ellipsis">{user.email}</span>
         <UserMenuContent
