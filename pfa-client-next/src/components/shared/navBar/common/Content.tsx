@@ -1,8 +1,15 @@
-const Content = ({ handleclosefromchild, content }) => {
+import React from "react";
+
+interface ContentProps {
+  handleclosefromchild?: Function;
+  content: React.ReactNode;
+}
+
+const Content = ({ handleclosefromchild, content }: ContentProps) => {
   return (
     <div className="absolute top-12">
       <div
-        onClick={() => handleclosefromchild()}
+        onClick={() => { handleclosefromchild && handleclosefromchild() }}
         role="menu"
         className="flex flex-col items-end bg-grey2 p-1.5 rounded border border-grey0 shadow-login shadow-grey2"
       >

@@ -3,10 +3,10 @@ import queryString from "query-string";
 import DayPicker from "react-day-picker";
 import "react-day-picker/lib/style.css";
 import useOnClickOutside from "use-onclickoutside";
-import useDatePickerState from "@components/datePickerWrapper/helpers/useDatePickerState";
 import fr from "date-fns/locale/fr";
-import { WEEKDAYS_LONG, WEEKDAYS_SHORT, MONTHS } from "./locale-fr";
 import format from "date-fns/format";
+import { WEEKDAYS_LONG, WEEKDAYS_SHORT, MONTHS } from "./locale-fr";
+import useDatePickerState from "@components/datePickerWrapper/helpers/useDatePickerState";
 
 const DatePickerWrapper = () => {
   const {

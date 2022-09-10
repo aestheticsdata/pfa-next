@@ -1,8 +1,22 @@
+import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import Content from '../common/Content';
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
-const UserMenuContent = ({ listItems, handleclosefromchild }) => {
+interface ListItemMenu {
+  id: string;
+  label: string;
+  icon: IconProp;
+  callback: Function
+}
+
+  interface UserMenuContentProps {
+  handleclosefromchild?: Function;
+  listItems: ListItemMenu[];
+}
+
+const UserMenuContent = ({ handleclosefromchild, listItems }: UserMenuContentProps) => {
   const content = listItems && listItems.map(item => (
     <li
       key={item.id}
