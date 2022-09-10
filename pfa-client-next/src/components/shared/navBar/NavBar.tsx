@@ -4,6 +4,7 @@ import { useAuthStore } from "@auth/store/authStore";
 import DatePickerWrapper from "@components/datePickerWrapper/DatePickerWrapper";
 import useGlobalStore from "@components/shared/globalStore";
 import sharedText from "@components//shared/config/text";
+import UserMenu from "@components/shared/navBar/userMenu/UserMenu";
 
 const NavBar = () => {
   const token = useAuthStore((state) => state.token);
@@ -15,10 +16,15 @@ const NavBar = () => {
         <Image src="/money-svgrepo-com.svg" alt="logo" width="40" height="40" />
       </div>
       {token ? (
-        <div className="flex space-x-5 font-ubuntu">
-          <Link href="/" passHref><div className="outline-hidden p-1 hover:cursor-pointer hover:bg-spendingItemHover hover:text-blueNavy hover:rounded">{sharedText.navBar.spendings}</div></Link>
-          <Link href="/categories" passHref><div className="outline-hidden p-1 hover:cursor-pointer hover:bg-spendingItemHover hover:text-blueNavy hover:rounded">{sharedText.navBar.categories}</div></Link>
-          {isCalendarVisible && <DatePickerWrapper />}
+        <div className="flex space-x-5 items-center justify-between font-ubuntu w-full">
+          <div className="flex">
+            <Link href="/" passHref><div className="outline-hidden p-1 hover:cursor-pointer hover:bg-spendingItemHover hover:text-blueNavy hover:rounded">{sharedText.navBar.spendings}</div></Link>
+            <Link href="/categories" passHref><div className="outline-hidden p-1 hover:cursor-pointer hover:bg-spendingItemHover hover:text-blueNavy hover:rounded">{sharedText.navBar.categories}</div></Link>
+            {isCalendarVisible && <DatePickerWrapper />}
+          </div>
+          <div className="flex">
+            <UserMenu />
+          </div>
         </div>
       ) : (
         <div className="flex space-x-5 font-ubuntu">

@@ -3,8 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleUp, faAngleDown} from '@fortawesome/free-solid-svg-icons';
 import useOnClickOutside from 'use-onclickoutside';
 
-import StyledDropDown from './StyledDropDown';
-import {Dropdown} from "./types";
+import type { Dropdown } from "./types";
 
 
 const DropDown = ({ children }: Dropdown) => {
@@ -19,37 +18,34 @@ const DropDown = ({ children }: Dropdown) => {
   const close = () => { setIsOpen(false) };
 
   return (
-    <StyledDropDown ref={ref}>
-      <div className="container">
-        <div
-          onClick={toggleDropdown}
-        >
-          <>
-            {
-              isOpen ?
-                <FontAwesomeIcon
-                  className="icon"
-                  icon={faAngleUp}
-                />
-                :
-                <FontAwesomeIcon
-                  className="icon"
-                  icon={faAngleDown}
-                />
-            }
-          </>
+    <div ref={ref}>
+      <div
+        onClick={toggleDropdown}
+        className="flex flex-col items-end"
+      >
+        <div className="flex flex-row items-center justify-center space-x-2">
+          {isOpen ?
+            <FontAwesomeIcon
+              className="icon"
+              icon={faAngleUp}
+            />
+            :
+            <FontAwesomeIcon
+              className="icon"
+              icon={faAngleDown}
+            />
+          }
           { children[0] }
         </div>
-        <div>
-          {
-            isOpen ?
-              cloneElement(children[1], { handleclosefromchild: () => close()})
-              :
-              null
-          }
-        </div>
+        {isOpen ?
+          cloneElement(children[1], { handleclosefromchild: () => close()})
+          :
+          null
+        }
       </div>
-    </StyledDropDown>
+      <div>
+      </div>
+    </div>
   )
 }
 
