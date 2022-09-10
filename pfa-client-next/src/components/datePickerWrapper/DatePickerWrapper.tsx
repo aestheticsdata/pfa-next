@@ -46,7 +46,7 @@ const DatePickerWrapper = () => {
   }, []);
 
   return (
-    <div ref={ref} className="bg-grey3 relative m-1">
+    <div ref={ref} className="flex flex-col items-start bg-grey3 relative m-1">
       <div
         className="border border-datePickerWrapper text-datePickerWrapper bg-datePickerWrapperBackground rounded px-2 select-none cursor-pointer"
         onClick={toggleCalendar}
@@ -62,25 +62,25 @@ const DatePickerWrapper = () => {
           <div>dates</div>
         )}
       </div>
-      <div className="date-picker absolute bg-grey3">
-        {isCalendarVisible ? (
-          <DayPicker
-            initialMonth={selectedDays[0]}
-            locale="fr"
-            months={MONTHS}
-            weekdaysLong={WEEKDAYS_LONG}
-            weekdaysShort={WEEKDAYS_SHORT}
-            selectedDays={selectedDays}
-            showWeekNumbers={false}
-            showOutsideDays={false}
-            modifiers={modifiers}
-            onDayClick={handleDayChange}
-            onDayMouseEnter={handleDayEnter}
-            onDayMouseLeave={handleDayLeave}
-            onWeekClick={() => {}}
-          />
-        ) : null}
-      </div>
+        {isCalendarVisible && (
+          <div className="absolute top-8 bg-grey3 rounded border border-grey0 shadow-login">
+            <DayPicker
+              initialMonth={selectedDays[0]}
+              locale="fr"
+              months={MONTHS}
+              weekdaysLong={WEEKDAYS_LONG}
+              weekdaysShort={WEEKDAYS_SHORT}
+              selectedDays={selectedDays}
+              showWeekNumbers={false}
+              showOutsideDays={false}
+              modifiers={modifiers}
+              onDayClick={handleDayChange}
+              onDayMouseEnter={handleDayEnter}
+              onDayMouseLeave={handleDayLeave}
+              onWeekClick={() => {}}
+            />
+          </div>
+        )}
     </div>
   );
 };

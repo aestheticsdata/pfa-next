@@ -6,7 +6,7 @@ import useOnClickOutside from 'use-onclickoutside';
 import type { Dropdown } from "./types";
 
 
-const DropDown = ({ children }: Dropdown) => {
+const DropDown = ({ children, displayCaret = true }: Dropdown) => {
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef(null);
 
@@ -24,16 +24,18 @@ const DropDown = ({ children }: Dropdown) => {
         className="flex flex-col items-end"
       >
         <div className="flex flex-row items-center justify-center space-x-2">
-          {isOpen ?
-            <FontAwesomeIcon
-              className="icon"
-              icon={faAngleUp}
-            />
-            :
-            <FontAwesomeIcon
-              className="icon"
-              icon={faAngleDown}
-            />
+          {displayCaret &&
+            (isOpen ?
+              <FontAwesomeIcon
+                className="icon"
+                icon={faAngleUp}
+              />
+              :
+              <FontAwesomeIcon
+                className="icon"
+                icon={faAngleDown}
+              />
+            )
           }
           { children[0] }
         </div>
