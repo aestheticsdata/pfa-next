@@ -3,9 +3,10 @@ import { useRouter } from "next/router";
 import Layout from "@src/components/shared/Layout";
 import SharedLoginForm from "@src/components/shared/sharedLoginForm/sharedLoginForm";
 import useLoginService from "@auth/useLoginService";
-import type { LoginValues } from "@src/components/shared/sharedLoginForm/interfaces";
 import { useAuthStore } from "@auth/store/authStore";
 import { useUserStore } from "@auth/store/userStore";
+
+import type { LoginValues } from "@src/components/shared/sharedLoginForm/interfaces";
 
 const Login = () => {
   const router = useRouter();
@@ -17,7 +18,7 @@ const Login = () => {
     const result = await loginService(values.email, values.password);
     await authStore.setToken(result.token);
     await userStore.setUser(result.user);
-    router.push("/");
+    await router.push("/");
   };
 
   return (

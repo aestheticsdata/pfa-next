@@ -1,16 +1,15 @@
-import { useUserStore } from "@auth/store/userStore";
 import { useRouter } from "next/router";
 import {
   faSignOutAlt,
   faKey,
 } from '@fortawesome/free-solid-svg-icons';
-
+import { useUserStore } from "@auth/store/userStore";
 import Dropdown from '@components/common/dropdown/Dropdown';
 import UserMenuContent from './UserMenuContent';
 
 
 const UserMenu = () => {
-  const user = useUserStore((state) => state.user!);
+  const userStore = useUserStore();
   const router = useRouter();
 
   const listItems = [
@@ -31,7 +30,7 @@ const UserMenu = () => {
   return (
     <div className="mr-8 cursor-pointer bg-transparent">
       <Dropdown>
-        <span className="whitespace-nowrap block overflow-hidden text-ellipsis">{user.email}</span>
+        <span className="whitespace-nowrap block overflow-hidden text-ellipsis">{userStore.user?.email}</span>
         <UserMenuContent listItems={listItems} />
       </Dropdown>
     </div>

@@ -63,7 +63,7 @@ const DatePickerWrapper = () => {
         )}
       </div>
         {isCalendarVisible && (
-          <div className="absolute top-8 bg-grey3 rounded border border-grey0 shadow-login">
+          <div className="absolute top-8 bg-grey3 rounded border border-grey0 shadow-charttooltip">
             <DayPicker
               initialMonth={selectedDays[0]}
               locale="fr"
