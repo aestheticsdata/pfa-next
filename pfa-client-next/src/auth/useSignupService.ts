@@ -1,20 +1,19 @@
 import useRequestHelper from "@helpers/useRequestHelper";
+import Swal from "sweetalert2";
 
-interface NewUser {
-  email: string;
-  password: string;
-}
+import type { LoginValues } from "@components/shared/sharedLoginForm/interfaces";
+
 
 const useSignupService = () => {
   const { request } = useRequestHelper();
 
-  const signupService = async (user: NewUser) => {
+  const signupService = async (user: LoginValues) => {
     const { email, password } = user;
     try {
       const res = await request('/users/add', {
         method: 'POST',
         data: {
-          name: email.split('@')[0],
+          name: email!.split('@')[0],
           email,
           password,
           registerDate: new Date(),
@@ -22,11 +21,16 @@ const useSignupService = () => {
           language: "fr",
         }
       });
-      // yield put(registerSuccess(res))
+      return res.data;
     } catch (err) {
-      // yield put(registerFail(err.response.data.error));
+      await Swal.fire({
+        title: "Erreur lors de la création de compte",
+        icon: "warning",
+        confirmButtonText: "fermer",
+      });
     }
   }
+
   return {
     signupService,
   }

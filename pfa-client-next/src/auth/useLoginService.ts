@@ -3,6 +3,7 @@ import Swal from "sweetalert2";
 
 const useLoginService = () => {
   const { request } = useRequestHelper();
+
   const loginService = async (email: string, password: string) => {
     try {
       const result = await request("/users", {
@@ -16,8 +17,8 @@ const useLoginService = () => {
     } catch (e) {
       await Swal.fire({
         title: `login error: ${e}`,
-        icon: "error",
-        confirmButtonText: `dismiss`,
+        icon: "warning",
+        confirmButtonText: "fermer",
       });
     }
   };

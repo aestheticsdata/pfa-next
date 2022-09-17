@@ -1,16 +1,17 @@
-import { useRouter } from "next/router";
 import SharedLoginForm from "@components/shared/sharedLoginForm/sharedLoginForm";
 import Layout from "@components/shared/Layout";
 import useSignupService from "@auth/useSignupService";
+import useCredentials from "@auth/helpers/useCredentials";
 
 import type { LoginValues } from "@components/shared/sharedLoginForm/interfaces";
 
 const SignUp = () => {
-  const router = useRouter();
   const { signupService } = useSignupService();
+  const { setCredentials } = useCredentials();
 
-  const onSubmit = async (user: LoginValues) => {
-    // const result = await signupService(user);
+  const onSubmit = async (values: LoginValues) => {
+    const { token, user } = await signupService(values);
+    await setCredentials(token, user);
   };
 
   return (
