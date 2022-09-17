@@ -15,7 +15,7 @@ const Login = () => {
   const { loginService } = useLoginService();
 
   const onSubmit = async (values: LoginValues) => {
-    const result = await loginService(values.email, values.password);
+    const result = await loginService(values.email!, values.password!);
     await authStore.setToken(result.token);
     await userStore.setUser(result.user);
     await router.push("/");
@@ -32,7 +32,7 @@ const Login = () => {
         />
         <div className="text-formsGlobalColor hover:text-generalWarningBackground hover:underline">
           <Link href="/forgotPassword">
-            forgot password ?
+            mot de passe oublié ?
           </Link>
         </div>
       </div>
