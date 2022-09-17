@@ -4,12 +4,6 @@ import {
   faLongArrowAltDown,
   faLongArrowAltUp,
 } from "@fortawesome/free-solid-svg-icons";
-import startOfMonth from 'date-fns/startOfMonth';
-import endOfMonth from 'date-fns/endOfMonth';
-import format from 'date-fns/format';
-import getDay from "date-fns/getDay";
-import getDaysInMonth from "date-fns/getDaysInMonth";
-import getDate from "date-fns/getDate";
 import spinner from "@src/assets/Wedges-3s-200px.svg";
 import Image from 'next/image';
 import WidgetHeader from "@components/spendings/spendingDashboard/common/WidgetHeader";

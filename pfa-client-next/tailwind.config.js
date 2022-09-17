@@ -4,6 +4,7 @@ module.exports = {
     extend: {
       boxShadow: {
         login: "0 0 1px 1px rgb(10, 10, 10)",
+        categories: "0 0 1px 2px rgb(255, 255, 255)",
         dashboard: "1px 4px 21px 6px rgba(0,0,0,0.54)",
         charttooltip: "0 1px 10px 1px rgba(100, 100, 100, 0.6)",
       },

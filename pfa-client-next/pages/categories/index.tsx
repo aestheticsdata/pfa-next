@@ -1,6 +1,6 @@
-import Layout from "@src/components/shared/Layout";
-import useGlobalStore from "@components/shared/globalStore";
 import { useEffect } from "react";
+import useGlobalStore from "@components/shared/globalStore";
+import CategoriesListcontainer from "@components/categories/CategoriesListcontainer";
 
 
 const Categories = () => {
@@ -9,11 +9,7 @@ const Categories = () => {
     setIsCalendarVisible(false);
   }, [setIsCalendarVisible]);
 
-  return (
-    <Layout>
-      <div>Categories</div>
-    </Layout>
-  );
+ return <CategoriesListcontainer />;
 };
 
 export default Categories;

@@ -18,6 +18,7 @@ const useCategories = () => {
 
   return useQuery(QUERY_KEYS.CATEGORIES, getCategories, {
     retry: false,
+    enabled: !!userID,
     ...QUERY_OPTIONS,
   });
 }

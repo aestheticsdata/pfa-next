@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm, useController } from "react-hook-form";
 import format from 'date-fns/format';
 import { z } from "zod";
@@ -13,8 +13,6 @@ import { useUserStore } from "@auth/store/userStore";
 import useSpendings from "@components/spendings/services/useSpendings";
 import useReccurings from "@components/spendings/services/useReccurings";
 import AutocompleteItem from "@components/spendings/common/spendingModal/AutocompleteItem";
-import category from "@components/common/Category";
-import Swal from "sweetalert2";
 
 const spendingSchema = z.object({
   spendingLabel: z.string().nonempty(),
