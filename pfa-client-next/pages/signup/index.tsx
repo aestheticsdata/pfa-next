@@ -19,7 +19,7 @@ const SignUp = () => {
       <div className="flex flex-col items-center w-96 space-y-8 mt-28 rounded bg-gradient-to-br from-teal-300 to-sky-500 py-3 font-smooch shadow-lg">
         <SharedLoginForm
           onSubmit={onSubmit}
-          buttonTitle="Sign up"
+          buttonTitle="Créer un compte"
           displayEmailField
           displayPasswordField
         />
