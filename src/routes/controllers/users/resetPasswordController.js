@@ -2,8 +2,16 @@ const prisma = require('../../../db/dbInit');
 
 const bcrypt = require('bcryptjs');
 const passwordgenerator = require('generate-password');
-const sendgrid = require('@sendgrid/mail');
-sendgrid.setApiKey(process.env.SENDGRID_APIKEY);
+
+// Sendinblue
+const SibApiV3Sdk = require('sib-api-v3-sdk');
+let defaultClient = SibApiV3Sdk.ApiClient.instance;
+let apiKey = defaultClient.authentications['api-key'];
+apiKey.apiKey = process.env.SENDINBLUE_APIKEY;
+let apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
+let sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
+// Sendinblue end
+
 
 const createError = require('http-errors');
 
@@ -16,12 +24,11 @@ module.exports = async (req, res, next) => {
     numbers: true,
   });
 
-  const msg = {
-    to: email,
-    from: 'hxf.finance@protonmail.com',
-    subject,
-    text: `your new password is: ${newPassword}`,
-  };
+  sendSmtpEmail.subject = subject;
+  sendSmtpEmail.htmlContent = `votre nouveau mot de passe: ${newPassword}`;
+  sendSmtpEmail.sender = {"name":"HXF finance","email":"hxf.finance@gmail.com"};
+  sendSmtpEmail.to = [{"email":email, "name":email}];
+  sendSmtpEmail.replyTo = {"email":"hxf.finance@gmail.com", "name":"HXF Finance"};
 
   const user = await prisma.users.findUnique({ where: { email } });
   if (user === null) return next(createError(500, 'no users registered with this email'));
@@ -33,8 +40,8 @@ module.exports = async (req, res, next) => {
         if (err) console.error('There was an error during hash', err);
         else {
           await prisma.users.update({ where: { email }, data: { password: hash } })
-          await sendgrid.send(msg);
-          res.json('sendgrid success');
+          await apiInstance.sendTransacEmail(sendSmtpEmail);
+          res.json('sendinblue success');
         }
       });
     }
