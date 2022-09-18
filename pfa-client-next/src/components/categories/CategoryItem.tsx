@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Swal from 'sweetalert2';
+import Button from "@components/common/form/Button";
 import getCategoryComponent from "@components/common/Category";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencilAlt, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
@@ -74,11 +75,11 @@ const CategoryItem = ({ category }) => {
 
   const editCategoryPopin = () => {
     return (
-      <div className="edit-category-popin">
+      <div className="flex text-xs space-x-2">
 
         <input
           type="text"
-          className="edit-category-popin-name"
+          className="rounded px-2"
           value={singleCategory.name}
           onChange={(ev) => setSingleCategory({...singleCategory, name: ev.target.value})}
           onKeyPress={(keypressEvent) => { keypressEvent.code === 'Enter' && commitEditing() }}
@@ -86,31 +87,33 @@ const CategoryItem = ({ category }) => {
 
         <input
           type="color"
-          className="edit-category-popin-color"
+          className="rounded bg-transparent cursor-pointer hover:shadow-login"
           value={singleCategory.color}
           onChange={(ev) => setSingleCategory({...singleCategory, color: ev.target.value})}
         />
 
-        <button
-          className="cancel-button"
+        <Button
+          type="button"
+          label="Annuler"
+          fontSize="text-xxs"
+          hoverTextColor="hover:text-white"
           onClick={() => { cancelEditing() }}
-        >
-          Annuler
-        </button>
+        />
 
-        <button
-          className="confirm-button"
+        <Button
+          type="button"
+          label="Modifier"
+          fontSize="text-xxs"
+          hoverTextColor="hover:text-white"
           onClick={() => { commitEditing() }}
-        >
-          Modifier
-        </button>
+        />
 
       </div>
     );
   };
 
   const actionsFragment = () => (
-    <div className="flex w-1/5 justify-between text-grey3">
+    <div className="flex w-1/5 justify-around text-grey3">
       <div
         className="cursor-pointer hover:text-grey0"
         onClick={() => {
@@ -142,7 +145,7 @@ const CategoryItem = ({ category }) => {
   }
 
   return (
-    <div className="w-[260px] hover:shadow-categories hover:rounded p-1 transition-colors ease-linear duration-100">
+    <div className="w-[350px] hover:shadow-categories hover:rounded p-1 transition-colors ease-linear duration-100">
       { getCategoryContainer() }
     </div>
   );

@@ -9,9 +9,18 @@ interface ButtonProps {
   onClick: MouseEventHandler;
   label: string;
   disabled?: boolean;
+  hoverTextColor?: string;
 }
 
-const Button = ({ type, value, onClick, label, disabled = false, fontSize="text-sm" }: ButtonProps) => {
+const Button = ({
+  type,
+  value,
+  onClick,
+  label,
+  disabled = false,
+  fontSize = "text-sm",
+  hoverTextColor = "",
+}: ButtonProps) => {
   return (
     <button
       type={type}
@@ -31,7 +40,8 @@ const Button = ({ type, value, onClick, label, disabled = false, fontSize="text-
         disabled:cursor-not-allowed
         disabled:opacity-50
         disabled:shadow-none
-        hover:shadow-xl
+        hover:shadow-login
+        ${hoverTextColor}
       `}
     >
       {label}
