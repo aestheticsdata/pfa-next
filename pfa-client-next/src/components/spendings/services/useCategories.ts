@@ -1,12 +1,12 @@
+import { useQuery } from "react-query";
 import useRequestHelper from "@helpers/useRequestHelper";
 import { useUserStore } from "@auth/store/userStore";
-import { useQuery } from "react-query";
 import { QUERY_KEYS, QUERY_OPTIONS } from "@components/spendings/config/constants";
 
 
 const useCategories = () => {
   const { privateRequest } = useRequestHelper();
-  const userID = useUserStore((state) => state.user!.id);
+  const userID = useUserStore((state) => state.user?.id);
 
   const getCategories = async () => {
     try {

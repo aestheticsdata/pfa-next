@@ -15,7 +15,7 @@ const useDatePickerState = () => {
   const [hoverRange, setHoverRange] = useState<HoverRange>(null);
   const [selectedDays, setSelectedDays] = useState<Days>([]);
 
-  const router = useRouter()
+  const router = useRouter();
 
   const { setFrom, setTo, setRange } = useDatePickerWrapperStore();
 
@@ -29,7 +29,7 @@ const useDatePickerState = () => {
 
   const handleDayChange = (date: Date) => {
     const dateISO = formatISO(date, { representation: "date" });
-    router.push({
+    router.pathname === "/" && router.push({
       query: { currentDate: dateISO },
     });
 
