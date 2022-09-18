@@ -34,7 +34,7 @@ const SpendingModal = ({
   const user = useUserStore((state) => state.user);
   const { createSpending, updateSpending } = useSpendings();
   const { createRecurring, updateRecurring } = useReccurings();
-  const { data: categories } = useCategories();
+  const { categories } = useCategories();
 
 
   const initialEmptyCategoryState = {

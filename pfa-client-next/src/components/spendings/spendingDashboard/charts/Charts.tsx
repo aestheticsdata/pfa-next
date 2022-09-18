@@ -9,6 +9,8 @@ import WidgetHeader from "@components/spendings/spendingDashboard/common/WidgetH
 import useCharts from "@components/spendings/services/useCharts";
 import { MONTHLY, WEEKLY } from "@components/spendings/spendingDashboard/common/widgetHeaderConstants";
 
+import type { Category } from "@src/interfaces/categories";
+
 
 type periodType = typeof MONTHLY | typeof WEEKLY;
 
@@ -16,13 +18,6 @@ interface ChartsProps {
   title: string;
   periodType: periodType;
 }
-
-interface Category {
-  value: number;
-  label: string;
-  bgcolor: `#${string}`;
-}
-
 
 const getMaxValue = (data: Category[]) => Math.max(...data.map(category => +category.value));
 const getTotal = (data: Category[]) => data.reduce((acc, curr) => acc + curr.value, 0);

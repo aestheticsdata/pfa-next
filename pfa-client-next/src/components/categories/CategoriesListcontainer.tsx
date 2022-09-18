@@ -4,16 +4,20 @@ import spinner from "@src/assets/Wedges-3s-200px.svg";
 import useCategories from "@components/spendings/services/useCategories";
 import CategoryItem from "@components/categories/CategoryItem";
 
+
 const CategoriesListcontainer = () => {
-  const { data: categories } = useCategories();
+  const { categories } = useCategories();
 
   return (
     <Layout>
-      <div className="flex flex-col md:mt-20 pl-1">
+      <div className="flex flex-col md:mt-20 pl-1 space-y-2">
+        <div className="ml-1 font-ubuntu text-grey3 font-bold underline">
+          Nombre de catégories : {categories?.data.length}
+        </div>
         {categories?.data.length > 0 ?
           categories!.data
             .sort((c1, c2) => c1.name.localeCompare(c2.name))
-            .map(category => (
+            .map((category) => (
               <CategoryItem
                 key={category.ID}
                 category={category}
