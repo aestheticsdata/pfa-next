@@ -33,7 +33,10 @@ const useCategories = () => {
   const deleteCategory = useMutation(({ category }) => {
     return deleteCategoryService(category);
   }, {
-    onSuccess: async () => await queryClient.invalidateQueries([QUERY_KEYS.CATEGORIES]),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries([QUERY_KEYS.CATEGORIES]);
+      await queryClient.invalidateQueries([QUERY_KEYS.SPENDINGS]);
+    },
     onError: ((e) => {console.log("error deleting category", e)}),
   })
 
@@ -45,21 +48,3 @@ const useCategories = () => {
 
 export default useCategories;
 
-
-/*
-* export function* onDeleteCategory(payload) {
-  const { category } = payload;
-  try {
-    yield call(privateRequest, `/categories/${category.ID}`, {
-      method: 'DELETE',
-    });
-    console.log('success deleting categories');
-    yield put(getCategoriesAction());
-  } catch (err) {
-    console.log(err);
-  }
-}
-*
-*
-*
-* */

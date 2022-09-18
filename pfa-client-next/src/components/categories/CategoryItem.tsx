@@ -4,9 +4,11 @@ import Button from "@components/common/form/Button";
 import getCategoryComponent from "@components/common/Category";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencilAlt, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import useCategories from "@components/spendings/services/useCategories";
 
 
 const CategoryItem = ({ category }) => {
+  const { deleteCategory } = useCategories();
   const [isDeleteConfirmVisible, setIsDeleteConfirmVisible] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [singleCategory, setSingleCategory] = useState(category);
@@ -26,7 +28,7 @@ const CategoryItem = ({ category }) => {
   // }, [updateError]);
 
   const deleteCallback = () => {
-    // dispatch(deleteCategory(category));
+    deleteCategory.mutate({ category });
     setIsDeleteConfirmVisible(false);
   };
 
@@ -47,27 +49,30 @@ const CategoryItem = ({ category }) => {
 
   const confirmDeletePopin = (item, deleteCallback) => {
     return (
-      <div className="confirm-delete-popin">
-        <span className="title">
-          Confirmer la suppression
-        </span>
-        <div className="button-container">
-          <button
-            className="cancel-button"
+      <div className="flex justify-between items-center bg-warningDeleteBackground p-1 rounded">
+        <div className="text-xs text-warningDelete font-bold">
+          Confirmer la suppression ?
+        </div>
+        <div className="flex space-x-2">
+          <Button
+            type="button"
+            label="Annuler"
+            fontSize="text-xxs"
+            hoverTextColor="hover:text-grey3"
             onClick={() => setIsDeleteConfirmVisible(false)}
-          >
-            Annuler
-          </button>
-          <button
-            className="confirm-button"
+          />
+          <Button
+            type="button"
+            label="Effacer"
+            fontSize="text-xxs"
+            hoverTextColor="hover:text-warningDelete"
             onClick={
               () => {
                 setIsDeleteConfirmVisible(false);
                 deleteCallback(item.ID);
               }
-            }>
-            Effacer
-          </button>
+            }
+          />
         </div>
       </div>
     );
