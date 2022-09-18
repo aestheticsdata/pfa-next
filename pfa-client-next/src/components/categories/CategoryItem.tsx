@@ -27,8 +27,8 @@ const CategoryItem = ({ category }) => {
   //   }
   // }, [updateError]);
 
-  const deleteCallback = () => {
-    deleteCategory.mutate({ category });
+  const deleteCallback = (categoryID) => {
+    deleteCategory.mutate({ categoryID });
     setIsDeleteConfirmVisible(false);
   };
 

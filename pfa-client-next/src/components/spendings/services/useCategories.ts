@@ -25,17 +25,18 @@ const useCategories = () => {
       ...QUERY_OPTIONS,
     });
 
-  const deleteCategoryService = async (category) => {
-    return privateRequest(`/categories/${category.ID}`, {
+  const deleteCategoryService = async (categoryID) => {
+    return privateRequest(`/categories/${categoryID}`, {
       method: 'DELETE',
     });
   };
-  const deleteCategory = useMutation(({ category }) => {
-    return deleteCategoryService(category);
+  const deleteCategory = useMutation(({ categoryID }) => {
+    return deleteCategoryService(categoryID);
   }, {
     onSuccess: async () => {
       await queryClient.invalidateQueries([QUERY_KEYS.CATEGORIES]);
       await queryClient.invalidateQueries([QUERY_KEYS.SPENDINGS]);
+      await queryClient.invalidateQueries([QUERY_KEYS.CHARTS]);
     },
     onError: ((e) => {console.log("error deleting category", e)}),
   })
