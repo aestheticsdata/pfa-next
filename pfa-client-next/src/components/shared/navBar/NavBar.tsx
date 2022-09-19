@@ -1,14 +1,27 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useAuthStore } from "@auth/store/authStore";
 import DatePickerWrapper from "@components/datePickerWrapper/DatePickerWrapper";
 import useGlobalStore from "@components/shared/globalStore";
-import sharedText from "@components//shared/config/text";
 import UserMenu from "@components/shared/navBar/userMenu/UserMenu";
+import { ROUTES } from "@components/shared/config/constants";
 
 const NavBar = () => {
   const token = useAuthStore((state) => state.token);
   const { isCalendarVisible } = useGlobalStore();
+  const router = useRouter();
+
+  const getActivePath = (route: string) => route === router.pathname ? "bg-spendingItemHover rounded text-blueNavy" : "";
+  const getLinkItem = (route: any) => {
+    return (
+      <Link href={route.path} passHref>
+        <a className={`outline-hidden p-1 ${getActivePath(route.path)} hover:cursor-pointer hover:bg-spendingItemHover hover:text-blueNavy hover:rounded`}>
+          {route.label}
+        </a>
+      </Link>
+    )
+  }
 
   return (
     <div className="flex fixed h-14 w-screen items-center justify-start bg-blueNavy text-white z-50">
@@ -18,16 +31,8 @@ const NavBar = () => {
       {token ? (
         <div className="flex space-x-5 items-center justify-between font-ubuntu w-full">
           <div className="flex space-x-4">
-            <Link href="/" passHref>
-              <div className="outline-hidden p-1 hover:cursor-pointer hover:bg-spendingItemHover hover:text-blueNavy hover:rounded">
-                {sharedText.navBar.spendings}
-              </div>
-            </Link>
-            <Link href="/categories" passHref>
-              <div className="outline-hidden p-1 hover:cursor-pointer hover:bg-spendingItemHover hover:text-blueNavy hover:rounded">
-                {sharedText.navBar.categories}
-              </div>
-            </Link>
+            {getLinkItem(ROUTES.spendings)}
+            {getLinkItem(ROUTES.categories)}
             {isCalendarVisible && <DatePickerWrapper />}
           </div>
           <div className="flex">
@@ -36,21 +41,9 @@ const NavBar = () => {
         </div>
       ) : (
         <div className="flex space-x-5 font-ubuntu">
-          <Link href="/login" passHref>
-            <div className="outline-hidden p-1 hover:cursor-pointer hover:bg-spendingItemHover hover:text-blueNavy hover:rounded">
-              {sharedText.navBar.login}
-            </div>
-          </Link>
-          <Link href="/signup" passHref>
-            <div className="outline-hidden p-1 hover:cursor-pointer hover:bg-spendingItemHover hover:text-blueNavy hover:rounded">
-              {sharedText.navBar.signup}
-            </div>
-          </Link>
-          <Link href="/about" passHref>
-            <div className="outline-hidden p-1 hover:cursor-pointer hover:bg-spendingItemHover hover:text-blueNavy hover:rounded">
-              {sharedText.navBar.about}
-            </div>
-          </Link>
+            {getLinkItem(ROUTES.login)}
+            {getLinkItem(ROUTES.signup)}
+            {getLinkItem(ROUTES.about)}
         </div>
       )}
     </div>

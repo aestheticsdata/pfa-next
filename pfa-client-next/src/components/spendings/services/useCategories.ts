@@ -12,6 +12,12 @@ const useCategories = () => {
   const userID = useUserStore((state) => state.user?.id);
   const queryClient = useQueryClient();
 
+  const invalidation = async () => {
+    await queryClient.invalidateQueries([QUERY_KEYS.CATEGORIES]);
+    await queryClient.invalidateQueries([QUERY_KEYS.SPENDINGS]);
+    await queryClient.invalidateQueries([QUERY_KEYS.CHARTS]);
+  };
+
   const getCategoriesService = async () => {
     try {
       return privateRequest(`/categories?userID=${userID}`);
@@ -25,6 +31,25 @@ const useCategories = () => {
       ...QUERY_OPTIONS,
     });
 
+
+  const updateCategoryService = async (category) => {
+    try {
+      return privateRequest(`/categories/${category.ID}`, {
+        method: 'PUT',
+        data: category,
+      })
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  const updateCategory = useMutation(({ singleCategory: category }) => {
+    console.log("WTF", category);
+    return updateCategoryService(category);
+  }, {
+    onSuccess: async () => { await invalidation() },
+    onError: ((e) => {console.log("error updating category", e)}),
+  })
+
   const deleteCategoryService = async (categoryID) => {
     return privateRequest(`/categories/${categoryID}`, {
       method: 'DELETE',
@@ -33,17 +58,14 @@ const useCategories = () => {
   const deleteCategory = useMutation(({ categoryID }) => {
     return deleteCategoryService(categoryID);
   }, {
-    onSuccess: async () => {
-      await queryClient.invalidateQueries([QUERY_KEYS.CATEGORIES]);
-      await queryClient.invalidateQueries([QUERY_KEYS.SPENDINGS]);
-      await queryClient.invalidateQueries([QUERY_KEYS.CHARTS]);
-    },
+    onSuccess: async () => { await invalidation() },
     onError: ((e) => {console.log("error deleting category", e)}),
   })
 
   return {
     categories,
     deleteCategory,
+    updateCategory,
   }
 }
 

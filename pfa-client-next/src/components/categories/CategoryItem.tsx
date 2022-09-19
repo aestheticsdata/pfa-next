@@ -5,10 +5,11 @@ import getCategoryComponent from "@components/common/Category";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencilAlt, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import useCategories from "@components/spendings/services/useCategories";
+import categories from "@pages/categories";
 
 
 const CategoryItem = ({ category }) => {
-  const { deleteCategory } = useCategories();
+  const { deleteCategory, updateCategory } = useCategories();
   const [isDeleteConfirmVisible, setIsDeleteConfirmVisible] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [singleCategory, setSingleCategory] = useState(category);
@@ -44,7 +45,8 @@ const CategoryItem = ({ category }) => {
 
   const commitEditing = () => {
     setIsEditing(false);
-    // dispatch(updateCategory(singleCategory));
+    console.log("singleCategory", singleCategory);
+    updateCategory.mutate({ singleCategory });
   }
 
   const confirmDeletePopin = (item, deleteCallback) => {
