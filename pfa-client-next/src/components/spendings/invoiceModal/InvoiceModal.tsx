@@ -2,15 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import { useQueryClient } from "react-query";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileUpload } from "@fortawesome/free-solid-svg-icons";
-import Image from 'next/image';
 import useOnClickOutside from "use-onclickoutside";
 import Button from "@components/common/form/Button";
 import useRequestHelper from "@helpers/useRequestHelper";
 import { useUserStore } from "@auth/store/userStore";
 import InvoiceImageModal from './invoiceImageModal/InvoiceImageModal';
 import getCategoryComponent from "@components/common/Category";
-import spinner from "@src/assets/Wedges-3s-200px.svg";
 import texts from "@components/spendings/config/text";
+import Spinner from "@components/common/Spinner";
 import { QUERY_KEYS } from "@components/spendings/config/constants";
 
 
@@ -163,12 +162,7 @@ const InvoiceModal = ({ handleClickOutside, spending }) => {
           {
             isLoading ?
               <div className="flex justify-center items-center h-[220px]">
-                <Image
-                  alt="spinner"
-                  src={spinner}
-                  width={60}
-                  height={60}
-                />
+               <Spinner />
               </div>
               :
               invoiceImage ?
@@ -205,12 +199,7 @@ const InvoiceModal = ({ handleClickOutside, spending }) => {
                 </div>
                 :
                 <div className="flex justify-center items-center h-[220px]">
-                  <Image
-                    alt="spinner"
-                    src={spinner}
-                    width={60}
-                    height={60}
-                  />
+                 <Spinner />
                 </div>
               :
               invoiceImage ?

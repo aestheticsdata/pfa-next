@@ -4,8 +4,6 @@ import {
   faLongArrowAltDown,
   faLongArrowAltUp,
 } from "@fortawesome/free-solid-svg-icons";
-import spinner from "@src/assets/Wedges-3s-200px.svg";
-import Image from 'next/image';
 import WidgetHeader from "@components/spendings/spendingDashboard/common/WidgetHeader";
 import { WEEKLY } from "@components/spendings/spendingDashboard/common/widgetHeaderConstants";
 import useWeeklyStats from "@components/spendings/services/useWeeklyStats";
@@ -15,6 +13,8 @@ import { useForm } from "react-hook-form";
 import useDatePickerWrapperStore from "@components/datePickerWrapper/store";
 import useWeeklyStatsHelper from "@components/spendings/spendingDashboard/weeklyStats/helpers/useWeeklyStatsHelper";
 import spendingsText from "@components/spendings/config/text";
+import Spinner from "@components/common/Spinner";
+
 import type { KeyboardEvent } from "react";
 
 interface InitialCeiling {
@@ -156,12 +156,7 @@ const WeeklyStats = () => {
               )
             })
             :
-            <Image
-              alt="spinner"
-              src={spinner}
-              width={60}
-              height={60}
-            />
+            <Spinner />
         }
       </div>
 

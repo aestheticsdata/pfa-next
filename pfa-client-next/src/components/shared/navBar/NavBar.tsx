@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useAuthStore } from "@auth/store/authStore";
@@ -26,7 +25,7 @@ const NavBar = () => {
   return (
     <div className="flex fixed h-14 w-screen items-center justify-start bg-blueNavy text-white z-50">
       <div className="mx-4 mt-2">
-        <Image src="/money-svgrepo-com.svg" alt="logo" width="40" height="40" />
+        <img src="/assets/money-svgrepo-com.svg" alt="logo" width="40" height="40" />
       </div>
       {token ? (
         <div className="flex space-x-5 items-center justify-between font-ubuntu w-full">

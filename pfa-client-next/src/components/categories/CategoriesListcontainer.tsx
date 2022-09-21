@@ -1,9 +1,15 @@
-import Image from "next/image";
 import Layout from "@components/shared/Layout";
-import spinner from "@src/assets/Wedges-3s-200px.svg";
 import useCategories from "@components/spendings/services/useCategories";
 import CategoryItem from "@components/categories/CategoryItem";
+import Spinner from "@components/common/Spinner";
 
+
+interface Category {
+  ID: string;
+  userID: string;
+  name: string;
+  color: string;
+};
 
 const CategoriesListcontainer = () => {
   const { categories } = useCategories();
@@ -16,8 +22,8 @@ const CategoriesListcontainer = () => {
         </div>
         {categories?.data.length > 0 ?
           categories!.data
-            .sort((c1, c2) => c1.name.localeCompare(c2.name))
-            .map((category) => (
+            .sort((c1: Category, c2: Category) => c1.name.localeCompare(c2.name))
+            .map((category: Category) => (
               <CategoryItem
                 key={category.ID}
                 category={category}
@@ -26,12 +32,7 @@ const CategoriesListcontainer = () => {
           )
           :
           <div>
-            <Image
-              alt="spinner"
-              src={spinner}
-              width={60}
-              height={60}
-            />
+            <Spinner />
           </div>
         }
       </div>
