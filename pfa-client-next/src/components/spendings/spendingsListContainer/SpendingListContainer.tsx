@@ -24,7 +24,7 @@ const SpendingsListContainer = ({
   }, [recurringType, spendingsByDaySorted]);
 
   return (
-  <div className={`space-y-1 ${recurringType ? 'recurrings' : 'spendings'}-list-container overflow-auto ${recurringType ? "h-[180px] w-[390px] px-2" : "h-[210px]"}`}>
+  <div className={`space-y-1 ${recurringType ? 'recurrings' : 'spendings'}-list-container overflow-auto ${recurringType ? "h-[150px] w-[390px] px-2" : "h-[210px]"}`}>
     {
       spendings?.length > 0 ?
         isLoading ?
