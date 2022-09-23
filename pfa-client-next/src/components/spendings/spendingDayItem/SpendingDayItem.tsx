@@ -61,10 +61,10 @@ const SpendingDayItem = ({ spendingsByDay, deleteSpending, isLoading, date, recu
 
   return (
     <div
-      className={`rounded bg-spendingDayBackground border ${isToday ? "border-datePickerWrapper" : "border-grey2"}
+      className={`rounded bg-spendingDayBackground border ${isToday ? "shadow-spendingDaySelected" : "border-grey2"}
       ${recurringType
-        ? "md:w-[400px] h-[265px]"
-        : "md:w-[490px] h-[330px] m-2"
+        ? "w-full md:w-[400px] h-[265px]"
+        : "w-full md:w-[490px] h-[330px] md:m-2"
       }`}
     >
       <div className="flex flex-col">

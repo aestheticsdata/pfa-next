@@ -39,7 +39,7 @@ const Spendings = () => {
         <>
           <SpendingDashboard month={month} />
           <div className="flex justify-center w-full">
-            <div className="flex flex-wrap justify-start md:mt-96 pl-1 w-11/12">
+            <div className="flex flex-wrap justify-start mt-16 md:mt-96 md:pl-1 w-full md:w-11/12 space-y-2">
               {spendings?.map((spending: any, i:number) =>
                   <SpendingDayItem
                     key={i}

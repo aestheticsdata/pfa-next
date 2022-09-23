@@ -4,6 +4,7 @@ module.exports = {
     extend: {
       boxShadow: {
         login: "0 0 1px 1px rgb(10, 10, 10)",
+        spendingDaySelected: "0 0 1px 3px rgb(83, 255, 131)",
         categories: "0 0 1px 2px rgb(255, 255, 255)",
         dashboard: "1px 4px 21px 6px rgba(0,0,0,0.54)",
         charttooltip: "0 1px 10px 1px rgba(100, 100, 100, 0.6)",
@@ -53,6 +54,7 @@ module.exports = {
         ceilingWarn: "rgb(250,136,73)",
         ceilingExcess: "rgb(247, 8, 8)",
         datePickerWrapper: "rgb(83, 255, 131)",
+        selectedSpendingDay: "rgba(83, 255, 131, 0.3)",
         datePickerWrapperBackground: "rgb(74, 107, 109)",
         categoryBorder: "rgba(152, 152, 152, 0.5)",
         sortbutton: "rgb(199,199,199)",
