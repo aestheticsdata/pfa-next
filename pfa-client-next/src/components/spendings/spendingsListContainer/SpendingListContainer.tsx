@@ -16,11 +16,7 @@ const SpendingsListContainer = ({
   const [spendings, setSpendings] = useState<any>();
 
   useEffect(() => {
-    if (recurringType) {
-      setSpendings(spendingsByDaySorted)
-    } else {
-      setSpendings(spendingsByDaySorted);
-    }
+    setSpendings(spendingsByDaySorted);
   }, [recurringType, spendingsByDaySorted]);
 
   return (
