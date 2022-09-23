@@ -38,8 +38,8 @@ const SpendingDayItem = ({ spendingsByDay, deleteSpending, isLoading, date, recu
   }, [spendingsByDay]);
 
   const getRecurringsTotal = (recurrings: SpendingCompoundType) => {
-    if (recurrings?.data?.length > 0) {
-      return recurrings.data.reduce((acc, curr) => {
+    if (recurrings?.length > 0) {
+      return recurrings.reduce((acc, curr) => {
         acc = acc + Number(curr.amount);
         return acc;
       }, 0);

@@ -23,10 +23,12 @@ const NavBar = () => {
   }
 
   return (
-    <div className="flex fixed h-14 w-screen items-center justify-start bg-blueNavy text-white z-50">
-      <div className="mx-4 mt-2">
-        <img src="/assets/money-svgrepo-com.svg" alt="logo" width="40" height="40" />
-      </div>
+    <div className="flex flex-col md:flex-row fixed h-14 w-screen items-center justify-start bg-blueNavy text-white z-50">
+      {window && window.matchMedia("min-width: 768px").matches &&
+        <div className="mx-4 mt-2">
+          <img src="/assets/money-svgrepo-com.svg" alt="logo" width="40" height="40"/>
+        </div>
+      }
       {token ? (
         <div className="flex space-x-5 items-center justify-between font-ubuntu w-full">
           <div className="flex space-x-4">
