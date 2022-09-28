@@ -68,7 +68,7 @@ const SpendingDayItem = ({ spendingsByDay, deleteSpending, isLoading, date, recu
       }`}
     >
       <div className="flex flex-col">
-        <div className="spending-modal relative">
+        <div className="relative">
           {
             isModalVisible ?
               <SpendingModal

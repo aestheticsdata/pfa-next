@@ -152,7 +152,7 @@ const SpendingModal = ({
 
   return (
     <div className={`
-      flex bg-spendingItemHover p-2 rounded-b
+      flex bg-spendingItemHover p-2 rounded-b w-full
       ${recurringType
         ? "md:w-[398px] h-[220px]"
         : "md:w-[488px] h-[285px]"
@@ -182,7 +182,7 @@ const SpendingModal = ({
               }
             }
             autoComplete={true}
-            style={{width: "440px"}}
+            style={{width: "100%"}}
             classes={{
              root: "backgroundColor: yellow"
             }}
