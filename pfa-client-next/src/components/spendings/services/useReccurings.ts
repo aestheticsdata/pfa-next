@@ -30,6 +30,7 @@ const useReccurings = () => {
     displayPopup({ text: `recurring ${message}`});
     await queryClient.invalidateQueries([QUERY_KEYS.RECURRINGS, monthBeginning]);
     await queryClient.invalidateQueries([QUERY_KEYS.DASHBOARD, monthBeginning]);
+    await queryClient.invalidateQueries([QUERY_KEYS.INITIAL_AMOUNT, monthBeginning]);
   }
 
   const getRecurrings = async () => {
