@@ -16,7 +16,7 @@ const Logout = () => {
     authStore.setToken(null);
     userStore.setUser(null);
     router.push("/login");
-  }, []);
+  });
 
   return <></>;
 };
