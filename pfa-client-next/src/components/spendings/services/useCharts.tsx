@@ -30,7 +30,7 @@ const useCharts = (periodType: string) => {
     return privateRequest(`/spendings/charts?userID=${userID}&from=${startDate}&to=${endDate}`);
   }
 
-  return useQuery([QUERY_KEYS.CHARTS, startDate], getCharts, {
+  return useQuery([QUERY_KEYS.CHARTS, startDate, endDate], getCharts, {
     retry: false,
     enabled: !!startDate,
     ...QUERY_OPTIONS,
