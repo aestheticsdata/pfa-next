@@ -19,6 +19,7 @@ interface SpendingDayItemProps {
   deleteSpending: any;
   isLoading: boolean;
   date?: Date;
+  user: any; // TODO
   recurringType: boolean;
   month: any;
   total: number;

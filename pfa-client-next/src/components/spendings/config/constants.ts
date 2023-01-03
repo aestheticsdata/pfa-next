@@ -4,7 +4,8 @@ export const QUERY_OPTIONS = {
 };
 
 export const QUERY_KEYS = {
-  SPENDINGS: "spendings",
+  SPENDINGS_BY_WEEK: "spendingsByWeek",
+  SPENDINGS_BY_MONTH: "spendingsByMonth",
   RECURRINGS: "recurrings",
   INITIAL_AMOUNT: "initialAmount",
   DASHBOARD: "dashboard",

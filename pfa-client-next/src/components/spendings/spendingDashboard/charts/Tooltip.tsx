@@ -1,14 +1,9 @@
 import adjustFontColor from "@components/shared/helpers/adjustColor";
-
-interface categoryInfos {
-  value: number;
-  label: string;
-  bgcolor: string;
-}
+import type { CategoryInfos } from "@components/spendings/interfaces/categoryInfos";
 
 interface TooltipProps {
   tooltipPos: { x: number, y: number };
-  categoryInfos: categoryInfos;
+  categoryInfos: CategoryInfos;
 }
 
 

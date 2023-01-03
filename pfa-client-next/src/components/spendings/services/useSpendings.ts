@@ -13,7 +13,7 @@ import type { SpendingCompoundType } from "@components/spendings/types";
 import type { Spending } from "@components/spendings/interfaces/spendingDashboardTypes";
 
 const useSpendings = () => {
-  const [spendings, setSpendings] = useState<SpendingCompoundType>();
+  const [spendingsByWeek, setSpendingsByWeek] = useState<SpendingCompoundType>();
   const { privateRequest } = useRequestHelper();
   const userID = useUserStore((state) => state.user!.id);
   const { from, to, range } = useDatePickerWrapperStore();
@@ -57,7 +57,7 @@ const useSpendings = () => {
     }
   };
 
-  const { data, isLoading } = useQuery([QUERY_KEYS.SPENDINGS, from, to], getSpendings, {
+  const { data, isLoading } = useQuery([QUERY_KEYS.SPENDINGS_BY_WEEK, from, to], getSpendings, {
     retry: false,
     // date store is available when coming from login because DatePicker
     // mounts before Spendings
@@ -70,7 +70,7 @@ const useSpendings = () => {
   });
 
   useEffect(() => {
-    data?.data && range && setSpendings(aggregateSpendingByDate(data.data, range));
+    data?.data && range && setSpendingsByWeek(aggregateSpendingByDate(data.data, range));
   }, [data, range]);
 
   const queryClient = useQueryClient();
@@ -78,7 +78,7 @@ const useSpendings = () => {
   const spendingsActionOnSuccess = async (message: string) => {
     displayPopup({ text: `dépense ${message}`});
 
-    await queryClient.invalidateQueries([QUERY_KEYS.SPENDINGS, from, to]);
+    await queryClient.invalidateQueries([QUERY_KEYS.SPENDINGS_BY_WEEK, from, to]);
     await queryClient.invalidateQueries([QUERY_KEYS.WEEKLY_STATS, monthBeginning]);
     await queryClient.invalidateQueries([QUERY_KEYS.CATEGORIES]);
     await queryClient.invalidateQueries([QUERY_KEYS.INITIAL_AMOUNT, monthBeginning]);
@@ -127,7 +127,7 @@ const useSpendings = () => {
   });
 
   return {
-    spendings,
+    spendingsByWeek,
     isLoading,
     deleteSpending,
     createSpending,

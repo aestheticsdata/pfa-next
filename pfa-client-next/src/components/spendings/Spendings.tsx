@@ -14,11 +14,11 @@ const Spendings = () => {
   const [month, setMonth] = useState<MonthRange>();
   const { from, to, range } = useDatePickerWrapperStore();
 
-  const { spendings, isLoading: isSpendingsLoading } = useSpendings();
+  const { spendingsByWeek, isLoading: isSpendingsLoading } = useSpendings();
 
-  const { get: { data: dashboard } } = useDashboard();
+  // const { get: { data: dashboard } } = useDashboard();
 
-  const { data: initialAmount } = useInitialAmount();
+  // const { data: initialAmount } = useInitialAmount();
 
   useEffect(() => {
     if (from && to) {
@@ -30,8 +30,8 @@ const Spendings = () => {
   }, [from, to]);
 
   useEffect(() => {
-    console.log("spendings", spendings);
-  }, [spendings]);
+    console.log("spendings", spendingsByWeek);
+  }, [spendingsByWeek]);
 
   return (
     <>
@@ -40,7 +40,7 @@ const Spendings = () => {
           <SpendingDashboard month={month} />
           <div className="flex justify-center w-full">
             <div className="flex flex-wrap justify-start mt-36 md:mt-96 md:pl-1 w-full md:w-11/12 space-y-2">
-              {spendings?.map((spending: any, i:number) =>
+              {spendingsByWeek?.map((spending: any, i:number) =>
                   <SpendingDayItem
                     key={i}
                     spendingsByDay={spending}
