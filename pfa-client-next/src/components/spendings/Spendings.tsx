@@ -30,8 +30,8 @@ const Spendings = () => {
   }, [from, to]);
 
   useEffect(() => {
-    console.log("spendings by week", spendingsByWeek);
-    console.log("spendings by month", spendingsByMonth);
+    // console.log("spendings by week", spendingsByWeek);
+    // console.log("spendings by month", spendingsByMonth);
   }, [spendingsByWeek, spendingsByMonth]);
 
   return (

@@ -14,7 +14,7 @@ import type { SpendingCompoundType } from "@components/spendings/types";
 import type { Spending } from "@components/spendings/interfaces/spendingDashboardTypes";
 
 const useSpendings = () => {
-  const [spendingsByWeek, setSpendingsByWeek] = useState<SpendingCompoundType>();
+  const [spendingsByWeek, setSpendingsByWeek] = useState<SpendingCompoundType[]>();
   const [spendingsByMonth, setSpendingsByMonth] = useState<SpendingCompoundType>();
   const { privateRequest } = useRequestHelper();
   const userID = useUserStore((state) => state.user!.id);
@@ -24,7 +24,7 @@ const useSpendings = () => {
   // transform an array of object into an array of array<Object> aggregated
   // by same date
   // const aggregateSpendingByDate = (spendings, range, exchangeRates, baseCurrency) => {
-  const aggregateSpendingByDate = (spendings: SpendingCompoundType, range): SpendingCompoundType => {
+  const aggregateSpendingByDate = (spendings: SpendingCompoundType, range): SpendingCompoundType[] => {
     const tempArr = [];
     tempArr.total = 0;
     const spendingsPlaceholder = new Array(range.length).fill(tempArr);
