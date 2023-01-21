@@ -7,13 +7,12 @@ module.exports = async (req, res, _next) => {
   const dateFormat = 'yyyy-MM-dd';
   const previousMonthStart = format(subMonths(new Date(currentMonth), 1), dateFormat);
 
-  const recurringsFromPreviousMonth = await prisma.$queryRaw(`
+  const recurringsFromPreviousMonth = await prisma.$queryRaw`
       SELECT label, amount, itemType, currency, userID, invoicefile
       FROM Recurrings
-      WHERE dateFrom = '${previousMonthStart}'
-        AND userID = '${req.body.userID}';
-    `
-  );
+      WHERE dateFrom = ${previousMonthStart}
+        AND userID = ${req.body.userID};
+    `;
   const recurringsFromCurrentMonth = recurringsFromPreviousMonth.map(recurring => (
     {
       ID: uuidv1(),

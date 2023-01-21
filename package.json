@@ -36,6 +36,7 @@
   "repository": "",
   "author": "aestheticsdata <aesthetics.data@gmail.com>",
   "dependencies": {
+    "@prisma/client": "^4.8.1",
     "@sendgrid/mail": "^7.6.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
@@ -49,11 +50,13 @@
     "jsonwebtoken": "^8.5.1",
     "multer": "^1.4.4",
     "nan": "^2.15.0",
+    "prisma": "^4.8.0",
+    "sib-api-v3-sdk": "^8.5.0",
     "ssh2": "^1.6.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15",
-    "eslint": "^8.8.0"
+    "eslint": "^8.8.0",
+    "nodemon": "^2.0.15"
   }
 }

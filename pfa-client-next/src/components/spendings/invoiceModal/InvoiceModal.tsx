@@ -45,7 +45,7 @@ const InvoiceModal = ({ handleClickOutside, spending }) => {
       if (res?.data?.msg === 'INVOICE_IMAGE_DELETED') {
         setInvoiceImage(null);
         setInvoicefile('');
-        await queryClient.invalidateQueries([QUERY_KEYS.SPENDINGS_BY_WEEK]);
+        await queryClient.invalidateQueries([QUERY_KEYS.SPENDINGS_BY_MONTH]);
         setIsLoading(false);
       }
     } catch (e) {
@@ -72,7 +72,7 @@ const InvoiceModal = ({ handleClickOutside, spending }) => {
         data: payload,
       }, config);
       setInvoiceImage(uploadedImage.data);
-      await queryClient.invalidateQueries([QUERY_KEYS.SPENDINGS_BY_WEEK]);
+      await queryClient.invalidateQueries([QUERY_KEYS.SPENDINGS_BY_MONTH]);
       setIsLoading(false);
     } catch (e) {
       console.log('error uploading image : ', e);

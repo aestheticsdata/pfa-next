@@ -14,7 +14,7 @@ const useCategories = () => {
 
   const invalidation = async () => {
     await queryClient.invalidateQueries([QUERY_KEYS.CATEGORIES]);
-    await queryClient.invalidateQueries([QUERY_KEYS.SPENDINGS_BY_WEEK]);
+    await queryClient.invalidateQueries([QUERY_KEYS.SPENDINGS_BY_MONTH]);
     await queryClient.invalidateQueries([QUERY_KEYS.CHARTS]);
   };
 

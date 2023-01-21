@@ -1,6 +1,8 @@
 import adjustFontColor from "@components/common/helpers/adjustFontColor";
 
-const getCategoryComponent = (item) => {
+import type { Category } from "@src/interfaces/category";
+
+const getCategoryComponent = (item: Category) => {
   return (
     <div
       className="flex justify-center rounded border border-categoryBorder text-xxs uppercase"

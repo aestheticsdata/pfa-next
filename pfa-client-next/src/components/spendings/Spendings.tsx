@@ -14,7 +14,7 @@ const Spendings = () => {
   const [month, setMonth] = useState<MonthRange>();
   const { from, to, range } = useDatePickerWrapperStore();
 
-  const { spendingsByWeek, isLoading: isSpendingsLoading } = useSpendings();
+  const { spendingsByWeek, spendingsByMonth, isLoading: isSpendingsLoading } = useSpendings();
 
   // const { get: { data: dashboard } } = useDashboard();
 
@@ -30,8 +30,9 @@ const Spendings = () => {
   }, [from, to]);
 
   useEffect(() => {
-    console.log("spendings", spendingsByWeek);
-  }, [spendingsByWeek]);
+    console.log("spendings by week", spendingsByWeek);
+    console.log("spendings by month", spendingsByMonth);
+  }, [spendingsByWeek, spendingsByMonth]);
 
   return (
     <>

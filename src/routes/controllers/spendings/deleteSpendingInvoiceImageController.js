@@ -25,11 +25,11 @@ module.exports = async (req, res, _next) => {
 
   // could have used updateMany instead of raw query
   if (itemType === 'recurring') {
-    await prisma.$queryRaw(`
+    await prisma.$queryRaw`
       UPDATE Recurrings
       SET invoicefile = NULL
-      WHERE invoicefile = '${invoicefile}';
-  `);
+      WHERE invoicefile = ${invoicefile};
+  `;
   }
 
   sshDeleteFile(process.env.PFA_BACKUP_INVOICES_SERVER_PATH + userID + '/' + invoicefile);

@@ -10,7 +10,7 @@ import WidgetHeader from "@components/spendings/spendingDashboard/common/WidgetH
 import SpendingsListModal from "@components/spendings/spendingsListModal/SpendingsListModal";
 import { MONTHLY, WEEKLY } from "@components/spendings/spendingDashboard/common/widgetHeaderConstants";
 
-import type { Category } from "@src/interfaces/categories";
+import type { Category } from "@src/interfaces/category";
 
 
 type periodType = typeof MONTHLY | typeof WEEKLY;
@@ -21,7 +21,7 @@ interface ChartsProps {
 }
 
 const getMaxValue = (data: Category[]) => Math.max(...data.map(category => +category.value));
-const getTotal = (data: Category[]) => data.reduce((acc, curr) => acc + curr.value, 0);
+const getTotal = (data: Category[]) => data.reduce((acc, curr) => acc + +curr.value, 0);
 
 const widthOfContainer = 290; // 300 - (border width * 2)
 
@@ -57,7 +57,7 @@ const Charts = ({ title, periodType }: ChartsProps) => {
           <SpendingsListModal
             handleClickOutside={() => setIsInvoiceModalVisible(!isInvoiceModalVisible)}
             periodType={periodType}
-            categoryInfos={categoryInfos}
+            categoryInfos={categoryInfos!}
           />
         )
 
@@ -83,7 +83,7 @@ const Charts = ({ title, periodType }: ChartsProps) => {
             charts.data.map((category: Category) => {
               return (
                 <div
-                  key={category.label}
+                  key={category.category}
                   className="flex items-center gap-x-1"
                   onClick={() => {
                     setIsInvoiceModalVisible(!isInvoiceModalVisible);
@@ -93,7 +93,7 @@ const Charts = ({ title, periodType }: ChartsProps) => {
                     className="h-[15px] cursor-pointer"
                     style={{
                       width: getWidth(category.value),
-                      backgroundColor: category.bgcolor ?? "#ffffff",
+                      backgroundColor: category.categoryColor ?? "#ffffff",
                     }}
                     onMouseEnter={() => setIsTooltipVisible(true)}
                     onMouseLeave={() => setIsTooltipVisible(false)}

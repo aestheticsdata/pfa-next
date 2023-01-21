@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "react-query";
 import getDate from "date-fns/getDate";
 import parseISO from "date-fns/parseISO";
 import startOfMonth from "date-fns/startOfMonth";
+import endOfMonth from "date-fns/endOfMonth";
 import { displayPopup } from "@helpers/swalHelper";
 import useRequestHelper from "@helpers/useRequestHelper";
 import { useUserStore } from "@auth/store/userStore";
@@ -14,6 +15,7 @@ import type { Spending } from "@components/spendings/interfaces/spendingDashboar
 
 const useSpendings = () => {
   const [spendingsByWeek, setSpendingsByWeek] = useState<SpendingCompoundType>();
+  const [spendingsByMonth, setSpendingsByMonth] = useState<SpendingCompoundType>();
   const { privateRequest } = useRequestHelper();
   const userID = useUserStore((state) => state.user!.id);
   const { from, to, range } = useDatePickerWrapperStore();
@@ -50,14 +52,14 @@ const useSpendings = () => {
   const getSpendings = async () => {
     try {
       return privateRequest(
-        `/spendings?userID=${userID}&from=${from}&to=${to}`
+        `/spendings?userID=${userID}&from=${startOfMonth(from!)}&to=${endOfMonth(to!)}`
       );
     } catch (e) {
       console.log("get spendings error", e);
     }
   };
 
-  const { data, isLoading } = useQuery([QUERY_KEYS.SPENDINGS_BY_WEEK, from, to], getSpendings, {
+  const { data, isLoading } = useQuery([QUERY_KEYS.SPENDINGS_BY_MONTH, startOfMonth(from!), endOfMonth(to!)], getSpendings, {
     retry: false,
     // date store is available when coming from login because DatePicker
     // mounts before Spendings
@@ -70,7 +72,10 @@ const useSpendings = () => {
   });
 
   useEffect(() => {
-    data?.data && range && setSpendingsByWeek(aggregateSpendingByDate(data.data, range));
+    if (data?.data) {
+      range && setSpendingsByWeek(aggregateSpendingByDate(data.data, range));
+      setSpendingsByMonth(data.data);
+    }
   }, [data, range]);
 
   const queryClient = useQueryClient();
@@ -78,7 +83,7 @@ const useSpendings = () => {
   const spendingsActionOnSuccess = async (message: string) => {
     displayPopup({ text: `dépense ${message}`});
 
-    await queryClient.invalidateQueries([QUERY_KEYS.SPENDINGS_BY_WEEK, from, to]);
+    await queryClient.invalidateQueries([QUERY_KEYS.SPENDINGS_BY_MONTH, from, to]);
     await queryClient.invalidateQueries([QUERY_KEYS.WEEKLY_STATS, monthBeginning]);
     await queryClient.invalidateQueries([QUERY_KEYS.CATEGORIES]);
     await queryClient.invalidateQueries([QUERY_KEYS.INITIAL_AMOUNT, monthBeginning]);
@@ -128,6 +133,7 @@ const useSpendings = () => {
 
   return {
     spendingsByWeek,
+    spendingsByMonth,
     isLoading,
     deleteSpending,
     createSpending,

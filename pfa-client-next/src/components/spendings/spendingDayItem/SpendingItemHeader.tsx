@@ -14,7 +14,7 @@ interface SpendingItemHeaderProps {
 
 const SpendingItemHeader = ({ date, recurringType, isToday, addSpending, addSpendingEnabled }: SpendingItemHeaderProps) => {
   return (
-    <div className="header flex h-10 justify-around items-center">
+    <div className="flex h-10 justify-around items-center">
       {(!!date || recurringType) && (
         !recurringType
           ?

@@ -1,11 +1,12 @@
 import adjustFontColor from "@components/shared/helpers/adjustColor";
-import type { CategoryInfos } from "@components/spendings/interfaces/categoryInfos";
+
+import type { Category } from "@src/interfaces/category";
+
 
 interface TooltipProps {
   tooltipPos: { x: number, y: number };
-  categoryInfos: CategoryInfos;
+  categoryInfos: Category;
 }
-
 
 const Tooltip = ({ tooltipPos, categoryInfos }: TooltipProps) => {
   return (
@@ -26,10 +27,10 @@ const Tooltip = ({ tooltipPos, categoryInfos }: TooltipProps) => {
       {
         categoryInfos && (
           <div
-            className={`flex h-1/2 justify-center items-center uppercase text-tiny font-bold ${adjustFontColor(categoryInfos.bgcolor) === "#ffffff" ? "text-white" : "text-black"}`}
-            style={{backgroundColor: categoryInfos?.bgcolor ?? "#ffffff"}}
+            className={`flex h-1/2 justify-center items-center uppercase text-tiny font-bold ${adjustFontColor(categoryInfos.categoryColor) === "#ffffff" ? "text-white" : "text-black"}`}
+            style={{backgroundColor: categoryInfos?.categoryColor ?? "#ffffff"}}
           >
-            {categoryInfos?.label ?? "sans catégories"}
+            {categoryInfos?.category ?? "sans catégories"}
           </div>
         )
       }
