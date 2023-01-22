@@ -20,6 +20,7 @@ interface SpendingsListModalProps {
 
 const SpendingsListModal = ({ handleClickOutside, periodType, categoryInfos }: SpendingsListModalProps) => {
   const { spendingsByWeek, spendingsByMonth } = useSpendings();
+  const [totalAmount, setTotalAmount] = useState<number>(0);
   const ref = useRef(null);
 
   useOnClickOutside(ref, handleClickOutside);
@@ -46,15 +47,18 @@ const SpendingsListModal = ({ handleClickOutside, periodType, categoryInfos }: S
     const spendingsList = (spendings, i) =>
       <div
         key={i}
-        className=""
+        className="text-sm mt-2 mb-2 px-3"
       >
-        {format(parseISO(spendings[0]), "EEEE dd MMMM", { locale: fr })} : {spendings[1].map((spending, j) =>
-        <div
-          key={i+j}
-          className=""
-        >
-          {spending.label}: {spending.amount} €
+        <div className="uppercase font-medium bg-grey01 p-1 mb-1 text-grey3">
+          {format(parseISO(spendings[0]), "EEEE dd MMMM", { locale: fr })}
         </div>
+        {spendings[1].map((spending, j) =>
+          <div
+            key={i+j}
+            className="ml-2"
+          >
+            - {spending.label} : {spending.amount} €
+          </div>
       )}
       </div>;
 
@@ -84,15 +88,15 @@ const SpendingsListModal = ({ handleClickOutside, periodType, categoryInfos }: S
         ref={ref}
         className="absolute flex flex-col w-[700px] h-[520px] bg-grey0 rounded overflow-hidden"
       >
-        <div className="flex flex-row justify-around border-b border-b-grey3 mx-3 h-10 items-center">
+        <div className="flex flex-row justify-around border-b border-b-grey3 mx-3 h-12 items-center">
           <div className="w-1/3 border-r-2 border-r-grey1 border pr-2">
             {categoryInfos?.category && getCategoryComponent(categoryInfos)}
           </div>
-          <div className="w-1/4 uppercase border-r-2 border-r-grey1 border pr-2 text-sm">total : </div>
+          <div className="w-1/4 uppercase border-r-2 border-r-grey1 border pr-2 text-sm bold">total : </div>
           <Period periodType={periodType} />
         </div>
 
-        <div className="flex flex-col mx-3">
+        <div className="flex flex-col mt-1 overflow-y-auto">
           {displaySpendingsList()}
         </div>
 
