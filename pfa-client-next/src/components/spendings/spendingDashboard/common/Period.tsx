@@ -13,7 +13,7 @@ const Period = ({ periodType }: PeriodProps) => {
   const { to, from } = useDatePickerStore();
 
   return (
-    <div className="uppercase">
+    <div className="uppercase text-sm">
       {periodType === MONTHLY && from && to ?
         <>
           {format(to, "MMMM", { locale: fr })} {getYear(to)}
