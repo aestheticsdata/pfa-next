@@ -5,6 +5,7 @@ import getCategoryComponent from "@components/common/Category";
 import useSpendings from "@components/spendings/services/useSpendings";
 import { MONTHLY } from "@components/spendings/spendingDashboard/common/widgetHeaderConstants";
 import parseISO from "date-fns/parseISO";
+import formatISO from "date-fns/formatISO";
 import format from "date-fns/format";
 import fr from "date-fns/locale/fr";
 
@@ -49,9 +50,27 @@ const SpendingsListModal = ({ handleClickOutside, periodType, categoryInfos }: S
         key={i}
         className="text-sm mt-2 mb-2 px-3"
       >
-        <div className="uppercase font-medium bg-grey01 p-1 mb-1 text-grey3">
-          {format(parseISO(spendings[0]), "EEEE dd MMMM", { locale: fr })}
-        </div>
+        {
+          periodType === MONTHLY ?
+            <div
+              className="cursor-pointer"
+              onClick={() => {
+                const dateISO = formatISO(new Date(spendings[0]), { representation: "date" });
+                // TODO : update react-day-picker to v8, but
+                // there is a lot of breaking changes
+                // so location.replace for the time being
+                window.location.replace(`/?currentDate=${dateISO}`);
+              }}
+            >
+              <div className="uppercase font-medium bg-grey01 p-1 mb-1 text-grey3 hover:bg-spendingItemHover transition-colors ease-linear duration-200">
+                {format(parseISO(spendings[0]), "EEEE dd MMMM", { locale: fr })}
+              </div>
+            </div>
+            :
+            <div className="uppercase font-medium bg-grey01 p-1 mb-1 text-grey3">
+              {format(parseISO(spendings[0]), "EEEE dd MMMM", { locale: fr })}
+            </div>
+        }
         {spendings[1].map((spending, j) =>
           <div
             key={i+j}
