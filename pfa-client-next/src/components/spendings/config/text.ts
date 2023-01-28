@@ -33,7 +33,11 @@ const spendings = {
     fileTypeWarning: "(Seulement des fichiers jpg)",
     send: "Envoyer",
     delete: "Effacer la facture",
-  }
+  },
+  spendingsListModal: {
+    total: "total",
+    filter: "filtrer",
+  },
 };
 
 export default spendings;

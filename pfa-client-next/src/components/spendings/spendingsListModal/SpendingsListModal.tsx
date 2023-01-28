@@ -1,6 +1,6 @@
 import {
   useEffect,
-  useRef
+  useRef, useState
 } from "react";
 import useOnClickOutside from "use-onclickoutside";
 import parseISO from "date-fns/parseISO";
@@ -11,6 +11,7 @@ import Period from "@components/spendings/spendingDashboard/common/Period";
 import getCategoryComponent from "@components/common/Category";
 import useSpendings from "@components/spendings/services/useSpendings";
 import { MONTHLY } from "@components/spendings/spendingDashboard/common/widgetHeaderConstants";
+import texts from "@components/spendings/config/text";
 
 import type { Category } from "@src/interfaces/category";
 import type { SpendingType } from "@components/spendings/types";
@@ -26,6 +27,8 @@ interface SpendingsListModalProps {
 const SpendingsListModal = ({ handleClickOutside, periodType, categoryInfos, total }: SpendingsListModalProps) => {
   const { spendingsByWeek, spendingsByMonth } = useSpendings();
   const ref = useRef(null);
+  const [searchTerm, setsearchTerm] = useState("");
+  const { spendingsListModal: spendingsListModalTexts } = texts;
 
   useOnClickOutside(ref, handleClickOutside);
 
@@ -89,7 +92,9 @@ const SpendingsListModal = ({ handleClickOutside, periodType, categoryInfos, tot
         Object.entries(
           groupByDate(
             spendingsByMonth
-              .filter((spending) => spending.category === categoryInfos.category)))
+              .filter((spending) => {
+                return (spending.category === categoryInfos.category) && (spending.label.includes(searchTerm))
+              })))
           .map((spendings, i) => spendingsList(spendings, i))
       }
     else {
@@ -99,30 +104,34 @@ const SpendingsListModal = ({ handleClickOutside, periodType, categoryInfos, tot
             spendingsByWeek
               .filter((spending) => spending.length > 0)
               .flat()
-              ?.filter((spending) => spending.category === categoryInfos.category)))
+              ?.filter((spending) => {
+                return (spending.category === categoryInfos.category) && (spending.label.includes(searchTerm))
+              })))
           .map((spendings, i) => spendingsList(spendings, i))
     }
   }
 
   return (
     <div className="fixed flex justify-center items-center z-50 left-0 right-0 top-0 bottom-0 bg-invoiceFileModalBackground">
-      <div
-        ref={ref}
-        className="absolute flex flex-col w-[700px] h-[520px] bg-grey0 rounded"
-      >
+      <div ref={ref} className="absolute flex flex-col space-y-2 w-[700px] h-[520px] bg-grey0 rounded">
 
         <div className="flex flex-row justify-around border-b border-b-grey3 mx-3 h-[50px] items-center">
           <div className="w-1/3 border-r-2 border-r-grey1 border pr-2">
             {categoryInfos?.category && getCategoryComponent(categoryInfos)}
           </div>
           <div className="flex flex-row space-x-2 w-1/4 uppercase border-r-2 border-r-grey1 border pr-2 text-sm">
-            <div>total :</div>
+            <div>{spendingsListModalTexts.total} :</div>
             <div className="font-bold">{total} €</div>
           </div>
           <Period periodType={periodType} />
         </div>
 
-        <div className="flex flex-col my-1 overflow-y-auto h-[470px]">
+        <div className="flex flex-row space-x-2 pb-2 border-b border-b-grey3 mx-3 h-[30px] items-center">
+          <div>{spendingsListModalTexts.filter} :</div>
+          <input value={searchTerm} onChange={e => setsearchTerm(e.target.value)} />
+        </div>
+
+        <div className="flex flex-col my-1 overflow-y-auto h-[420px]">
           {displaySpendingsList()}
         </div>
 
