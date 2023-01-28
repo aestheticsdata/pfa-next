@@ -1,6 +1,7 @@
 import {
   useEffect,
   useState,
+  useCallback,
 } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChartBar } from "@fortawesome/free-solid-svg-icons";
@@ -42,6 +43,15 @@ const Charts = ({ title, periodType }: ChartsProps) => {
       setTotal(getTotal(charts!.data));
     }
   }, [charts]);
+
+  const handleEscKey = useCallback((event) => {
+    if (event.key === "Escape") {
+      setIsInvoiceModalVisible(false);
+    }
+  }, []);
+  useEffect(() => {
+    document.addEventListener("keyup", handleEscKey, false);
+  });
 
   const getWidth = (value: number) => {
     let width;
