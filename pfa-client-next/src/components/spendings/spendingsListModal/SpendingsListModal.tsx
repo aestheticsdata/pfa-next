@@ -108,9 +108,10 @@ const SpendingsListModal = ({ handleClickOutside, periodType, categoryInfos, tot
     <div className="fixed flex justify-center items-center z-50 left-0 right-0 top-0 bottom-0 bg-invoiceFileModalBackground">
       <div
         ref={ref}
-        className="absolute flex flex-col w-[700px] h-[520px] bg-grey0 rounded overflow-hidden"
+        className="absolute flex flex-col w-[700px] h-[520px] bg-grey0 rounded"
       >
-        <div className="flex flex-row justify-around border-b border-b-grey3 mx-3 h-12 items-center">
+
+        <div className="flex flex-row justify-around border-b border-b-grey3 mx-3 h-[50px] items-center">
           <div className="w-1/3 border-r-2 border-r-grey1 border pr-2">
             {categoryInfos?.category && getCategoryComponent(categoryInfos)}
           </div>
@@ -121,7 +122,7 @@ const SpendingsListModal = ({ handleClickOutside, periodType, categoryInfos, tot
           <Period periodType={periodType} />
         </div>
 
-        <div className="flex flex-col mt-1 overflow-y-auto">
+        <div className="flex flex-col my-1 overflow-y-auto h-[470px]">
           {displaySpendingsList()}
         </div>
 
