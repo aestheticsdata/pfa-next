@@ -44,6 +44,7 @@ const Charts = ({ title, periodType }: ChartsProps) => {
     }
   }, [charts]);
 
+  // https://keyholesoftware.com/2022/07/13/cancel-a-react-modal-with-escape-key-or-external-click/
   const handleEscKey = useCallback((event) => {
     if (event.key === "Escape") {
       setIsInvoiceModalVisible(false);
@@ -51,6 +52,9 @@ const Charts = ({ title, periodType }: ChartsProps) => {
   }, []);
   useEffect(() => {
     document.addEventListener("keyup", handleEscKey, false);
+    return () => {
+      document.removeEventListener("keyup", handleEscKey, false);
+    };
   });
 
   const getWidth = (value: number) => {
