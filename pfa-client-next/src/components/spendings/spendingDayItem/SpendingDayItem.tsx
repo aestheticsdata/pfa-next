@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import format from 'date-fns/format';
 import { getDayOfYear } from "date-fns";
 import fr from "date-fns/locale/fr";
@@ -12,7 +12,8 @@ import SpendingsListContainer from "@components/spendings/spendingsListContainer
 import SpendingSort from "@components/spendings/spendingSort/SpendingSort";
 import SpendingModal from "@components/spendings/common/spendingModal/SpendingModal"
 
-import type { SpendingCompoundType } from "@components/spendings/types";
+import type { SpendingCompoundType, SpendingType } from "@components/spendings/types";
+import { dividerClasses } from "@mui/material";
 
 interface SpendingDayItemProps {
   spendingsByDay: any;
@@ -35,6 +36,7 @@ const SpendingDayItem = ({ spendingsByDay, deleteSpending, isLoading, date, recu
   } = useClickSort();
 
   useEffect(() => {
+    console.log("spendingsByDay", spendingsByDay);
     setSpendingsByDaySorted(spendingsByDay);
   }, [spendingsByDay]);
 
@@ -47,6 +49,24 @@ const SpendingDayItem = ({ spendingsByDay, deleteSpending, isLoading, date, recu
     }
   }
 
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  useEffect(() => {
+    if (selectedCategory) {
+      const spendingsFilteredByCategory = spendingsByDay.filter(
+        (spending: SpendingType) => {
+          if (spending.category === null && selectedCategory === "none") return true;
+          return spending.category === selectedCategory;
+        }
+      );
+      const total = spendingsFilteredByCategory.length > 0 ? spendingsFilteredByCategory.reduce((acc, spending) => {
+        return Number(spending.amount) + acc;
+      }, 0) : 0;
+      spendingsFilteredByCategory.total = total.toFixed(2);
+      setSpendingsByDaySorted(spendingsFilteredByCategory);
+    } else {
+      setSpendingsByDaySorted(spendingsByDay);
+    }
+  }, [selectedCategory]);
 
   const {
     isModalVisible,
@@ -105,6 +125,31 @@ const SpendingDayItem = ({ spendingsByDay, deleteSpending, isLoading, date, recu
               </div>
             </div>
           }
+        </div>
+        <div className="flex space-x-2 border-b border-b-grey1 mx-3">
+          {spendingsByDay &&
+            Array.from(new Set(spendingsByDay.map((spending: SpendingType) => spending.category)))
+              .map(
+                // @ts-ignore
+                (category: string | null) =>
+                  <div
+                    key={(new Date()).getMilliseconds() + Math.trunc(Math.random()*1000000)}
+                    className="hover:bg-grey1 cursor-pointer"
+                    onClick={() => {
+                      if (!category) category = "none"
+                      setSelectedCategory(category);
+                    }}
+                  >
+                    {category || "sans catégorie"}
+                  </div>
+              )
+          }
+          <div
+            className="hover:bg-grey1 cursor-pointer"
+            onClick={() => {setSelectedCategory(null)}}
+          >
+            tout
+          </div>
         </div>
         <SpendingSort
           recurringType={recurringType}

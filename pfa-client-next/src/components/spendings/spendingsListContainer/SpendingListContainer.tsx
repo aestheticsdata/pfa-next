@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import SpendingItem from "@components/spendings/spendingDayItem/spendingItem/SpendingItem";
 
-import type { SpendingsListContainerType, SpendingType} from "@components/spendings/types";
+import type { SpendingsListContainerType } from "@components/spendings/types";
 import Spinner from "@components/common/Spinner";
 
 

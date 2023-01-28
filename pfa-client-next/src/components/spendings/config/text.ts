@@ -37,6 +37,7 @@ const spendings = {
   spendingsListModal: {
     total: "total",
     filter: "filtrer",
+    noCategoryLabel: "sans catégorie",
   },
 };
 

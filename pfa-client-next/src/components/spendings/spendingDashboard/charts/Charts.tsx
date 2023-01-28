@@ -49,7 +49,7 @@ const Charts = ({ title, periodType }: ChartsProps) => {
     if (event.key === "Escape") {
       setIsInvoiceModalVisible(false);
     }
-  }, []);
+  }, []); // https://stackoverflow.com/questions/57294549/react-hook-usecallback-without-dependencies
   useEffect(() => {
     document.addEventListener("keyup", handleEscKey, false);
     return () => {

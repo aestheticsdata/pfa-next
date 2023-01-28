@@ -10,11 +10,13 @@ import fr from "date-fns/locale/fr";
 import Period from "@components/spendings/spendingDashboard/common/Period";
 import getCategoryComponent from "@components/common/Category";
 import useSpendings from "@components/spendings/services/useSpendings";
+import Input from "@components/common/form/Input";
 import { MONTHLY } from "@components/spendings/spendingDashboard/common/widgetHeaderConstants";
 import texts from "@components/spendings/config/text";
 
 import type { Category } from "@src/interfaces/category";
 import type { SpendingType } from "@components/spendings/types";
+import { SpendingCompoundType } from "@components/spendings/types";
 
 
 interface SpendingsListModalProps {
@@ -51,7 +53,7 @@ const SpendingsListModal = ({ handleClickOutside, periodType, categoryInfos, tot
   }
 
   const displaySpendingsList = () => {
-    const spendingsList = (spendings, i) =>
+    const spendingsList = (spendings, i: number) =>
       <div
         key={i}
         className="text-sm mt-2 mb-2 px-3"
@@ -77,12 +79,12 @@ const SpendingsListModal = ({ handleClickOutside, periodType, categoryInfos, tot
               {format(parseISO(spendings[0]), "EEEE dd MMMM", { locale: fr })}
             </div>
         }
-        {spendings[1].map((spending, j) =>
+        {spendings[1].map((spending: SpendingType, j: number) =>
           <div
             key={i+j}
             className="ml-2"
           >
-            - {spending.label} : {spending.amount} €
+            - {spending.label} : {Number(spending.amount).toFixed(2)} €
           </div>
       )}
       </div>;
@@ -117,7 +119,10 @@ const SpendingsListModal = ({ handleClickOutside, periodType, categoryInfos, tot
 
         <div className="flex flex-row justify-around border-b border-b-grey3 mx-3 h-[50px] items-center">
           <div className="w-1/3 border-r-2 border-r-grey1 border pr-2">
-            {categoryInfos?.category && getCategoryComponent(categoryInfos)}
+            {categoryInfos?.category ?
+              getCategoryComponent(categoryInfos)
+              :
+              spendingsListModalTexts.noCategoryLabel}
           </div>
           <div className="flex flex-row space-x-2 w-1/4 uppercase border-r-2 border-r-grey1 border pr-2 text-sm">
             <div>{spendingsListModalTexts.total} :</div>
@@ -126,9 +131,13 @@ const SpendingsListModal = ({ handleClickOutside, periodType, categoryInfos, tot
           <Period periodType={periodType} />
         </div>
 
-        <div className="flex flex-row space-x-2 pb-2 border-b border-b-grey3 mx-3 h-[30px] items-center">
-          <div>{spendingsListModalTexts.filter} :</div>
-          <input value={searchTerm} onChange={e => setsearchTerm(e.target.value)} />
+        <div className="flex flex-row space-x-2 pb-2 border-b border-b-grey3 mx-3 h-[30px]">
+          <div className="">{spendingsListModalTexts.filter} :</div>
+          <input
+            className=" py-2 bg-transparent focus:shadow-sm focus:shadow-login border-formsGlobalColor border outline-none h-6 rounded p-1 text-sm w-2/5"
+            value={searchTerm}
+            onChange={e => setsearchTerm(e.target.value)}
+          />
         </div>
 
         <div className="flex flex-col my-1 overflow-y-auto h-[420px]">
