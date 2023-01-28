@@ -1,13 +1,16 @@
-import { useEffect, useRef, useState } from "react";
+import {
+  useEffect,
+  useRef
+} from "react";
 import useOnClickOutside from "use-onclickoutside";
-import Period from "@components/spendings/spendingDashboard/common/Period";
-import getCategoryComponent from "@components/common/Category";
-import useSpendings from "@components/spendings/services/useSpendings";
-import { MONTHLY } from "@components/spendings/spendingDashboard/common/widgetHeaderConstants";
 import parseISO from "date-fns/parseISO";
 import formatISO from "date-fns/formatISO";
 import format from "date-fns/format";
 import fr from "date-fns/locale/fr";
+import Period from "@components/spendings/spendingDashboard/common/Period";
+import getCategoryComponent from "@components/common/Category";
+import useSpendings from "@components/spendings/services/useSpendings";
+import { MONTHLY } from "@components/spendings/spendingDashboard/common/widgetHeaderConstants";
 
 import type { Category } from "@src/interfaces/category";
 import type { SpendingType } from "@components/spendings/types";
@@ -17,11 +20,11 @@ interface SpendingsListModalProps {
   handleClickOutside: any;
   periodType: string;
   categoryInfos: Category;
+  total: number;
 }
 
-const SpendingsListModal = ({ handleClickOutside, periodType, categoryInfos }: SpendingsListModalProps) => {
+const SpendingsListModal = ({ handleClickOutside, periodType, categoryInfos, total }: SpendingsListModalProps) => {
   const { spendingsByWeek, spendingsByMonth } = useSpendings();
-  const [totalAmount, setTotalAmount] = useState<number>(0);
   const ref = useRef(null);
 
   useOnClickOutside(ref, handleClickOutside);
@@ -111,7 +114,10 @@ const SpendingsListModal = ({ handleClickOutside, periodType, categoryInfos }: S
           <div className="w-1/3 border-r-2 border-r-grey1 border pr-2">
             {categoryInfos?.category && getCategoryComponent(categoryInfos)}
           </div>
-          <div className="w-1/4 uppercase border-r-2 border-r-grey1 border pr-2 text-sm bold">total : </div>
+          <div className="flex flex-row space-x-2 w-1/4 uppercase border-r-2 border-r-grey1 border pr-2 text-sm">
+            <div>total :</div>
+            <div className="font-bold">{total} €</div>
+          </div>
           <Period periodType={periodType} />
         </div>
 

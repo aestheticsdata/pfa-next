@@ -2,10 +2,10 @@ import {
   useEffect,
   useState,
 } from "react";
-import useCharts from "@components/spendings/services/useCharts";
-import Tooltip from "@components/spendings/spendingDashboard/charts/Tooltip";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChartBar } from "@fortawesome/free-solid-svg-icons";
+import useCharts from "@components/spendings/services/useCharts";
+import Tooltip from "@components/spendings/spendingDashboard/charts/Tooltip";
 import WidgetHeader from "@components/spendings/spendingDashboard/common/WidgetHeader";
 import SpendingsListModal from "@components/spendings/spendingsListModal/SpendingsListModal";
 import { MONTHLY, WEEKLY } from "@components/spendings/spendingDashboard/common/widgetHeaderConstants";
@@ -28,6 +28,7 @@ const widthOfContainer = 290; // 300 - (border width * 2)
 const Charts = ({ title, periodType }: ChartsProps) => {
   const [maxv, setMaxv] = useState(0);
   const [total, setTotal] = useState(0);
+  const [categoryTotal, setCategoryTotal] = useState(0);
   const [isTooltipVisible, setIsTooltipVisible] = useState(false);
   const [isInvoiceModalVisible, setIsInvoiceModalVisible] = useState(false);
   const [tooltipPos, setTooltipPos] = useState({x: 0, y: 0});
@@ -58,6 +59,7 @@ const Charts = ({ title, periodType }: ChartsProps) => {
             handleClickOutside={() => setIsInvoiceModalVisible(!isInvoiceModalVisible)}
             periodType={periodType}
             categoryInfos={categoryInfos!}
+            total={categoryTotal}
           />
         )
 
@@ -87,6 +89,7 @@ const Charts = ({ title, periodType }: ChartsProps) => {
                   className="flex items-center gap-x-1"
                   onClick={() => {
                     setIsInvoiceModalVisible(!isInvoiceModalVisible);
+                    setCategoryTotal(category.value);
                   }}
                 >
                   <div
