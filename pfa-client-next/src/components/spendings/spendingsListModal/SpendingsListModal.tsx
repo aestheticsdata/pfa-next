@@ -8,13 +8,13 @@ import formatISO from "date-fns/formatISO";
 import format from "date-fns/format";
 import fr from "date-fns/locale/fr";
 import Period from "@components/spendings/spendingDashboard/common/Period";
-import getCategoryComponent from "@components/common/Category";
+import CategoryComponent from "@components/common/Category";
 import useSpendings from "@components/spendings/services/useSpendings";
 import Input from "@components/common/form/Input";
 import { MONTHLY } from "@components/spendings/spendingDashboard/common/widgetHeaderConstants";
 import texts from "@components/spendings/config/text";
 
-import type { Category } from "@src/interfaces/category";
+import type { CategoryProps } from "@src/interfaces/category";
 import type { SpendingType } from "@components/spendings/types";
 import { SpendingCompoundType } from "@components/spendings/types";
 
@@ -120,7 +120,7 @@ const SpendingsListModal = ({ handleClickOutside, periodType, categoryInfos, tot
         <div className="flex flex-row justify-around border-b border-b-grey3 mx-3 h-[50px] items-center">
           <div className="w-1/3 border-r-2 border-r-grey1 border pr-2">
             {categoryInfos?.category ?
-              getCategoryComponent(categoryInfos)
+              <CategoryComponent item={categoryInfos} />
               :
               spendingsListModalTexts.noCategoryLabel}
           </div>

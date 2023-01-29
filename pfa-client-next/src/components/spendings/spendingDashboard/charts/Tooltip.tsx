@@ -1,11 +1,11 @@
 import adjustFontColor from "@components/shared/helpers/adjustColor";
 
-import type { Category } from "@src/interfaces/category";
+import type { CategoryProps } from "@src/interfaces/category";
 
 
 interface TooltipProps {
   tooltipPos: { x: number, y: number };
-  categoryInfos: Category;
+  categoryInfos: CategoryProps;
 }
 
 const Tooltip = ({ tooltipPos, categoryInfos }: TooltipProps) => {

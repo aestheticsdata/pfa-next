@@ -14,6 +14,7 @@ import SpendingModal from "@components/spendings/common/spendingModal/SpendingMo
 
 import type { SpendingCompoundType, SpendingType } from "@components/spendings/types";
 import { dividerClasses } from "@mui/material";
+import CategoryComponent from "@components/common/Category";
 
 interface SpendingDayItemProps {
   spendingsByDay: any;
@@ -49,7 +50,7 @@ const SpendingDayItem = ({ spendingsByDay, deleteSpending, isLoading, date, recu
     }
   }
 
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   useEffect(() => {
     if (selectedCategory) {
       const spendingsFilteredByCategory = spendingsByDay.filter(
@@ -79,13 +80,15 @@ const SpendingDayItem = ({ spendingsByDay, deleteSpending, isLoading, date, recu
     editSpending,
   } = useSpendingDayItem();
 
+  const getCategories = (spendingsByDay) => Array.from(new Set(spendingsByDay.map((spending: SpendingType) => spending.category)))
+  const getCategoryColor = (category) => spendingsByDay?.filter((spending) => spending.category === category)[0].categoryColor || "#fff";
 
   return (
     <div
       className={`rounded bg-spendingDayBackground border ${isToday ? "shadow-spendingDaySelected" : "border-grey2"}
       ${recurringType
         ? "w-full md:w-[400px] h-[265px]"
-        : "w-full md:w-[490px] h-[330px] md:m-2"
+        : "w-full md:w-[490px] h-[350px] md:m-2"
       }`}
     >
       <div className="flex flex-col">
@@ -126,31 +129,42 @@ const SpendingDayItem = ({ spendingsByDay, deleteSpending, isLoading, date, recu
             </div>
           }
         </div>
-        <div className="flex space-x-2 border-b border-b-grey1 mx-3">
-          {spendingsByDay &&
-            Array.from(new Set(spendingsByDay.map((spending: SpendingType) => spending.category)))
-              .map(
+        {!recurringType &&
+          <div className="flex space-x-2 border-b border-b-grey2 mx-3 py-1 justify-between">
+            <div className="flex flex-row space-x-1">
+            {spendingsByDay &&
+              getCategories(spendingsByDay).map(
                 // @ts-ignore
                 (category: string | null) =>
                   <div
                     key={(new Date()).getMilliseconds() + Math.trunc(Math.random()*1000000)}
-                    className="hover:bg-grey1 cursor-pointer"
+                    className="cursor-pointer"
                     onClick={() => {
                       if (!category) category = "none"
                       setSelectedCategory(category);
                     }}
                   >
-                    {category || "sans catégorie"}
+                    <CategoryComponent
+                      item={{category, categoryColor: getCategoryColor(category) }}
+                      isDynamic={true}
+                      isClicked={selectedCategory === category}
+                    />
                   </div>
-              )
-          }
-          <div
-            className="hover:bg-grey1 cursor-pointer"
-            onClick={() => {setSelectedCategory(null)}}
-          >
-            tout
+                )
+            }
+            </div>
+            <div
+              className=""
+              onClick={() => {setSelectedCategory(null)}}
+            >
+              {spendingsByDaySorted.length > 0 ?
+                <div className="bg-grey4 text-white hover:bg-grey2 cursor-pointer text-tiny uppercase rounded border px-1">tout</div>
+                :
+                <div className="h-3"></div>
+              }
+            </div>
           </div>
-        </div>
+        }
         <SpendingSort
           recurringType={recurringType}
           onClickSort={onClickSort}

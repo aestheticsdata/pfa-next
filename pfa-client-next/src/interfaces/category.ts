@@ -1,5 +1,5 @@
-export interface Category {
-  value: number;
+export interface CategoryProps {
+  value?: number;
   category: string;
   categoryColor: `#${string}`;
 }

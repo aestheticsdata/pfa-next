@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Swal from 'sweetalert2';
 import Button from "@components/common/form/Button";
-import getCategoryComponent from "@components/common/Category";
+import CategoryComponent from "@components/common/Category";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencilAlt, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import useCategories from "@components/spendings/services/useCategories";
@@ -144,7 +144,7 @@ const CategoryItem = ({ category }) => {
     return (
       <div className="flex justify-between items-center">
         <div className="w-[120px]">
-          { getCategoryComponent(item) }
+          <CategoryComponent item={item} />
         </div>
         { actionsFragment() }
       </div>

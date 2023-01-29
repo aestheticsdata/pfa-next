@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt, faTrashAlt, faFileInvoice } from '@fortawesome/free-solid-svg-icons';
 import InvoiceModal from "@components/spendings/invoiceModal/InvoiceModal";
-import getCategoryComponent from '@components/common/Category';
+import CategoryComponent from '@components/common/Category';
 // import cssSizes from "@src/css-sizes";
 import ConfirmDeletePopin from "@components/spendings/common/deletePopin";
 
@@ -62,7 +62,9 @@ const SpendingItem = ({
               spending?.category ?
                 <div className="flex justify-center items-center w-1/3">
                   <div className="w-3/4">
-                    {spending?.category && getCategoryComponent(spending)}
+                    {spending?.category &&
+                      <CategoryComponent item={spending} />
+                    }
                   </div>
                 </div>
                 :

@@ -7,7 +7,7 @@ import Button from "@components/common/form/Button";
 import useRequestHelper from "@helpers/useRequestHelper";
 import { useUserStore } from "@auth/store/userStore";
 import InvoiceImageModal from './invoiceImageModal/InvoiceImageModal';
-import getCategoryComponent from "@components/common/Category";
+import CategoryComponent from "@components/common/Category";
 import texts from "@components/spendings/config/text";
 import Spinner from "@components/common/Spinner";
 import { QUERY_KEYS } from "@components/spendings/config/constants";
@@ -152,7 +152,9 @@ const InvoiceModal = ({ handleClickOutside, spending }) => {
             {spending.label}
           </div>
           <div className="w-1/4">
-            {spending?.category && getCategoryComponent(spending)}
+            {spending?.category &&
+              <CategoryComponent item={spending} />
+            }
           </div>
           <div>
             {Number(spending.amount).toFixed(2)} €

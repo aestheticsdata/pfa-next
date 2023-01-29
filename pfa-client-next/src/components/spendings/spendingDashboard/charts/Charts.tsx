@@ -11,7 +11,7 @@ import WidgetHeader from "@components/spendings/spendingDashboard/common/WidgetH
 import SpendingsListModal from "@components/spendings/spendingsListModal/SpendingsListModal";
 import { MONTHLY, WEEKLY } from "@components/spendings/spendingDashboard/common/widgetHeaderConstants";
 
-import type { Category } from "@src/interfaces/category";
+import type { CategoryProps } from "@src/interfaces/category";
 
 
 type periodType = typeof MONTHLY | typeof WEEKLY;
@@ -21,8 +21,8 @@ interface ChartsProps {
   periodType: periodType;
 }
 
-const getMaxValue = (data: Category[]) => Math.max(...data.map(category => +category.value));
-const getTotal = (data: Category[]) => data.reduce((acc, curr) => acc + +curr.value, 0);
+const getMaxValue = (data: CategoryProps[]) => Math.max(...data.map(category => +category.value));
+const getTotal = (data: CategoryProps[]) => data.reduce((acc, curr) => acc + +curr.value, 0);
 
 const widthOfContainer = 290; // 300 - (border width * 2)
 
@@ -96,7 +96,7 @@ const Charts = ({ title, periodType }: ChartsProps) => {
         <div className="flex flex-col gap-y-1">
         {
           maxv !== 0 && charts &&
-            charts.data.map((category: Category) => {
+            charts.data.map((category: CategoryProps) => {
               return (
                 <div
                   key={category.category}

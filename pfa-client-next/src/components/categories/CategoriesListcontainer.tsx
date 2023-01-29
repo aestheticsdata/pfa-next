@@ -4,7 +4,7 @@ import CategoryItem from "@components/categories/CategoryItem";
 import Spinner from "@components/common/Spinner";
 
 
-interface Category {
+interface CategoryItemProps {
   ID: string;
   userID: string;
   name: string;
@@ -22,8 +22,8 @@ const CategoriesListcontainer = () => {
         </div>
         {categories?.data.length > 0 ?
           categories!.data
-            .sort((c1: Category, c2: Category) => c1.name.localeCompare(c2.name))
-            .map((category: Category) => (
+            .sort((c1: CategoryItemProps, c2: CategoryItemProps) => c1.name.localeCompare(c2.name))
+            .map((category: CategoryItemProps) => (
               <CategoryItem
                 key={category.ID}
                 category={category}
