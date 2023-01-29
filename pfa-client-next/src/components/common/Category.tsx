@@ -14,7 +14,7 @@ const CategoryComponent = ({item, isDynamic = false, isClicked = false}: Categor
       if(isClicked) {
         return adjustFontColor(item.categoryColor)
       } else {
-        return "#fff";
+        return item.category ? "#fff" : adjustFontColor(item.categoryColor);
       }
     } else {
       return adjustFontColor(item.categoryColor)
@@ -26,7 +26,7 @@ const CategoryComponent = ({item, isDynamic = false, isClicked = false}: Categor
       if (isClicked) {
         return item.categoryColor;
       } else {
-        return "#aaa";
+        return item.category ? "#aaa" : item.categoryColor;
       }
     } else {
       return item.categoryColor;
