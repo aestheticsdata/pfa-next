@@ -37,7 +37,6 @@ const SpendingDayItem = ({ spendingsByDay, deleteSpending, isLoading, date, recu
   } = useClickSort();
 
   useEffect(() => {
-    console.log("spendingsByDay", spendingsByDay);
     setSpendingsByDaySorted(spendingsByDay);
   }, [spendingsByDay]);
 

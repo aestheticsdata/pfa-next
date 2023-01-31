@@ -155,7 +155,7 @@ const SpendingModal = ({
       flex bg-spendingItemHover p-2 rounded-b w-full
       ${recurringType
         ? "md:w-[398px] h-[220px]"
-        : "md:w-[488px] h-[285px]"
+        : "md:w-[488px] h-[305px]"
         }
       absolute top-11`
     }>
@@ -212,7 +212,7 @@ const SpendingModal = ({
           />
         }
 
-        <div className="flex flex-col space-y-2 w-1/3">
+        <div className="flex flex-col space-y-2 w-1/3 pt-2">
           <Button
             type="submit"
             disabled={formState.isSubmitting || !formState.isValid}
