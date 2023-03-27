@@ -1,13 +1,17 @@
-const prisma = require('../../../db/dbInit');
+const dbConnection = require('../../../db/dbinitmysql');
 
 
 module.exports = async (req, res, _next) => {
-  const spending = await prisma.spendings.findUnique({
-    where: {
-      spendingID: req.params.id,
-      userID: req.params.userID,
+  const sql = `
+    SELECT DISTINCT spending
+    FROM Spendings
+    WHERE spendingID=${req.params.id} AND userID=${req.params.userID};
+`;
+  dbConnection.query(
+    sql,
+    (err, results) => {
+      res.json(results);
     }
-  });
-  res.json(spending);
+  );
 };
 
