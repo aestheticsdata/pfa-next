@@ -1,11 +1,15 @@
-const prisma = require('../../../db/dbInit');
-
+const dbConnection = require('../../../db/dbinitmysql');
 
 module.exports = async (req, res, _next) => {
-  const categories = await prisma.categories.findMany({
-    where: {
-      userID: req.query.userID,
+  const sql = `
+    SELECT * FROM Categories
+    WHERE userID="${req.query.userID}";
+  `;
+
+  dbConnection.query(
+    sql,
+    (err, results) => {
+      res.json(results)
     }
-  });
-  res.json(categories);
+  );
 };

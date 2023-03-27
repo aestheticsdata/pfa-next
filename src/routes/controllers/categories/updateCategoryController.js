@@ -1,7 +1,6 @@
-const prisma = require('../../../db/dbInit');
+const dbConnection = require('../../../db/dbinitmysql');
 
-
-module.exports = async (req, res, _next) => {
+module.exports =  async (req, res, _next) => {
   const {
     ID: categoryID,
     name,
@@ -9,17 +8,26 @@ module.exports = async (req, res, _next) => {
     userID,
   } = req.body;
 
-  await prisma.categories.update({
-    where: { ID: categoryID },
-    data: {
-      name,
-      color,
-    },
-  });
-  const categories = await prisma.categories.findMany({
-    where: {
-      userID,
-    },
-  });
-  res.json(categories);
+  const sqlUpdate = `
+    UPDATE Categories
+    SET name="${name}", color="${color}"
+    WHERE ID="${categoryID}";
+  `;
+  const sql = `
+    SELECT * FROM Categories
+    WHERE userID="${userID}";
+  $`;
+
+  dbConnection.query(
+    sqlUpdate,
+    () => {
+      dbConnection.query(
+        sql,
+        (err, results) => {
+          res.json(results);
+        }
+      );
+    }
+  );
 };
+
