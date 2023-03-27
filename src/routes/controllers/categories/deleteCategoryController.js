@@ -1,17 +1,28 @@
-const prisma = require('../../../db/dbInit');
-
+const dbConnection = require('../../../db/dbinitmysql');
 
 module.exports = async (req, res, _next) => {
   const { id: ID } = req.params;
-  await prisma.categories.delete({ where: { ID } });
-  // UPDATE Spendings SET categoryID = null WHERE categoryID = '${ID}';
-  await prisma.spendings.updateMany({
-    where: {
-      categoryID: ID,
-    },
-    data: {
-      categoryID: null,
+
+  const sqlDelete = `
+    DELETE FROM Categories
+    WHERE ID="${ID}";
+  `;
+
+  const sqlSpendingsUpdate = `
+    UPDATE Spendings
+    SET categoryID=NULL
+    WHERE categoryID="${ID}";
+  `;
+
+  dbConnection.query(
+    sqlDelete,
+    () => {
+      dbConnection.query(
+        sqlSpendingsUpdate,
+        () => {
+          res.json({ success: true });
+        }
+      )
     }
-  })
-  res.json({ success: true });
+  )
 };
