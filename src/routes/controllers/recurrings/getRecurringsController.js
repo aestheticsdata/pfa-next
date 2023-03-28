@@ -1,18 +1,19 @@
-const prisma = require('../../../db/dbInit');
+const dbConnection = require('../../../db/dbinitmysql');
+const dateFormatter = require('../../api/helpers/dateFormatter');
 
 module.exports = async (req, res, _next) => {
-  const recurrings = await prisma.recurrings.findMany({
-    where: {
-      AND: [
-        { userID: req.query.userID },
-        {
-          dateFrom: { equals: new Date(req.query.start) }
-        },
-      ]
-    },
-    orderBy: {
-      amount: 'desc',
-    },
-  });
-  res.json(recurrings);
+  const { from } = dateFormatter(req.query.start);
+
+  const sql = `
+    SELECT * FROM Recurrings
+    WHERE userID="${req.query.userID}" AND dateFrom="${from}"
+    ORDER BY amount DESC;
+  `;
+
+  dbConnection.query(
+    sql,
+    (err, results) => {
+      res.json(results);
+    }
+  );
 };
