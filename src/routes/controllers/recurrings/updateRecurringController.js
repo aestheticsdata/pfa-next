@@ -1,5 +1,4 @@
-const prisma = require('../../../db/dbInit');
-
+const dbConnection = require('../../../db/dbinitmysql');
 
 module.exports = async (req, res, _next) => {
   const {
@@ -7,12 +6,16 @@ module.exports = async (req, res, _next) => {
     amount,
   } = req.body;
 
-  await prisma.recurrings.update({
-    where: { ID: req.params.id },
-    data: {
-      label,
-      amount,
-    },
-  });
-  res.json({ success: true });
+  const sql = `
+    UPDATE Recurrings
+    SET label="${label}", amount="${amount}"
+    WHERE ID="${req.params.id}";
+  `;
+
+  dbConnection.query(
+    sql,
+    () => {
+      res.json({ success: true });
+    }
+  );
 };

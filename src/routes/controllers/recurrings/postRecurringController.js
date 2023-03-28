@@ -18,13 +18,13 @@ module.exports = async (req, res, next) => {
 
   const sql = `
     INSERT INTO Recurrings (ID, userID, dateFrom, dateTo, label, amount, currency, itemType)
-    VALUES ("${uuidv1()}", "${userID}", "${dateFrom}", "${dateTo}", "${label}", "${amount}", "${currency}", "recurring")
+    VALUES ("${uuidv1()}", "${userID}", "${dateFrom}", "${dateTo}", "${label}", "${amount}", "${currency}", "recurring");
   `;
 
   dbConnection.query(
     sql,
     () => {
-      res.json("new recurring added")
+      res.json("new recurring added");
     }
   );
 };
