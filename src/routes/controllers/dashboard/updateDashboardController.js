@@ -1,22 +1,37 @@
-const prisma = require('../../../db/dbInit');
+const dbConnection = require('../../../db/dbinitmysql');
 
 module.exports = async (req, res, _next) => {
   let dashboard;
+
+  const sqlInitialAmount = `
+    UPDATE Dashboards
+    SET initialAmount="${req.body.amount}"
+    WHERE ID="${req.params.id}"
+  `;
+
   if (req.body.amount !== null) {
-    dashboard = await prisma.dashboards.update({
-      where: { ID: req.params.id },
-      data: { initialAmount: req.body.amount },
-    });
+   dbConnection.query(
+     sqlInitialAmount,
+     (err, results) => {
+       dashboard = results;
+     }
+   );
   }
+
+  const sqlCeiling = `
+    UPDATE Dashboards
+    SET initialCeiling="${req.body.ceiling}"
+    WHERE ID="${req.params.id}"
+  `;
+
   if (req.body.ceiling !== null) {
-    dashboard = await prisma.dashboards.update({
-      where: {
-        ID: req.params.id,
-      },
-      data: {
-        initialCeiling: req.body.ceiling,
-      },
-    });
+   dbConnection.query(
+     sqlCeiling,
+     (err, results) => {
+       dashboard = results
+     }
+   );
   }
+
   res.json(dashboard);
 }
