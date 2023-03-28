@@ -23,7 +23,7 @@ const MonthlyBudget = () => {
 
   useEffect(() => {
     if (dashboard && initialAmount) {
-      const totalOfMonth: number = (Number(initialAmount.spendingsSum._sum.amount) + Number(initialAmount.recurringsSum._sum.amount));
+      const totalOfMonth: number = (Number(initialAmount.spendingsSum.amount) + Number(initialAmount.recurringsSum.amount));
       const remaining: number = dashboard?.data ? Number(dashboard.data.initialAmount) - totalOfMonth : 0;
       setRemaining(Number(remaining.toFixed(2)));
       setTotalOfMonth(Number(totalOfMonth.toFixed(2)));
