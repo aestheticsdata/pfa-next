@@ -4,12 +4,8 @@ module.exports = async (req, res, _next) => {
   let dashboard;
   if (req.body.amount !== null) {
     dashboard = await prisma.dashboards.update({
-      where: {
-        ID: req.params.id,
-      },
-      data: {
-        initialAmount: req.body.amount,
-      },
+      where: { ID: req.params.id },
+      data: { initialAmount: req.body.amount },
     });
   }
   if (req.body.ceiling !== null) {
