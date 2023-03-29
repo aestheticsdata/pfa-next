@@ -33,7 +33,12 @@ const SpendingModal = ({
  }) => {
   const user = useUserStore((state) => state.user);
   const { createSpending, updateSpending } = useSpendings();
-  const { createRecurring, updateRecurring } = useReccurings();
+  const {
+    recurrings,
+    createRecurring,
+    updateRecurring,
+    copyRecurrings,
+  } = useReccurings();
   const { categories } = useCategories();
 
 
@@ -197,7 +202,7 @@ const SpendingModal = ({
                 {...params}
                 label="Catégorie"
                 inputRef={field.ref}
-                error={fieldState.invalid}
+                error={!!fieldState.error}
                 helperText={fieldState.error?.message}
               />
             )}
@@ -210,6 +215,19 @@ const SpendingModal = ({
             }
             onInputChange={(_, value) => {value && field.onChange(value)}}
           />
+        }
+
+        {
+          recurringType && recurrings?.length === 0 && (
+            <Button
+              type="button"
+              label="Copier les recurrings du mois précédent"
+              onClick={() => {
+                closeModal();
+                copyRecurrings.mutate({ userID: user!.id, formattedMonth: month });
+              }}
+            />
+          )
         }
 
         <div className="flex flex-col space-y-2 w-1/3 pt-2">

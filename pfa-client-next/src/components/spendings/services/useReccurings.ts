@@ -10,12 +10,14 @@ import { QUERY_KEYS, QUERY_OPTIONS } from "@components/spendings/config/constant
 import type { Spending } from "@components/spendings/interfaces/spendingDashboardTypes";
 
 
+interface FormattedMonth {
+  start: string;
+  end: string;
+}
+
 interface CreateRecurring {
   spendingEdited: Spending;
-  formattedMonth: {
-    start: string;
-    end: string;
-  };
+  formattedMonth: FormattedMonth;
 }
 
 const useReccurings = () => {
@@ -57,7 +59,7 @@ const useReccurings = () => {
 
   const deleteRecurringService = async (recurring: Spending) => {
     return privateRequest(`/recurrings/${recurring.ID}`, {method: "DELETE"});
-  }
+  };
 
   const deleteRecurring = useMutation(({ recurring }: { recurring: Spending }) => {
     return deleteRecurringService(recurring);
@@ -73,7 +75,17 @@ const useReccurings = () => {
         ...recurring,
         ...formattedMonth,
       }
-    })
+    });
+  };
+
+  const copyRecurringsService = async (userID: string, month: FormattedMonth) => {
+    return privateRequest("/recurrings/copy", {
+      method: "POST",
+      data: {
+        userID,
+        month,
+      }
+    });
   };
 
   const createRecurring = useMutation(({ spendingEdited, formattedMonth }: CreateRecurring) => {
@@ -98,12 +110,21 @@ const useReccurings = () => {
     }
   });
 
+  const copyRecurrings = useMutation(({ userID, formattedMonth }: { userID: string, formattedMonth: FormattedMonth }) => {
+    return copyRecurringsService(userID, formattedMonth);
+  }, {
+    onSuccess: () =>  recurringsActionOnSuccess("créés"),
+    onError: (e) => { console.log("error copying recurrings", e);
+    }
+  });
+
   return {
     recurrings,
     isLoading,
     deleteRecurring,
     createRecurring,
     updateRecurring,
+    copyRecurrings,
   }
 }
 

@@ -1,4 +1,5 @@
-const prisma = require('../../../db/dbInit');
+// const prisma = require('../../../db/dbInit');
+const dbConnection = require('../../../db/dbinitmysql');
 const { format, subMonths } = require('date-fns');
 const { v1: uuidv1 } = require('uuid');
 
@@ -7,20 +8,44 @@ module.exports = async (req, res, _next) => {
   const dateFormat = 'yyyy-MM-dd';
   const previousMonthStart = format(subMonths(new Date(currentMonth), 1), dateFormat);
 
-  const recurringsFromPreviousMonth = await prisma.$queryRaw`
-      SELECT label, amount, itemType, currency, userID, invoicefile
-      FROM Recurrings
-      WHERE dateFrom = ${previousMonthStart}
-        AND userID = ${req.body.userID};
-    `;
-  const recurringsFromCurrentMonth = recurringsFromPreviousMonth.map(recurring => (
-    {
-      ID: uuidv1(),
-      dateFrom: new Date(currentMonth),
-      dateTo: new Date(req.body.month.end),
-      ...recurring,
-    })
+  const sqlRead = `
+    SELECT label, amount, itemType, currency, userID, invoicefile
+    FROM Recurrings
+    WHERE dateFrom="${previousMonthStart}" AND userID="${req.body.userID}";
+  `;
+
+  const order = ["ID", "userID", "dateFrom", "dateTo", "label", "amount", "currency", "itemType"];
+
+  const sqlWrite = (values) => `
+    INSERT INTO Recurrings (${order.toString()})
+    VALUES ${values};
+  `;
+
+  dbConnection.query(
+    sqlRead,
+    (err, results) => {
+      const recurringsFromCurrentMonth = results.map(recurring => ({
+        ...recurring,
+        ID: uuidv1(),
+        dateFrom: format(new Date(currentMonth), dateFormat),
+        dateTo: format(new Date(req.body.month.end), dateFormat),
+        invoicefile: "NULL",
+      }));
+
+
+      const sortedValues = recurringsFromCurrentMonth.map((recurring) => {
+        return "("+ order.map(key => {
+          const value = recurring[key];
+          if (key === "amount") return Number(value);
+          return '"'+recurring[key]+'"';
+        })+ ")"});
+
+      dbConnection.query(
+        sqlWrite(sortedValues),
+        () => {
+          res.status(200).json({msg: 'recurrings copied'});
+        }
+      );
+    }
   );
-  await prisma.recurrings.createMany({ data: recurringsFromCurrentMonth });
-  res.status(200).json({msg: 'recurrings copied'});
 };
