@@ -1,4 +1,4 @@
-const prisma = require('../../../db/dbInit');
+const dbConnection = require('../../../db/dbinitmysql');
 const { v1: uuidv1 } = require('uuid');
 const createError = require('http-errors');
 
@@ -14,19 +14,17 @@ module.exports = async (req, res, next) => {
   } = req.body;
 
   const createSpending = async (newCategoryID = null, existingCategory = null) => {
-    await prisma.spendings.create({
-      data: {
-        ID: uuidv1(),
-        userID,
-        date: new Date(date),
-        label,
-        amount,
-        categoryID: newCategoryID ?? (existingCategory?.ID ?? category?.ID),
-        currency,
-        itemType: 'spending',
+    const sqlCreateSpending = `
+      INSERT INTO Spendings (ID, userID, date, label, amount, categoryID, currency, itemType)
+      VALUES ("${uuidv1()}", "${userID}", "${date}", "${label}", "${amount}", "${newCategoryID ?? (existingCategory?.ID ?? category?.ID)}", "${currency}", "spending");
+    `;
+
+    dbConnection.query(
+      sqlCreateSpending,
+      () => {
+        res.json('new spending added');
       }
-    });
-    res.json('new spending added');
+    )
   };
 
   if (!amount || !label) {
@@ -35,29 +33,37 @@ module.exports = async (req, res, next) => {
 
   if (category.ID === null && category.color !== null) {
     // before creating a new category, we have to check if this user has already a category with this name
-    const existingCategory = await prisma.categories.findFirst({
-      where : {
-        userID,
-        name: category.name
-      }
-    });
-    if (existingCategory) {
-      // créer un spending en refusant la creation d'une catégorie qui existe deja pour ce user
-      await createSpending(null, existingCategory);
-    } else {
-      const newCategoryID = uuidv1();
-      await prisma.categories.create({
-        data: {
-          ID: newCategoryID,
-          userID,
-          name: category.name,
-          color: category.color,
+    // category.ID === null && category.color !== null -> c'est une nouvelle catégorie, la couleur
+    // a été créé à l'instant par le front, mais elle n'existe pas encore dans la base de donnée
+    // d'où le category.ID === null
+    const sqlCategory = `SELECT * FROM Categories WHERE userID="${userID}" AND name="${category.name}"`;
+
+    dbConnection.query(
+      sqlCategory,
+      (err, existingCategory) => {
+        if (existingCategory.length > 0) {
+          // créer un spending en refusant la creation d'une catégorie qui existe deja pour ce user
+          // une catégorie existe déjà avec ce nom mais avec une casse différente, donc il ne faut pas en créer une nouvelle
+          // par exemple aBC et AbC
+          // ce cas ne doit pas arriver fréquement, à part faute de frappe
+          createSpending(null, existingCategory);
+        } else {
+          const newCategoryID = uuidv1();
+
+          const sqlCreateCategory = `
+            INSERT INTO Categories (ID, userID, name, color)
+            VALUES ("${newCategoryID}", "${userID}", "${category.name}", "${category.color}");
+          `;
+
+          dbConnection.query(
+            sqlCreateCategory,
+            () => { createSpending(newCategoryID); }
+          )
         }
-      });
-      await createSpending(newCategoryID);
-    }
+      }
+    )
   } else {
     // no category created, just create a spending
-    await createSpending();
+    createSpending();
   }
 };
