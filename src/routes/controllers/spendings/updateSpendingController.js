@@ -16,6 +16,9 @@ module.exports = async (req, res, _next) => {
     },
   } = req.body;
 
+
+
+
   const createNewCategory = async (name, color) => {
     return await prisma.categories.create({
       data: {

@@ -1,14 +1,10 @@
 const dbConnection = require('../../../db/dbinitmysql');
+const sqlQueries = require("./helpers/sqlQueries");
 
 
 module.exports = async (req, res, _next) => {
-  const sql = `
-    SELECT DISTINCT spending
-    FROM Spendings
-    WHERE spendingID=${req.params.id} AND userID=${req.params.userID};
-`;
   dbConnection.query(
-    sql,
+    sqlQueries.getSpending(req.params.id, req.params.userID),
     (err, results) => {
       res.json(results);
     }
