@@ -1,6 +1,7 @@
-const dbConnection = require('../../../db/dbinitmysql');
 const { v1: uuidv1 } = require('uuid');
 const createError = require('http-errors');
+const dbConnection = require('../../../db/dbinitmysql');
+const sqlCreateCategory = require("./helpers/sqlCreateCategory");
 
 
 module.exports = async (req, res, next) => {
@@ -50,13 +51,8 @@ module.exports = async (req, res, next) => {
         } else {
           const newCategoryID = uuidv1();
 
-          const sqlCreateCategory = `
-            INSERT INTO Categories (ID, userID, name, color)
-            VALUES ("${newCategoryID}", "${userID}", "${category.name}", "${category.color}");
-          `;
-
           dbConnection.query(
-            sqlCreateCategory,
+            sqlCreateCategory(newCategoryID, userID, category),
             () => { createSpending(newCategoryID); }
           )
         }

@@ -99,7 +99,7 @@ const Charts = ({ title, periodType }: ChartsProps) => {
             charts.data.map((category: CategoryProps) => {
               return (
                 <div
-                  key={category.category}
+                  key={category.category + Math.random()}
                   className="flex items-center gap-x-1"
                   onClick={() => {
                     setIsInvoiceModalVisible(!isInvoiceModalVisible);

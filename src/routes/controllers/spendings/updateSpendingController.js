@@ -1,4 +1,5 @@
 const prisma = require('../../../db/dbInit');
+const dbConnection = require('../../../db/dbinitmysql');
 const { v1: uuidv1 } = require('uuid');
 
 
