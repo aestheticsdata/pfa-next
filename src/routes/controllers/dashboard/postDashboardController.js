@@ -2,6 +2,7 @@ const dbConnection = require('../../../db/dbinitmysql');
 const { v1: uuidv1 } = require('uuid');
 const createError = require('http-errors');
 
+
 module.exports = async (req, res, next) => {
   const {
     start,
@@ -9,8 +10,6 @@ module.exports = async (req, res, next) => {
     amount,
     userID,
   } = req.body;
-
-  let dashboard;
 
   if (!amount || !start) {
     return next(createError(500, 'Please enter amount and a date'));

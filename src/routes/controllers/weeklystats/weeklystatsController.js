@@ -1,5 +1,4 @@
-const prisma = require('../../../db/dbInit');
-
+const dbConnection = require('../../../db/dbinitmysql');
 const endOfMonth = require('date-fns').endOfMonth;
 const getDay = require('date-fns').getDay;
 const format = require('date-fns').format;
@@ -49,23 +48,17 @@ const weeklystatsController = async (req, res, _next) => {
     return totalsByWeek;
   }
 
-  const monthSpending = await prisma.spendings.findMany({
-    where: {
-      AND: [
-        { userID },
-        {
-          date: {
-            gte: startDate,
-            lte: endOfMonth(startDate),
-          },
-        },
-      ]
+  const sqlSpendings = `
+    SELECT * FROM Spendings
+    WHERE userID="${userID}" AND date>="${format(startDate, 'yyyy-MM-dd')}" AND date<="${format(endOfMonth(startDate), 'yyyy-MM-dd')}"
+  `
+  dbConnection.query(
+    sqlSpendings,
+    (err, results) => {
+      const weeklyStats = makeRange(results);
+      res.status(200).json(weeklyStats);
     }
-  });
-
-  const weeklyStats = makeRange(monthSpending);
-
-  res.status(200).json(weeklyStats);
+  )
 }
 
 module.exports = weeklystatsController;
