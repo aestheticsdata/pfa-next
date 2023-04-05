@@ -1,8 +1,7 @@
 const sqlQueries = {
   getSpending: (spendingID, userID) => `
-      SELECT DISTINCT spending
-      FROM Spendings
-      WHERE spendingID=${spendingID} AND userID=${userID};
+    SELECT * FROM Spendings
+    WHERE ID="${spendingID}" AND userID="${userID}";
     `,
   createCategory: (newCategoryID, userID, category) => `
     INSERT INTO Categories (ID, userID, name, color)

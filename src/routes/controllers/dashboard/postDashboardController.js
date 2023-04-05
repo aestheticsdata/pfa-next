@@ -16,13 +16,10 @@ module.exports = async (req, res, next) => {
     return next(createError(500, 'Please enter amount and a date'));
   }
 
-  console.log("2 req.body.start", new Date(req.body.start));
-
   let sql = `
     SELECT * FROM Dashboards
     WHERE userID="${userID}" AND dateFrom="${start}"
   `;
-  console.log("sql", sql);
 
   // this code seems to be unused
   // see below
@@ -38,8 +35,6 @@ module.exports = async (req, res, next) => {
     INSERT INTO Dashboards (ID, dateFrom, dateTo, initialAmount, userID)
     VALUES ("${uuidv1()}", "${start}", "${end}", "${amount}", "${userID}")
   `;
-
-  console.log("sqlCreate", sqlCreate);
 
   dbConnection.query(
     sql,
@@ -59,7 +54,6 @@ module.exports = async (req, res, next) => {
         dbConnection.query(
           sqlCreate,
           (err, results) => {
-          console.log("dashboard post create::results", results);
             res.json(results);
           }
         )
