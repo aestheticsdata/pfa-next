@@ -2,15 +2,12 @@ const router = require('express').Router();
 const signInController = require('../controllers/users/signInController');
 const addUserController = require('../controllers/users/addUserController');
 const resetPasswordController = require('../controllers/users/resetPasswordController');
-const updateUserLangController = require('../controllers/users/updateUserLangController');
-const checkToken = require('./helpers/checkToken');
 const catchAsync = require('../../utils/catchAsync');
 
 
 router.post('/', catchAsync(signInController));
 router.post('/add', catchAsync(addUserController));
 router.post('/resetpassword', catchAsync(resetPasswordController));
-router.put('/:id', checkToken, catchAsync(updateUserLangController));
 
 module.exports = router;
 
