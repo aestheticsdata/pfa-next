@@ -1,4 +1,3 @@
-// const prisma = require('../../../db/dbInit');
 const dbConnection = require('../../../db/dbinitmysql');
 const { format, subMonths } = require('date-fns');
 const { v1: uuidv1 } = require('uuid');
