@@ -6,22 +6,28 @@ module.exports = async (req, res, _next) => {
   const { userID } = req.query;
 
   let invoicefile = null;
-  dbConnection.query(
-    `
-      SELECT DISTINCT invoiceFile
-      FROM "${req.query.itemType}s"
-      WHERE ID="${spendingID}"
-    `,
-    (err, results) => {
-      invoicefile = results;
-    }
-  )
 
-  if (invoicefile) {
-    const [invoiceImageString, contentType] = await getImage(invoicefile, userID);
-    res.setHeader('content-type', contentType);
-    res.send(invoiceImageString);
-  } else {
-    res.status(200).json(null);
-  }
+  const itemType = req.query.itemType;
+
+  const spendingsTableName = itemType.charAt(0).toUpperCase() + itemType.slice(1) + "s";
+
+  const sqlInvoiceFile = `
+    SELECT invoiceFile
+    FROM ${spendingsTableName}
+    WHERE ID="${spendingID}";
+  `;
+
+  dbConnection.query(
+    sqlInvoiceFile,
+    async (err, results) => {
+      invoicefile = results[0]?.invoiceFile;
+      if (invoicefile) {
+        const [invoiceImageString, contentType] = await getImage(invoicefile, userID);
+        res.setHeader('content-type', contentType);
+        res.send(invoiceImageString);
+      } else {
+        res.status(200).json(null);
+      }
+    }
+  );
 };
