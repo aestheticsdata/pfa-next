@@ -9,7 +9,7 @@ const getSpendingController = require('../controllers/spendings/getSpendingContr
 const getSpendingInvoiceImageController = require('../controllers/spendings/getSpendingInvoiceImageController');
 const getSpendingsChartsController = require('../controllers/spendings/getSpendingsChartsController');
 const postSpendingController = require('../controllers/spendings/postSpendingController');
-// const postSpendingInvoiceUploadController = require('../controllers/spendings/postSpendingInvoiceUploadController');
+const postSpendingInvoiceUploadController = require('../controllers/spendings/postSpendingInvoiceUploadController');
 const deleteSpendingInvoiceImageController = require('../controllers/spendings/deleteSpendingInvoiceImageController');
 const updateSpendingController = require('../controllers/spendings/updateSpendingController');
 const deleteSpendingController = require('../controllers/spendings/deleteSpendingController');
@@ -20,7 +20,7 @@ router.get('/upload/:id', checkToken, catchAsync(getSpendingInvoiceImageControll
 router.get('/:id', checkToken, catchAsync(getSpendingController));
 
 router.post('/', checkToken, catchAsync(postSpendingController));
-// router.post('/upload', [checkToken, uploadMiddleware.single('invoiceImageUpload')], catchAsync(postSpendingInvoiceUploadController));
+router.post('/upload', [checkToken, uploadMiddleware.single('invoiceImageUpload')], catchAsync(postSpendingInvoiceUploadController));
 
 router.put('/upload', checkToken, catchAsync(deleteSpendingInvoiceImageController));
 router.put('/:id', checkToken, catchAsync(updateSpendingController));
