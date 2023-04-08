@@ -4,7 +4,7 @@ import { faPencilAlt, faTrashAlt, faFileInvoice } from '@fortawesome/free-solid-
 import InvoiceModal from "@components/spendings/invoiceModal/InvoiceModal";
 import CategoryComponent from '@components/common/Category';
 // import cssSizes from "@src/css-sizes";
-import ConfirmDeletePopin from "@components/spendings/common/deletePopin";
+import ConfirmDeletePopin from "@components/spendings/common/deleteSpendingPopin";
 
 
 const SpendingItem = ({

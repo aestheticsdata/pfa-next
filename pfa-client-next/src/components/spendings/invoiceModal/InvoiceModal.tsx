@@ -11,6 +11,8 @@ import CategoryComponent from "@components/common/Category";
 import texts from "@components/spendings/config/text";
 import Spinner from "@components/common/Spinner";
 import { QUERY_KEYS } from "@components/spendings/config/constants";
+import ConfirmDelete from "@components/common/confirmDelete";
+import DeleteInvoiceButton from "@components/spendings/invoiceModal/deleteInvoiceButton";
 
 
 const InvoiceModal = ({ handleClickOutside, spending }) => {
@@ -19,21 +21,26 @@ const InvoiceModal = ({ handleClickOutside, spending }) => {
   const { invoiceModal: invoiceModalTexts } = texts;
   const userID = useUserStore((state) => state.user!.id);
   const fileSizeLimit = 32_097_152;
-  const [invoicefile, setInvoicefile] = useState("");
+  const [invoicefile, setInvoicefile] = useState<string | File>("");
   const [invoiceImage, setInvoiceImage] = useState(null);
   const [isFileTooBig, setIsFileTooBig] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isClickOnThumbnail, setIsClickOnThumbnail] = useState(false);
   const [progressValue, setProgressValue] = useState(0);
   const [isProgress, setIsProgress] = useState(false);
+  const [showConfirmDeleteImage, setShowConfirmDeleteImage] = useState(false);
   const ref = useRef(null);
-  const onChange = (e) => {setInvoicefile(e.target.files[0])};
+  const onChange = (e) => { setInvoicefile(e.target.files[0]) };
 
   const handleClickOutsideCheckFullImage = () => {
     !isClickOnThumbnail && handleClickOutside();
   }
 
   useOnClickOutside(ref, handleClickOutsideCheckFullImage);
+
+  const confirmDeleteImage = () => {
+    setShowConfirmDeleteImage(true);
+  }
 
   const deleteImage = async () => {
     try {
@@ -101,7 +108,7 @@ const InvoiceModal = ({ handleClickOutside, spending }) => {
     setIsFileTooBig(false);
     const formData = new FormData();
 
-    // beware, userID must be append before file
+    // warning, userID must be appended before file
     // see : https://stackoverflow.com/questions/39589022/node-js-multer-and-req-body-empty
     formData.append('userID', userID);
 
@@ -122,7 +129,7 @@ const InvoiceModal = ({ handleClickOutside, spending }) => {
     formData.append('spendingID', spending.ID);
     formData.append('invoiceImageUpload', invoicefile);
 
-    if (invoicefile.size > fileSizeLimit) {
+    if ((invoicefile as File).size > fileSizeLimit) {
       setIsFileTooBig(true);
     } else {
       uploadInvoiceImage(formData);
@@ -205,11 +212,19 @@ const InvoiceModal = ({ handleClickOutside, spending }) => {
                 </div>
               :
               invoiceImage ?
-                <Button
-                  type="button"
-                  onClick={deleteImage}
-                  label={invoiceModalTexts.delete}
-                />
+                showConfirmDeleteImage ?
+                  <ConfirmDelete hideConfirm={() => { setShowConfirmDeleteImage(false) }}>
+                    <DeleteInvoiceButton
+                      hideConfirm={() => {setShowConfirmDeleteImage(false)}}
+                      deleteInvoice={deleteImage}
+                    />
+                  </ConfirmDelete>
+                  :
+                  <Button
+                    type="button"
+                    onClick={confirmDeleteImage}
+                    label={invoiceModalTexts.delete}
+                  />
                 :
                 <>
                   <input
@@ -224,7 +239,7 @@ const InvoiceModal = ({ handleClickOutside, spending }) => {
                       {
                         invoicefile !== '' ?
                           <div className="flex flex-col space-y-4 pt-2 relative font-semibold text-lg h-[105px]">
-                            <div>{invoicefile.name}</div>
+                            <div>{(invoicefile as File).name}</div>
                             {
                               invoicefile && (
                                 <Button
