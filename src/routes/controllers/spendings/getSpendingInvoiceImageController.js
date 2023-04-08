@@ -9,6 +9,7 @@ module.exports = async (req, res, _next) => {
 
   const itemType = req.query.itemType;
 
+  // itemType is spending or recurring, but no recurring invoice now
   const spendingsTableName = itemType.charAt(0).toUpperCase() + itemType.slice(1) + "s";
 
   const sqlInvoiceFile = `

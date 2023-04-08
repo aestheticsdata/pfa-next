@@ -48,7 +48,6 @@ module.exports = async (req, res, _next) => {
     dbConnection.query(
       sqlSpending,
       async () => {
-        console.log("invoice filename added to spending");
         const [invoiceImageString, contentType] = await getImage(resizedFilename, req.body.userID);
         res.setHeader('content-type', contentType);
         res.send(invoiceImageString);
