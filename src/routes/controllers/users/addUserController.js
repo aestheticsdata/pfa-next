@@ -54,7 +54,7 @@ module.exports = async (req, res, next) => {
                 sqlCreateUser,
                 () => {
                   signIn(res, {
-                    id: newUser.ID,
+                    ID: newUser.ID,
                     name: newUser.name,
                     email: newUser.email,
                     language: "fr",
