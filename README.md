@@ -1,0 +1,1 @@
+NextJS / TailwindCSS / MySQL / Express 
