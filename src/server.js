@@ -7,6 +7,7 @@ const OS = require('os');
 const cronMysql = require('./cron/cron-mysql');
 const errorHandlerMiddleware = require('./utils/errorHandlerMiddleware');
 const invoicesImagesBackup = require('./invoicesImagesBackup/invoicesImagesBackup');
+// const rateLimiter = require('./helpers/rateLimiter');
 
 process.env.UV_THREADPOOL_SIZE = OS.cpus().length;
 
@@ -15,7 +16,7 @@ app.use(helmet());
 // not very important to remve this header, see: https://github.com/expressjs/express/pull/2813#issuecomment-159270428
 // removing X-Powered-By: Express is not working with :
 app.use(helmet.hidePoweredBy());
-
+// app.use(rateLimiter);
 app.use(cors());
 
 if (process.env.PROD) {
