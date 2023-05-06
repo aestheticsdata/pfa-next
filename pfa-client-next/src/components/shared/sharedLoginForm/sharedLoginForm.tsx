@@ -26,7 +26,6 @@ const SharedLoginForm = ({
   };
 
   return (
-    // <StyledSharedLoginForm>
     <div className="flex w-full flex-col items-center space-y-8 text-formsGlobalColor">
       <div className="text-4xl font-thin">Personal Finance Assistant</div>
       <Formik
@@ -93,7 +92,6 @@ const SharedLoginForm = ({
         )}
       </Formik>
     </div>
-    // </StyledSharedLoginForm>
   );
 };
 
