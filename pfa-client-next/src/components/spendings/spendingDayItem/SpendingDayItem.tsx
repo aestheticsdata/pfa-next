@@ -129,7 +129,7 @@ const SpendingDayItem = ({ spendingsByDay, deleteSpending, isLoading, date, recu
           }
         </div>
         {!recurringType &&
-          <div className="flex space-x-2 border-b border-b-grey2 mx-3 py-1 justify-between">
+          <div className="flex overflow-y-auto max-h-7 space-x-2 border-b border-b-grey2 mx-3 py-1 justify-between">
             <div className="flex flex-row space-x-1">
             {spendingsByDay &&
               getCategories(spendingsByDay).map(
