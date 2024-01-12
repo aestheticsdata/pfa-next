@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useForm, useController } from "react-hook-form";
+import subMonths from "date-fns/subMonths";
 import format from 'date-fns/format';
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,6 +14,7 @@ import { useUserStore } from "@auth/store/userStore";
 import useSpendings from "@components/spendings/services/useSpendings";
 import useReccurings from "@components/spendings/services/useReccurings";
 import AutocompleteItem from "@components/spendings/common/spendingModal/AutocompleteItem";
+import { DATE_FORMAT } from "@components/spendings/config/constants";
 
 const spendingSchema = z.object({
   spendingLabel: z.string().nonempty(),
@@ -224,7 +226,13 @@ const SpendingModal = ({
               label="Copier les recurrings du mois précédent"
               onClick={() => {
                 closeModal();
-                copyRecurrings.mutate({ userID: user!.id, formattedMonth: month });
+                copyRecurrings.mutate({ userID: user!.id, dates: {
+                    start: format(month.start, DATE_FORMAT),
+                    end: format(month.end, DATE_FORMAT),
+                    previousMonthStart: format(subMonths(month.start, 1), DATE_FORMAT),
+                    previousMonthEnd: format(subMonths(month.end, 1), DATE_FORMAT),
+                  }
+                });
               }}
             />
           )

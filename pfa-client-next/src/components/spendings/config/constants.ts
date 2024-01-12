@@ -12,3 +12,5 @@ export const QUERY_KEYS = {
   WEEKLY_STATS: "weeklyStats",
   CATEGORIES: "categories",
 };
+
+export const DATE_FORMAT = "yyyy-MM-dd";

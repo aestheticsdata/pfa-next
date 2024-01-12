@@ -15,6 +15,11 @@ interface FormattedMonth {
   end: string;
 }
 
+interface Dates extends FormattedMonth {
+  previousMonthStart: string;
+  previousMonthEnd: string;
+}
+
 interface CreateRecurring {
   spendingEdited: Spending;
   formattedMonth: FormattedMonth;
@@ -78,12 +83,12 @@ const useReccurings = () => {
     });
   };
 
-  const copyRecurringsService = async (userID: string, month: FormattedMonth) => {
-    return privateRequest("/recurrings/copy", {
+  const copyRecurringsService = async (userID: string, dates: Dates) => {
+    return privateRequest(`/recurrings/copy`, {
       method: "POST",
       data: {
         userID,
-        month,
+        dates,
       }
     });
   };
@@ -110,8 +115,8 @@ const useReccurings = () => {
     }
   });
 
-  const copyRecurrings = useMutation(({ userID, formattedMonth }: { userID: string, formattedMonth: FormattedMonth }) => {
-    return copyRecurringsService(userID, formattedMonth);
+  const copyRecurrings = useMutation(({ userID, dates }: { userID: string, dates: Dates }) => {
+    return copyRecurringsService(userID, dates);
   }, {
     onSuccess: () =>  recurringsActionOnSuccess("créés"),
     onError: (e) => { console.log("error copying recurrings", e);
