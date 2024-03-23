@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+import useInitialAmount from "@components/spendings/services/useInitialAmount";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import useRequestHelper from "@src/helpers/useRequestHelper";
 import formatISO from "date-fns/formatISO";
@@ -6,6 +8,7 @@ import endOfMonth from "date-fns/endOfMonth";
 import { useUserStore } from "@auth/store/userStore";
 import useDatePickerWrapperStore from "@components/datePickerWrapper/store";
 import { QUERY_KEYS, QUERY_OPTIONS } from "@components/spendings/config/constants";
+
 import type { UseQueryResult } from "react-query";
 
 
@@ -25,6 +28,8 @@ export interface DashBoardData {
 interface UseDashboard {
   get: UseQueryResult<DashBoardData>;
   mutation: any;
+  remaining: number,
+  monthlyTotal: number,
 }
 
 
@@ -34,6 +39,9 @@ const useDashboard = (): UseDashboard => {
   const { from } = useDatePickerWrapperStore();
   const monthBeginning = startOfMonth(from!);
   const queryClient = useQueryClient();
+  const { data: initialAmount } = useInitialAmount();
+  const [remaining, setRemaining] = useState<number>(0);
+  const [monthlyTotal, setMonthlyTotal] = useState<number>(0);
 
   const getDashboard = async () => {
     return privateRequest(
@@ -73,6 +81,14 @@ const useDashboard = (): UseDashboard => {
     ...QUERY_OPTIONS,
   });
 
+  useEffect(() => {
+    if (get.data?.data && initialAmount) {
+      const totalOfMonth: number = (Number(initialAmount.spendingsSum.amount) + Number(initialAmount.recurringsSum.amount));
+      setMonthlyTotal(Number(totalOfMonth.toFixed(2)));
+      setRemaining(Number((Number(get.data.data.initialAmount) - totalOfMonth).toFixed(2)));
+    }
+  }, [get.data, initialAmount]);
+
   const mutation = useMutation(({ dashboardID, initialAmount }) => {
     if (dashboardID) {
       return updateInitialSalary(dashboardID, initialAmount);
@@ -88,6 +104,8 @@ const useDashboard = (): UseDashboard => {
   return {
     get,
     mutation,
+    remaining,
+    monthlyTotal,
   }
 };
 

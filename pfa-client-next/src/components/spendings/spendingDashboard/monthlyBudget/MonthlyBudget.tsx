@@ -1,12 +1,12 @@
 import { KeyboardEvent, useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import getYear from "date-fns/getYear";
 import format from "date-fns/format";
 import fr from "date-fns/locale/fr";
 import useDatePickerWrapperStore from "@components/datePickerWrapper/store";
-import useDashboard, { DashBoardData } from "@components/spendings/services/useDashboard";
+import useDashboard from "@components/spendings/services/useDashboard";
 import useInitialAmount from "@components/spendings/services/useInitialAmount";
 import monthlyText from "@components/spendings/config/text";
-import { useForm } from "react-hook-form";
 
 interface InitialSalary {
   initialAmount: string;
@@ -15,26 +15,18 @@ interface InitialSalary {
 const MonthlyBudget = () => {
   const { to } = useDatePickerWrapperStore();
   const [isInputVisible, setIsInputVisible] = useState<boolean>(false);
-  const { get : { data: dashboard }, mutation } = useDashboard();
+  const { get : { data: dashboard }, mutation, remaining, monthlyTotal } = useDashboard();
   const { data: initialAmount } = useInitialAmount();
   const { register, handleSubmit, setFocus, reset } = useForm<InitialSalary>();
-  const [remaining, setRemaining] = useState<number>(0);
-  const [totalOfMonth, setTotalOfMonth] = useState<number>(0);
 
   useEffect(() => {
     if (dashboard && initialAmount) {
-      const totalOfMonth: number = (Number(initialAmount.spendingsSum.amount) + Number(initialAmount.recurringsSum.amount));
-      const remaining: number = dashboard?.data ? Number(dashboard.data.initialAmount) - totalOfMonth : 0;
-      setRemaining(Number(remaining.toFixed(2)));
-      setTotalOfMonth(Number(totalOfMonth.toFixed(2)));
       reset();
     }
   }, [dashboard, initialAmount]);
 
   const onSubmit = (value: InitialSalary) => {
-    console.log("value", value);
     setIsInputVisible(false);
-    console.log("onsubmit");
     mutation.mutate({dashboardID: dashboard?.data?.ID, initialAmount: value.initialAmount});
   }
 
@@ -95,7 +87,7 @@ const MonthlyBudget = () => {
             {monthlyText.dashboard.monthlyBudget.total}
           </div>
           <div className="text-monthTotalAmount font-bold">
-            {totalOfMonth} €
+            {monthlyTotal} €
           </div>
         </div>
       </div>

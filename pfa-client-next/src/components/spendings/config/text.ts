@@ -20,6 +20,8 @@ const spendings = {
   dayItem: {
     recurringTitle: "Dépenses fixes",
     total: "Total",
+    remainingBudget: "Budget du jour maximum",
+    filterResetLabel: "tout",
   },
   sortItem: {
     label: "Label",

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import format from 'date-fns/format';
-import { getDayOfYear } from "date-fns";
+import { getDayOfYear, endOfMonth } from "date-fns";
 import fr from "date-fns/locale/fr";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusSquare } from '@fortawesome/free-solid-svg-icons';
@@ -15,6 +15,7 @@ import SpendingModal from "@components/spendings/common/spendingModal/SpendingMo
 import type { SpendingCompoundType, SpendingType } from "@components/spendings/types";
 import { dividerClasses } from "@mui/material";
 import CategoryComponent from "@components/common/Category";
+import useDashboard from "@components/spendings/services/useDashboard";
 
 interface SpendingDayItemProps {
   spendingsByDay: any;
@@ -29,7 +30,19 @@ interface SpendingDayItemProps {
 
 
 const SpendingDayItem = ({ spendingsByDay, deleteSpending, isLoading, date, recurringType = false, month = null }: SpendingDayItemProps) => {
+  const { remaining: remainingAmount } = useDashboard();
+  const [todayCredits, setTodayCredits] = useState<number>(0);
   const isToday = getDayOfYear(date!) === getDayOfYear(Date.now());
+
+  useEffect(() => {
+    if (remainingAmount) {
+      if (isToday) {
+        const remainingDays = (getDayOfYear(endOfMonth(Date.now())) -  getDayOfYear(Date.now())) + 1;
+        setTodayCredits(remainingAmount / remainingDays);
+      }
+    }
+  }, [remainingAmount]);
+
   const {
     onClickSort,
     spendingsByDaySorted,
@@ -113,9 +126,9 @@ const SpendingDayItem = ({ spendingsByDay, deleteSpending, isLoading, date, recu
           addSpending={addSpending}
           addSpendingEnabled={addSpendingEnabled}
         />
-        <div>
+        <div className={`flex ${recurringType || !isToday ? "justify-center" : "justify-between"} items-center font-poppins border-b border-b-grey3 mx-3`}>
           {spendingsByDaySorted &&
-            <div className="flex justify-center gap-x-2 text-md font-poppins border-b border-b-grey3 mx-3">
+            <div className="flex justify-center gap-x-2 text-md">
               <div className="uppercase">{spendingsText.dayItem.total}</div>
               <div className="total-amount font-bold">
                 {recurringType
@@ -125,6 +138,11 @@ const SpendingDayItem = ({ spendingsByDay, deleteSpending, isLoading, date, recu
                   <div>{Number(spendingsByDaySorted.total).toFixed(2)} €</div>
                 }
               </div>
+            </div>
+          }
+          {!recurringType && isToday &&
+            <div className="text-xxs">
+              <span>{spendingsText.dayItem.remainingBudget}</span> <span className="font-bold">{Math.trunc(todayCredits)} €</span>
             </div>
           }
         </div>
@@ -157,7 +175,7 @@ const SpendingDayItem = ({ spendingsByDay, deleteSpending, isLoading, date, recu
               onClick={() => {setSelectedCategory(null)}}
             >
               {spendingsByDaySorted.length > 0 ?
-                <div className="bg-grey4 text-white hover:bg-grey2 cursor-pointer text-tiny uppercase rounded border px-1">tout</div>
+                <div className="bg-grey4 text-white hover:bg-grey2 cursor-pointer text-tiny uppercase rounded border px-1">{spendingsText.dayItem.filterResetLabel}</div>
                 :
                 <div className="h-3"></div>
               }
@@ -165,6 +183,7 @@ const SpendingDayItem = ({ spendingsByDay, deleteSpending, isLoading, date, recu
           </div>
         }
         <SpendingSort
+          recurringType={recurringType}
           recurringType={recurringType}
           onClickSort={onClickSort}
         />
