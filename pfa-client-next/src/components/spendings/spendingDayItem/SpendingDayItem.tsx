@@ -184,7 +184,6 @@ const SpendingDayItem = ({ spendingsByDay, deleteSpending, isLoading, date, recu
         }
         <SpendingSort
           recurringType={recurringType}
-          recurringType={recurringType}
           onClickSort={onClickSort}
         />
         <div className="flex flex-col mt-2">
