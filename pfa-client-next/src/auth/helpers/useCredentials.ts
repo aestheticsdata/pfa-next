@@ -8,8 +8,8 @@ const useCredentials = () => {
   const userStore = useUserStore();
 
   const setCredentials = async (token: any, user: any) => {
-    await authStore.setToken(token);
-    await userStore.setUser(user);
+    authStore.setToken(token);
+    userStore.setUser(user);
     await router.push("/");
   };
 
