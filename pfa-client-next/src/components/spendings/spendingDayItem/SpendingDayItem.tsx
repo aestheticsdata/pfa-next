@@ -97,7 +97,7 @@ const SpendingDayItem = ({ spendingsByDay, deleteSpending, isLoading, date, recu
 
   return (
     <div
-      className={`rounded bg-spendingDayBackground border ${isToday ? "shadow-spendingDaySelected" : "border-grey2"}
+      className={`rounded bg-spendingDayBackground
       ${recurringType
         ? "w-full md:w-[400px] h-[265px]"
         : "w-full md:w-[490px] h-[350px] md:m-2"
@@ -147,7 +147,7 @@ const SpendingDayItem = ({ spendingsByDay, deleteSpending, isLoading, date, recu
           }
         </div>
         {!recurringType &&
-          <div className="flex overflow-y-auto max-h-7 space-x-2 border-b border-b-grey2 mx-3 py-1 justify-between">
+          <div className="flex overflow-y-auto max-h-7 bg-white space-x-2 border-b border-b-grey2 mx-3 py-1 justify-between">
             <div className="flex flex-row space-x-1">
             {spendingsByDay &&
               getCategories(spendingsByDay).map(

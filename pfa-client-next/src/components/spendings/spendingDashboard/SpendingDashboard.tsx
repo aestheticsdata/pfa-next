@@ -17,7 +17,7 @@ const SpendingDashboard = ({ month }: SpendingDashboardProps) => {
   const { recurrings, isLoading: isRecurringsLoading, deleteRecurring } = useReccurings();
 
   return (
-    <div className="hidden md:flex justify-around mt-14 items-center w-full h-72 bg-grey2 z-30 fixed border-t-2 border-b-2 border-t-grey1 border-b-grey1 shadow-dashboard">
+    <div className="hidden md:flex justify-around mt-14 items-center w-full h-72 bg-grey2 z-30 fixed">
       <WeeklyStats />
       <MonthlyBudget />
       <MonthlyCharts />

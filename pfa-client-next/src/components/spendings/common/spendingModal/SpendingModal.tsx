@@ -161,8 +161,8 @@ const SpendingModal = ({
     <div className={`
       flex bg-spendingItemHover p-2 rounded-b w-full
       ${recurringType
-        ? "md:w-[398px] h-[220px]"
-        : "md:w-[488px] h-[305px]"
+        ? "md:w-full h-[221px]"
+        : "md:w-full h-[306px]"
         }
       absolute top-11`
     }>

@@ -35,7 +35,7 @@ const CategoryComponent = ({item, isDynamic = false, isClicked = false}: Categor
 
   return (
     <div
-      className={`flex justify-center px-0.5 rounded border border-categoryBorder ${isDynamic ? "text-tiny" : "text-xxs"} uppercase`}
+      className={`flex justify-center px-0.5 rounded ${isDynamic ? "text-tiny" : "text-xxs"} uppercase`}
       style={{
         color: `${getColor()}`,
         backgroundColor: `${getBackgroundcolor()}`,

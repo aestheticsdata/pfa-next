@@ -36,7 +36,7 @@ const MonthlyBudget = () => {
 
   return (
     to && (
-      <div className="flex flex-col shrink-0 items-center border border-white bg-grey0 rounded w-[180px] h-[265px] gap-y-4">
+      <div className="flex flex-col shrink-0 items-center bg-grey0 rounded w-[180px] h-[265px] gap-y-4">
 
         <div className="flex flex-col items-center text-xs font-bold border-b border-b-black w-5/6 py-2">
           <div className="uppercase">{format(to, "MMMM", { locale: fr })}</div>

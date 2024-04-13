@@ -111,6 +111,8 @@ const Charts = ({ title, periodType }: ChartsProps) => {
                     style={{
                       width: getWidth(category.value),
                       backgroundColor: category.categoryColor ?? "#ffffff",
+                      borderTopRightRadius: "3px",
+                      borderBottomRightRadius: "3px",
                     }}
                     onMouseEnter={() => setIsTooltipVisible(true)}
                     onMouseLeave={() => setIsTooltipVisible(false)}

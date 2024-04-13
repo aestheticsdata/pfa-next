@@ -70,7 +70,7 @@ const WeeklyStats = () => {
   }, [setFocus, isInputVisible]);
 
   return (
-    <div className="flex flex-col shrink-0 items-center w-[320px] h-[265px] border border-grey3 bg-black text-white rounded gap-y-3 text-xs">
+    <div className="flex flex-col shrink-0 items-center w-[320px] h-[265px] bg-black text-white rounded gap-y-3 text-xs">
       <WidgetHeader
         title={spendingsText.dashboard.weeklyStats.headerTitle}
         periodType={WEEKLY}

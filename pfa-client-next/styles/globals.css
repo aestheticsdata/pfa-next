@@ -59,11 +59,13 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
 
 .DayPicker-Day--selectedRange:not(.DayPicker-Day--outside).DayPicker-Day--selected,
 .DayPicker-Day--hoverRange:not(.DayPicker-Day--outside).DayPicker-Day--selected {
-  border-radius: 0 !important;
+  border-radius: 5px !important;
+  /*border-radius: 0 !important;*/
   color: black !important;
 }
 .DayPicker-Day--hoverRange:hover {
-  border-radius: 0 !important;
+  border-radius: 5px !important;
+  /*border-radius: 0 !important;*/
 }
 
 .transition-bar-enter {
