@@ -9,6 +9,7 @@ const spendings = {
       initialAmount: "Montant initial",
       remaining: "Restant",
       total: "Total du mois",
+      percentLabel: "dépensés",
     },
     monthlyCharts: {
       headerTitle: "répartition mensuelle",

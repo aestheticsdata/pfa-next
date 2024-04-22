@@ -18,12 +18,17 @@ const MonthlyBudget = () => {
   const { get : { data: dashboard }, mutation, remaining, monthlyTotal } = useDashboard();
   const { data: initialAmount } = useInitialAmount();
   const { register, handleSubmit, setFocus, reset } = useForm<InitialSalary>();
+  const [monthlyTotalPercentage, setMonthlyTotalPercentage] = useState<number>(0);
 
   useEffect(() => {
     if (dashboard && initialAmount) {
       reset();
+      if (dashboard.data?.initialAmount && monthlyTotal) {
+        const percentage = +(((monthlyTotal / +dashboard.data.initialAmount) * 100).toFixed(2));
+        setMonthlyTotalPercentage(Math.min(100, percentage));
+      }
     }
-  }, [dashboard, initialAmount]);
+  }, [dashboard, initialAmount, monthlyTotal]);
 
   const onSubmit = (value: InitialSalary) => {
     setIsInputVisible(false);
@@ -36,14 +41,14 @@ const MonthlyBudget = () => {
 
   return (
     to && (
-      <div className="flex flex-col shrink-0 items-center bg-grey0 rounded w-[180px] h-[265px] gap-y-4">
+      <div className="flex flex-col shrink-0 items-center bg-grey0 rounded w-[180px] h-[265px] gap-y-2">
 
         <div className="flex flex-col items-center text-xs font-bold border-b border-b-black w-5/6 py-2">
           <div className="uppercase">{format(to, "MMMM", { locale: fr })}</div>
           <div className="year">{getYear(to)}</div>
         </div>
 
-        <div className="flex flex-col w-full items-center text-xs bg-initialAmountAlpha border-l-8 border-l-initialAmount pr-4 justify-around h-12">
+        <div className="flex flex-col w-11/12 items-center text-xs bg-initialAmountAlpha justify-around h-12 rounded">
           <div className="uppercase">{monthlyText.dashboard.monthlyBudget.initialAmount}</div>
           <div
             className={`${!isInputVisible ? "visible" : "hidden"}`}
@@ -73,22 +78,37 @@ const MonthlyBudget = () => {
           }
         </div>
 
-        <div className={`flex flex-col w-full items-center text-xs border-l-8 border-l-remainingAmount pr-4 justify-around h-12 ${remaining >= 0 ? "bg-remainingAmountAlpha" : "bg-generalWarningBackground"}`}>
+        <div className={`flex flex-col w-11/12 rounded items-center text-xs h-12 justify-around ${remaining >= 0 ? "bg-remainingAmountAlpha" : "bg-generalWarningBackground"}`}>
           <div className="uppercase text-xs">
             {monthlyText.dashboard.monthlyBudget.remaining}
           </div>
-          <div className={`text-remainingAmount font-bold ${remaining < 0 && "text-generalWarning"}`}>
+          <div className={`text-blue-500 font-bold ${remaining < 0 && "text-generalWarning"}`}>
             {remaining} €
           </div>
         </div>
 
-        <div className="flex flex-col w-full items-center text-xs bg-monthTotalAmountAlpha border-l-8 border-l-monthTotalAmount pr-4 justify-around h-12">
+        <div
+          className="flex flex-col w-11/12 items-center text-xs bg-monthTotalAmountAlpha justify-around p-2">
           <div className="uppercase text-xs">
             {monthlyText.dashboard.monthlyBudget.total}
           </div>
-          <div className="text-monthTotalAmount font-bold">
+          <div className="font-bold text-blue-500">
             {monthlyTotal} €
           </div>
+            <>
+              <div className={`text-tiny font-bold self-start ${monthlyTotalPercentage === 100 ? "text-red-500" : "text-blue-500"}`}>
+                {`${monthlyTotalPercentage}%`} {monthlyText.dashboard.monthlyBudget.percentLabel}
+              </div>
+              <div className="w-full bg-grey1 rounded mb-2">
+                <div
+                  className={`h-[10px] ${monthlyTotalPercentage === 100 ? "rounded bg-red-500" : "rounded-l bg-blue-500"}`}
+                  style={{
+                    width: `${monthlyTotalPercentage}%`,
+                    transition: "width 0.4s ease-out",
+                  }}
+                />
+              </div>
+            </>
         </div>
       </div>
     )
