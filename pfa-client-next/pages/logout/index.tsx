@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useAuthStore } from "@auth/store/authStore";
 import { useUserStore } from "@auth/store/userStore";
@@ -8,6 +8,7 @@ const Logout = () => {
   const userStore = useUserStore();
   const authStore = useAuthStore();
   const router = useRouter();
+  const [isRedirected, setIsRedirected] = useState(false);
 
   const queryClient = useQueryClient();
   queryClient.clear();
@@ -15,8 +16,11 @@ const Logout = () => {
   useEffect(() => {
     authStore.setToken(null);
     userStore.setUser(null);
-    router.push("/login");
-  });
+    if (!isRedirected) { // https://stackoverflow.com/a/73344411/5671836
+      router.push("/login");
+      setIsRedirected(true);
+    }
+  }, []);
 
   return <></>;
 };
