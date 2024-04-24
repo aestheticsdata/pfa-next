@@ -7,10 +7,13 @@ import SpendingDashboard from "@components/spendings/spendingDashboard/SpendingD
 import useSpendings from "@components/spendings/services/useSpendings";
 import useInitialAmount from "@components/spendings/services/useInitialAmount";
 import SpendingDayItem from "@components/spendings/spendingDayItem/SpendingDayItem";
+import useBlur from "@components/common/helpers/blurHelper";
 
 import type { MonthRange } from "@components/spendings/interfaces/spendingDashboardTypes";
 
 const Spendings = () => {
+  const { isBlurActive } = useBlur();
+
   const [month, setMonth] = useState<MonthRange>();
   const { from, to, range } = useDatePickerWrapperStore();
 
@@ -29,26 +32,22 @@ const Spendings = () => {
     }
   }, [from, to]);
 
-  useEffect(() => {
-    // console.log("spendings by week", spendingsByWeek);
-    // console.log("spendings by month", spendingsByMonth);
-  }, [spendingsByWeek, spendingsByMonth]);
-
   return (
     <>
       {month &&
         <>
           <SpendingDashboard month={month} />
-          <div className="flex justify-center w-full">
+          <div className={`flex justify-center w-full ${isBlurActive && "opacity-20"}`}>
             <div className="flex flex-wrap justify-start mt-36 md:mt-96 md:pl-1 w-full md:w-11/12 space-y-2">
-              {spendingsByWeek?.map((spending: any, i:number) =>
-                  <SpendingDayItem
-                    key={i}
-                    spendingsByDay={spending}
-                    date={range![i]}
-                    isLoading={isSpendingsLoading}
-                  />
-                )
+            {/*<div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-8 mt-36 md:mt-96">*/}
+              {spendingsByWeek?.map((spending: any, i: number) =>
+                <SpendingDayItem
+                  key={i}
+                  spendingsByDay={spending}
+                  date={range![i]}
+                  isLoading={isSpendingsLoading}
+                />
+              )
               }
             </div>
           </div>

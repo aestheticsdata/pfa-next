@@ -6,11 +6,14 @@ import {
   getWeekRange,
 } from "@components/datePickerWrapper/helpers";
 import useDatePickerWrapperStore from "@components/datePickerWrapper/store";
+import useBlur from "@components/common/helpers/blurHelper";
 
 import type { Days, HoverRange } from "@components/datePickerWrapper/types";
 
 
 const useDatePickerState = () => {
+  const { toggleBlur } = useBlur();
+
   const [isCalendarVisible, setIsCalendarVisible] = useState<boolean>(false);
   const [hoverRange, setHoverRange] = useState<HoverRange>(null);
   const [selectedDays, setSelectedDays] = useState<Days>([]);
@@ -20,10 +23,12 @@ const useDatePickerState = () => {
   const { setFrom, setTo, setRange } = useDatePickerWrapperStore();
 
   const toggleCalendar = () => {
+    toggleBlur();
     setIsCalendarVisible(!isCalendarVisible);
   };
 
   const handleClickOutside = () => {
+    isCalendarVisible && toggleBlur();
     setIsCalendarVisible(false);
   };
 
@@ -40,8 +45,6 @@ const useDatePickerState = () => {
     setTo(weekRange.to);
     setRange(dateRange);
     setSelectedDays(dateRange);
-
-    handleClickOutside();
   };
 
   const handleDayEnter = (date: Date) => {

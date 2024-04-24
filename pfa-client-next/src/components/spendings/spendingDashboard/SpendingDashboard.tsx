@@ -5,6 +5,7 @@ import WeeklyCharts from "@components/spendings/spendingDashboard/weeklyCharts/W
 import MonthlyCharts from "@components/spendings/spendingDashboard/monthlyCharts/MonthlyCharts";
 import { useUserStore } from "@auth/store/userStore";
 import useReccurings from "@components/spendings/services/useReccurings";
+import useBlur from "@components/common/helpers/blurHelper";
 
 import type { MonthRange } from "@components/spendings/interfaces/spendingDashboardTypes";
 
@@ -13,11 +14,12 @@ interface SpendingDashboardProps {
 }
 
 const SpendingDashboard = ({ month }: SpendingDashboardProps) => {
+  const { isBlurActive } = useBlur();
   const user = useUserStore((state) => state.user);
   const { recurrings, isLoading: isRecurringsLoading, deleteRecurring } = useReccurings();
 
   return (
-    <div className="hidden md:flex justify-around mt-14 items-center w-full h-72 bg-grey2 z-30 fixed">
+    <div className={`hidden md:flex justify-around mt-14 items-center w-full h-72 bg-grey2 z-30 fixed ${isBlurActive && "opacity-20"}`}>
       <WeeklyStats />
       <MonthlyBudget />
       <MonthlyCharts />

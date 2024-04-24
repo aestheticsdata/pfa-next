@@ -37,7 +37,6 @@ const Charts = ({ title, periodType }: ChartsProps) => {
   const { data: charts } = useCharts(periodType);
 
   useEffect(() => {
-    console.log("charts", charts);
     if (charts?.data.length > 0) {
       setMaxv(getMaxValue(charts!.data));
       setTotal(getTotal(charts!.data));

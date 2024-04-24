@@ -113,7 +113,6 @@ const SpendingModal = ({
   }
 
   const onSubmit = (values: SpendingForm) => {
-    console.log("onSubmit values", values);
     const amountEvaluatedExpr = toFixedEval(String(values.spendingAmount));
     const spendingEdited = {
       // this format date is required to avoid inconsistency
@@ -128,8 +127,6 @@ const SpendingModal = ({
       userID: user!.id,
       id: spending.ID,
     };
-
-    console.log("spendingEdited", spendingEdited);
 
     if (isEditing) {
       if (recurringType) {
