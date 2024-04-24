@@ -45,6 +45,8 @@ const useDatePickerState = () => {
     setTo(weekRange.to);
     setRange(dateRange);
     setSelectedDays(dateRange);
+
+    handleClickOutside();
   };
 
   const handleDayEnter = (date: Date) => {
