@@ -20,7 +20,7 @@ const Logout = () => {
       router.push("/login");
       setIsRedirected(true);
     }
-  }, []);
+  });
 
   return <></>;
 };
