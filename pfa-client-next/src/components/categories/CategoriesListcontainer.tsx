@@ -20,6 +20,7 @@ const CategoriesListcontainer = () => {
         <div className="ml-1 font-ubuntu text-grey3 font-bold underline">
           Nombre de catégories : {categories?.data.length}
         </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
         {categories?.data.length > 0 ?
           categories!.data
             .sort((c1: CategoryItemProps, c2: CategoryItemProps) => c1.name.localeCompare(c2.name))
@@ -35,6 +36,7 @@ const CategoriesListcontainer = () => {
             <Spinner />
           </div>
         }
+        </div>
       </div>
     </Layout>
   )

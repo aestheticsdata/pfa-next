@@ -134,7 +134,7 @@ const SpendingsListModal = ({ handleClickOutside, periodType, categoryInfos, tot
         <div className="flex flex-row space-x-2 pb-2 border-b border-b-grey3 mx-3 h-[30px]">
           <div className="">{spendingsListModalTexts.filter} :</div>
           <input
-            className=" py-2 bg-transparent focus:shadow-sm focus:shadow-login border-formsGlobalColor border outline-none h-6 rounded p-1 text-sm w-2/5"
+            className=" py-2 bg-transparent focus:shadow-login border-formsGlobalColor border outline-none h-6 rounded p-1 text-sm w-2/5"
             value={searchTerm}
             onChange={e => setsearchTerm(e.target.value)}
           />

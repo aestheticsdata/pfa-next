@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useForm, useController } from "react-hook-form";
+import Mexp from "math-expression-evaluator";
 import subMonths from "date-fns/subMonths";
 import format from 'date-fns/format';
 import { z } from "zod";
@@ -113,7 +114,11 @@ const SpendingModal = ({
   }
 
   const onSubmit = (values: SpendingForm) => {
-    const amountEvaluatedExpr = toFixedEval(String(values.spendingAmount));
+    const mexp = new Mexp();
+    const lexed = mexp.lex(String(values.spendingAmount));
+    const postfixed = mexp.toPostfix(lexed);
+    const amountEvaluatedExpr = mexp.postfixEval(postfixed);
+
     const spendingEdited = {
       // this format date is required to avoid inconsistency
       // when axios convert date in POST request

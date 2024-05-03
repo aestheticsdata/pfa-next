@@ -26,7 +26,12 @@ const NavBar = () => {
     <div className={`flex md:flex-row fixed ${token ? "h-32" : "h-14"} md:h-14 w-screen items-center justify-start bg-blueNavy text-white z-50`}>
       {typeof window !== "undefined" && window.matchMedia("(min-width: 768px)").matches &&
         <div className="mx-4">
-          <img src="/assets/money-svgrepo-com.svg" alt="logo" width="40" height="40"/>
+          <img
+            src="/assets/money-svgrepo-com.svg"
+            alt="logo"
+            width="40"
+            height="40"
+          />
         </div>
       }
       {token ? (
@@ -34,6 +39,7 @@ const NavBar = () => {
           <div className="flex space-x-4">
             {typeof window !== "undefined" && window.matchMedia("(min-width: 768px)").matches && getLinkItem(ROUTES.spendings)}
             {typeof window !== "undefined" && window.matchMedia("(min-width: 768px)").matches && getLinkItem(ROUTES.categories)}
+            {typeof window !== "undefined" && window.matchMedia("(min-width: 768px)").matches && getLinkItem(ROUTES.statistics)}
             {isCalendarVisible && <DatePickerWrapper />}
           </div>
           <div className="flex">
