@@ -114,6 +114,7 @@ const SpendingModal = ({
   }
 
   const onSubmit = (values: SpendingForm) => {
+    // https://github.com/bugwheels94/math-expression-evaluator
     const mexp = new Mexp();
     const lexed = mexp.lex(String(values.spendingAmount));
     const postfixed = mexp.toPostfix(lexed);
