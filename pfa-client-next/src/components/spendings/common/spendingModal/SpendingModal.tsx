@@ -9,7 +9,6 @@ import { Autocomplete } from "@mui/material";
 import { TextField } from "@mui/material";
 import Button from "@components/common/form/Button";
 import Input from "@components/common/form/Input";
-import toFixedEval from "@helpers/mathExprEval";
 import useCategories from "@components/spendings/services/useCategories";
 import { useUserStore } from "@auth/store/userStore";
 import useSpendings from "@components/spendings/services/useSpendings";
