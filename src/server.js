@@ -35,6 +35,7 @@ app.use('/recurrings', require('./routes/api/recurringSpendings'));
 app.use('/dashboard', require('./routes/api/dashboard'));
 app.use('/monthlystats', require('./routes/api/monthlybudgetstats'));
 app.use('/weeklystats', require('./routes/api/weeklystats'));
+app.use('/statistics', require('./routes/api/statistics'));
 
 app.use(errorHandlerMiddleware);
 

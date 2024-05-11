@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   CartesianGrid,
   Tooltip,
@@ -5,89 +6,119 @@ import {
   YAxis,
   BarChart,
   Bar,
+  Legend,
+  LineChart,
+  Line,
 } from "recharts";
-import { useForm, useController } from "react-hook-form";
-import { Autocomplete, TextField } from "@mui/material";
-import AutocompleteItem from "@components/spendings/common/spendingModal/AutocompleteItem";
+import { useForm, Controller } from "react-hook-form";
+import Select from "react-select";
 import Layout from "@components/shared/Layout";
 import useCategories from "@components/spendings/services/useCategories";
-import { useState } from "react";
+import { selectOptionsCSS } from "@components/common/form/selectOptionCSS";
+import useStatisticsCategories from "@components/statistics/helpers/useStatisticsCategories";
+import useStatistics from "@components/statistics/services/useStatistics";
 
-const data = [
+const chartsData = [
   {
     "month": "Jan",
-    "total": 4000,
+    "alimentation": 4000,
+    "foo": 2388,
+    colors: {
+      "alimentation": "#ff339A",
+      "foo": "#4756AB",
+    }
   },
   {
     "month": "Fev",
-    "total": 3000,
+    "alimentation": 3000,
+    "foo": 2388,
   },
   {
     "month": "Mars",
-    "total": 2000,
+    "alimentation": 2000,
+    "foo": 2388,
   },
   {
     "month": "Avril",
-    "total": 2780,
+    "alimentation": 2780,
+    "foo": 2388,
   },
   {
     "month": "Mai",
-    "total": 1890,
+    "alimentation": 1890,
+    "foo": 2388,
   },
   {
     "month": "Juin",
-    "total": 2390,
+    "alimentation": 2390,
+    "foo": 2388,
   },
   {
     "month": "Juillet",
-    "total": 3490,
+    "alimentation": 3490,
+    "foo": 2388,
   },
   {
     "month": "Aout",
-    "total": 3090,
+    "alimentation": 3090,
+    "foo": 2388,
   },
   {
     "month": "Sep",
-    "total": 3110,
+    "alimentation": 3110,
+    "foo": 3726,
   },
   {
     "month": "Oct",
-    "total": 3400,
+    "alimentation": 3400,
+    "foo": 2388,
   },
   {
     "month": "Nov",
-    "total": 1490,
+    "alimentation": 1490,
+    "foo": 1388,
   },
   {
     "month": "Dec",
-    "total": 0,
+    "alimentation": 0,
+    "foo": 2388,
   },
 ];
 
 const Statistics = () => {
   const { categories } = useCategories();
+  const categoriesMarshalled = useStatisticsCategories(categories);
+  const [initialCategories, setinitialCategories] = useState();
 
-  const {  control } = useForm<any>({
+  const { control, watch } = useForm<any>({
     mode: "onChange",
+    defaultValues: {
+      categories: [],
+    }
   });
 
-  const {
-    field,
-    fieldState,
-  } = useController({
-    name: "category",
-    control,
-    rules: { required: true },
-    defaultValue: "",
-  });
+  const categorySelectorWatcher = watch("categorySelector");
+  const { isLoading, statistics } = useStatistics(categorySelectorWatcher);
 
-  const initialEmptyCategoryState = {
-    ID: null,
-    userID: null,
-    name: "",
-    color: null
-  };
-  const [selectedCategory, setselectedCategory] = useState(initialEmptyCategoryState);
+  useEffect(() => {
+    console.log(categorySelectorWatcher);
+  }, [categorySelectorWatcher]);
+
+  useEffect(() => {
+    console.log("statistics data", statistics);
+  }, [statistics]);
+
+  // const initialEmptyCategoryState = {
+  //   ID: null,
+  //   userID: null,
+  //   name: "",
+  //   color: null
+  // };
+  // // const [selectedCategory, setselectedCategory] = useState(initialEmptyCategoryState);
+
+  useEffect(() => {
+
+  }, []);
 
   return (
     <Layout>
@@ -100,58 +131,60 @@ const Statistics = () => {
           </select>
 
           <div>
-            <Autocomplete
-              {...field}
-              freeSolo
-              isOptionEqualToValue={(option, value) => {
-                return option.ID === value.ID;
-              }
-              }
-              autoComplete={true}
-              style={{width: "100%"}}
-              classes={{
-                root: "backgroundColor: yellow"
-              }}
-              getOptionLabel={(option) => option.name ?? option}
-              options={categories?.data || []}
-              renderOption={(props, option) => {
-                const { name, color } = option;
-                return <AutocompleteItem key={name} props={props} color={color!} name={name} />;
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Catégorie"
-                  inputRef={field.ref}
-                  error={!!fieldState.error}
-                  helperText={fieldState.error?.message}
+            {categoriesMarshalled &&
+              <div>
+                <Controller
+                  name="categorySelector"
+                  control={control}
+                  render={({field}) =>
+                    <Select
+                      placeholder="Catégories"
+                      isMulti={true}
+                      styles={selectOptionsCSS("500px")}
+                      options={categoriesMarshalled}
+                      value={initialCategories}
+                      onChange={(selectedOptions) => {
+                        setinitialCategories(selectedOptions);
+                        field.onChange(selectedOptions);
+                      }}
+                    />
+                  }
                 />
-              )}
-              value={selectedCategory}
-              onChange={
-                (e, value) => {
-                  setselectedCategory(value);
-                  return field.onChange(value);
-                }
-              }
-              onInputChange={(_, value) => {value && field.onChange(value)}}
-            />
+              </div>
+            }
           </div>
 
 
         </div>
-        <div className="bg-grey0 p-4 rounded">
-          <BarChart width={800} height={450} data={data}>
-            <CartesianGrid strokeDasharray="5 5" />
-            <XAxis dataKey="month" />
-            <YAxis />
-            <Tooltip />
-            <Bar dataKey="total" fill="blue" />
-          </BarChart>
+        {statistics && statistics.length > 0 &&
+          <div className="bg-grey0 p-4 rounded">
+            <BarChart width={800} height={450} data={chartsData}>
+              <CartesianGrid strokeDasharray="5 5"/>
+              <XAxis dataKey="month"/>
+              <YAxis/>
+              <Tooltip/>
+              <Legend/>
+              <Bar dataKey="alimentation" fill="blue"/>
+              <Bar dataKey="foo" fill="green"/>
+            </BarChart>
+          </div>
+        }
+
+          <div className="bg-grey0 p-4 rounded">
+            <LineChart width={730} height={250} data={chartsData}
+                       margin={{top: 5, right: 30, left: 20, bottom: 5}}>
+              <CartesianGrid strokeDasharray="3 3"/>
+              <XAxis dataKey="name"/>
+              <YAxis/>
+              <Tooltip/>
+              <Legend/>
+              <Line type="monotone" dataKey="alimentation" stroke="#8884d8"/>
+              <Line type="monotone" dataKey="foo" stroke="#82ca9d"/>
+            </LineChart>
+          </div>
         </div>
-      </div>
     </Layout>
-  );
+);
 }
 
 export default Statistics;

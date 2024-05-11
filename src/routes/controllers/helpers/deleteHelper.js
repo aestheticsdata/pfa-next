@@ -9,7 +9,7 @@ module.exports = async (table, ID, res, _next) => {
   dbConnection.query(
     sql,
     (_err) => {
-      res.json({ success: true });
+      res.json({ success: false });
     }
   )
 };

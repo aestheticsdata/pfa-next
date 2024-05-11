@@ -4,12 +4,12 @@ import {
   faLongArrowAltDown,
   faLongArrowAltUp,
 } from "@fortawesome/free-solid-svg-icons";
+import { useForm } from "react-hook-form";
 import WidgetHeader from "@components/spendings/spendingDashboard/common/WidgetHeader";
 import { WEEKLY } from "@components/spendings/spendingDashboard/common/widgetHeaderConstants";
 import useWeeklyStats from "@components/spendings/services/useWeeklyStats";
 import { accurateFixed } from "@helpers/mathExprEval";
 import useDashboard from "@components/spendings/services/useDashboard";
-import { useForm } from "react-hook-form";
 import useDatePickerWrapperStore from "@components/datePickerWrapper/store";
 import useWeeklyStatsHelper from "@components/spendings/spendingDashboard/weeklyStats/helpers/useWeeklyStatsHelper";
 import spendingsText from "@components/spendings/config/text";
