@@ -35,40 +35,56 @@ module.exports = async (req, res) => {
       return res.status(500).json({ error: 'Database error', details: _err.message });
     }
 
-    const output = {};
-    // result.forEach(row => {
-    //   const date = parse(row.month_key, 'yyyy-MM', new Date());
-    //   const formattedMonth = format(date, 'MMM', { locale: fr });
-    //   if (!output[formattedMonth]) {
-    //     output[formattedMonth] = { month: formattedMonth };
+    // data format :
+    // {
+    //   colors: {
+    //     "alimentation": "#ff339A",
+    //       "foo": "#4756AB",
+    //   },
+    //   data: {
+    //     2023: [
+    //       {
+    //         "month": "Fev",
+    //         "alimentation": 3000,
+    //         "foo": 2388,
+    //       },
+    //       {
+    //         "month": "Mars",
+    //         "alimentation": 2000,
+    //         "foo": 2388,
+    //       },
+    //       etc...
+    //     ],
+    //       2024: [etc...]
     //   }
-    //   output[formattedMonth][row.categoryName.toLowerCase()] = row.total;
-    // });
+    // }
 
-    dbConnection.query(sql, (_err, result) => {
-      if (_err) {
-        return res.status(500).json({ error: 'Database error', details: _err.message });
+    const output = { colors: {}, data: {} };
+    result.forEach(row => {
+      const date = parse(row.month_key, 'yyyy-MM', new Date());
+      const year = format(date, 'yyyy');
+      const month = format(date, 'MMM', { locale: fr });
+
+      if (!output.data[year]) {
+        output.data[year] = [];
       }
 
-      const output = {};
-      result.forEach(row => {
-        const date = parse(row.month_key, 'yyyy-MM', new Date());
-        const formattedMonth = format(date, 'MMM', { locale: fr });
+      const existingMonthData = output.data[year].find(m => m.month === month);
+      if (existingMonthData) {
+        existingMonthData[row.categoryName.toLowerCase()] = row.total;
+      } else {
+        const newMonthData = {
+          month: month,
+        };
+        newMonthData[row.categoryName.toLowerCase()] = row.total;
+        output.data[year].push(newMonthData);
+      }
 
-        if (!output[formattedMonth]) {
-          output[formattedMonth] = { month: formattedMonth, colors: {} };
-        }
-        output[formattedMonth][row.categoryName.toLowerCase()] = row.total;
-        output[formattedMonth].colors[row.categoryName.toLowerCase()] = row.categoryColor;
-      });
-
-      const formattedOutput = Object.values(output);
-
-      res.json(formattedOutput);
+      if (!output.colors[row.categoryName.toLowerCase()]) {
+        output.colors[row.categoryName.toLowerCase()] = row.categoryColor;
+      }
     });
 
-    const formattedOutput = Object.values(output);
-
-    res.json(formattedOutput);
+    res.json(output);
   });
 }

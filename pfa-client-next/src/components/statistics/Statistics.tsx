@@ -20,7 +20,7 @@ import useStatistics from "@components/statistics/services/useStatistics";
 
 const chartsData = [
   {
-    "month": "Jan",
+    "month": "Jan 2022",
     "alimentation": 4000,
     "foo": 2388,
     colors: {
@@ -108,18 +108,6 @@ const Statistics = () => {
     console.log("statistics data", statistics);
   }, [statistics]);
 
-  // const initialEmptyCategoryState = {
-  //   ID: null,
-  //   userID: null,
-  //   name: "",
-  //   color: null
-  // };
-  // // const [selectedCategory, setselectedCategory] = useState(initialEmptyCategoryState);
-
-  useEffect(() => {
-
-  }, []);
-
   return (
     <Layout>
       <div className="flex flex-col gap-y-8 mt-20 p-2">
@@ -156,7 +144,7 @@ const Statistics = () => {
 
 
         </div>
-        {statistics && statistics.length > 0 &&
+        {/*{statistics && statistics.length > 0 &&*/}
           <div className="bg-grey0 p-4 rounded">
             <BarChart width={800} height={450} data={chartsData}>
               <CartesianGrid strokeDasharray="5 5"/>
@@ -168,13 +156,13 @@ const Statistics = () => {
               <Bar dataKey="foo" fill="green"/>
             </BarChart>
           </div>
-        }
+        {/*}*/}
 
           <div className="bg-grey0 p-4 rounded">
             <LineChart width={730} height={250} data={chartsData}
                        margin={{top: 5, right: 30, left: 20, bottom: 5}}>
               <CartesianGrid strokeDasharray="3 3"/>
-              <XAxis dataKey="name"/>
+              <XAxis dataKey="month"/>
               <YAxis/>
               <Tooltip/>
               <Legend/>
