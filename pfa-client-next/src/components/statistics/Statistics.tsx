@@ -17,6 +17,9 @@ import useCategories from "@components/spendings/services/useCategories";
 import { selectOptionsCSS } from "@components/common/form/selectOptionCSS";
 import useStatisticsCategories from "@components/statistics/helpers/useStatisticsCategories";
 import useStatistics from "@components/statistics/services/useStatistics";
+import PFABarCharts from "@components/statistics/PFABarCharts";
+import logout from "@pages/logout";
+import PFALineCharts from "@components/statistics/PFALineCharts";
 
 const chartsData = [
   {
@@ -105,7 +108,8 @@ const Statistics = () => {
   }, [categorySelectorWatcher]);
 
   useEffect(() => {
-    console.log("statistics data", statistics);
+    console.log("statistics data", statistics.data[2022]);
+    statistics?.data?.[2022] && console.log("statistics data WTF",  statistics.data[2022]);
   }, [statistics]);
 
   return (
@@ -144,31 +148,14 @@ const Statistics = () => {
 
 
         </div>
-        {/*{statistics && statistics.length > 0 &&*/}
+        {statistics?.data?.[2022]?.length > 0 &&
           <div className="bg-grey0 p-4 rounded">
-            <BarChart width={800} height={450} data={chartsData}>
-              <CartesianGrid strokeDasharray="5 5"/>
-              <XAxis dataKey="month"/>
-              <YAxis/>
-              <Tooltip/>
-              <Legend/>
-              <Bar dataKey="alimentation" fill="blue"/>
-              <Bar dataKey="foo" fill="green"/>
-            </BarChart>
+            <PFABarCharts data={statistics} year={2022} />
           </div>
-        {/*}*/}
+        }
 
           <div className="bg-grey0 p-4 rounded">
-            <LineChart width={730} height={250} data={chartsData}
-                       margin={{top: 5, right: 30, left: 20, bottom: 5}}>
-              <CartesianGrid strokeDasharray="3 3"/>
-              <XAxis dataKey="month"/>
-              <YAxis/>
-              <Tooltip/>
-              <Legend/>
-              <Line type="monotone" dataKey="alimentation" stroke="#8884d8"/>
-              <Line type="monotone" dataKey="foo" stroke="#82ca9d"/>
-            </LineChart>
+           <PFALineCharts data={chartsData} />
           </div>
         </div>
     </Layout>
