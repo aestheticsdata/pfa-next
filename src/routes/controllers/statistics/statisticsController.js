@@ -60,6 +60,15 @@ module.exports = async (req, res) => {
     // }
 
     const output = { colors: {}, data: {} };
+    const categoryTemplate = {};
+
+    result.forEach(row => {
+      if (!output.colors[row.categoryName.toLowerCase()]) {
+        output.colors[row.categoryName.toLowerCase()] = row.categoryColor;
+        categoryTemplate[row.categoryName.toLowerCase()] = 0;
+      }
+    });
+
     result.forEach(row => {
       const date = parse(row.month_key, 'yyyy-MM', new Date());
       const year = format(date, 'yyyy');
@@ -69,22 +78,17 @@ module.exports = async (req, res) => {
         output.data[year] = [];
       }
 
-      const existingMonthData = output.data[year].find(m => m.month === month);
-      if (existingMonthData) {
-        existingMonthData[row.categoryName.toLowerCase()] = row.total;
-      } else {
-        const newMonthData = {
-          month: month,
-        };
-        newMonthData[row.categoryName.toLowerCase()] = row.total;
-        output.data[year].push(newMonthData);
+      let existingMonthData = output.data[year].find(m => m.month === month);
+      if (!existingMonthData) {
+        existingMonthData = { month: month, ...categoryTemplate }; // Utilisez le template pour initialiser les catégories à 0
+        output.data[year].push(existingMonthData);
       }
-
-      if (!output.colors[row.categoryName.toLowerCase()]) {
-        output.colors[row.categoryName.toLowerCase()] = row.categoryColor;
-      }
+      // Mise à jour des données réelles en s'assurant que les montants sont des nombres
+      existingMonthData[row.categoryName.toLowerCase()] = Number(row.total); // Convertit les montants en nombres
     });
 
     res.json(output);
   });
+
+
 }

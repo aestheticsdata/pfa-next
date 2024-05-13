@@ -9,9 +9,9 @@ import {
 } from 'recharts';
 
 const PFABarCharts = ({ data, year }) => {
-  const currentYearData = data.data[year];
+  const currentYearData = data?.data?.[year] ?? 0;
   if (!currentYearData) {
-    return <p>Aucune donnée disponible pour l'année {year}.</p>;
+    return <p>pas de données.</p>;
   }
   console.log("currentYearData", currentYearData);
 
@@ -24,8 +24,12 @@ const PFABarCharts = ({ data, year }) => {
       <YAxis />
       <Tooltip />
       <Legend />
-      {categoryKeys.map((key) => (
-        <Bar key={key} dataKey={key} fill={data.colors[key]} />
+      {data?.data && categoryKeys.map((key) => (
+        <Bar
+          key={key}
+          dataKey={key}
+          fill={data.colors[key]}
+        />
       ))}
     </BarChart>
   );
