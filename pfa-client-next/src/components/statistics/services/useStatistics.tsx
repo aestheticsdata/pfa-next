@@ -6,7 +6,7 @@ import { QUERY_OPTIONS } from "@components/spendings/config/constants";
 const useStatistics = (categories, yearSelectorWatcher) => {
   const { privateRequest } = useRequestHelper();
   const [ statistics, setStatistics ] = useState<any>([]);
-  const queryKey = ['statistics', yearSelectorWatcher.value, ...categories?.map(category => category.ID) || ""];
+  const queryKey = ['statistics', yearSelectorWatcher?.value ?? "", ...categories?.map(category => category.ID) || ""];
 
   const getStatistics = () => {
     const categoryIds = categories.map(category => category.ID).join(',');
