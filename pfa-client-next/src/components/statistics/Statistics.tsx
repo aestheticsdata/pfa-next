@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import Select from "react-select";
 import Layout from "@components/shared/Layout";
@@ -114,10 +114,18 @@ const chartsDataAlt = {
     ]
   }
 };
+
 const Statistics = () => {
   const { categories } = useCategories();
   const categoriesMarshalled = useStatisticsCategories(categories);
   const [initialCategories, setinitialCategories] = useState();
+
+  const makeYearsOptions = () => {
+    const currentYear = new Date().getFullYear();
+    const years = new Array(currentYear - 2018 + 1).fill(2018).map((start, index) => start + index);
+    return years.map(year => ({ value: year, label: year }));
+  };
+  const [initialYear, setinitialYear] = useState(new Date().getFullYear());
 
   const { control, watch } = useForm<any>({
     mode: "onChange",
@@ -127,25 +135,30 @@ const Statistics = () => {
   });
 
   const categorySelectorWatcher = watch("categorySelector");
-  const { isLoading, statistics } = useStatistics(categorySelectorWatcher);
-
-  useEffect(() => {
-    console.log(categorySelectorWatcher);
-  }, [categorySelectorWatcher]);
-
-  useEffect(() => {
-    statistics?.data?.[2022] && console.log("statistics data WTF",  statistics.data[2022]);
-  }, [statistics]);
+  const yearSelectorWatcher = watch("yearSelector");
+  const { isLoading: isStatisticsLoading, statistics } = useStatistics(categorySelectorWatcher, yearSelectorWatcher);
 
   return (
     <Layout>
       <div className="flex flex-col gap-y-8 mt-20 p-2">
-        <div>
-          <select name="year" id="year">
-            <option value="2024">2024</option>
-            <option value="2023">2023</option>
-            <option value="2022">2023</option>
-          </select>
+        <div className="flex flex-col space-y-2">
+          <Controller
+            name="yearSelector"
+            control={control}
+            render={({field}) =>
+              <Select
+                placeholder="Select Year"
+                isMulti={false}
+                styles={selectOptionsCSS("500px")}
+                options={makeYearsOptions()}
+                value={initialYear}
+                onChange={(selectedYear) => {
+                  setinitialYear(selectedYear);
+                  field.onChange(selectedYear);
+                }}
+              />
+            }
+          />
 
           <div>
             {categoriesMarshalled &&
@@ -170,19 +183,24 @@ const Statistics = () => {
               </div>
             }
           </div>
-
-
         </div>
-        {/*{statistics?.data?.[2022]?.length > 0 &&*/}
-          <div className="bg-grey0 p-4 rounded">
-            <PFABarCharts data={statistics} year={2022} />
-          </div>
-        {/*}*/}
 
-          <div className="bg-grey0 p-4 rounded">
-           <PFALineCharts data={chartsData} />
-          </div>
+        <div className="bg-grey0 p-4 rounded">
+          <PFABarCharts data={statistics} year={initialYear.value} />
         </div>
+
+        <div className="bg-grey0 p-4 rounded">
+         <PFALineCharts data={chartsData} />
+        </div>
+
+      </div>
+
+      {isStatisticsLoading &&
+        <div className="flex absolute items-center justify-center z-10 inset-0 bg-green-50 opacity-70">
+          Loading statistics...
+        </div>
+      }
+
     </Layout>
 );
 }

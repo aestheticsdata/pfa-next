@@ -3,31 +3,27 @@ import { useQuery, useMutation, useQueryClient } from "react-query";
 import useRequestHelper from "@src/helpers/useRequestHelper";
 import { QUERY_OPTIONS } from "@components/spendings/config/constants";
 
-const useStatistics = (categories) => {
+const useStatistics = (categories, yearSelectorWatcher) => {
   const { privateRequest } = useRequestHelper();
   const [ statistics, setStatistics ] = useState<any>([]);
-  console.log("categories", categories);
-  const queryKey = ['statistics', ...categories?.map(category => category.ID) || ""];
-  console.log("queryKey : ", queryKey);
+  const queryKey = ['statistics', yearSelectorWatcher.value, ...categories?.map(category => category.ID) || ""];
 
   const getStatistics = () => {
-    console.log("useStatistics::queryKey : ", queryKey);
     const categoryIds = categories.map(category => category.ID).join(',');
-    return privateRequest(`/statistics?years=2022&categories=${categoryIds}`);
+    return privateRequest(`/statistics?years=${yearSelectorWatcher.value}&categories=${categoryIds}`);
   };
 
   const { data, isLoading } = useQuery(
     queryKey,
     getStatistics,
     {
-      retry: false,
+      retry: true,
       ...QUERY_OPTIONS,
-      enabled: !!categories,
+      enabled: !!categories && !!yearSelectorWatcher,
     });
 
   useEffect(() => {
     if (data?.data) {
-      console.log("statistics data", data);
       setStatistics(data.data);
     }
   }, [data]);
