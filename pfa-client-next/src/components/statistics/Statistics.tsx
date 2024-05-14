@@ -125,6 +125,7 @@ const Statistics = () => {
     const years = new Array(currentYear - 2018 + 1).fill(2018).map((start, index) => start + index);
     return years.map(year => ({ value: year, label: year }));
   };
+
   const [initialYear, setinitialYear] = useState(new Date().getFullYear());
 
   const { control, watch } = useForm<any>({
@@ -136,12 +137,13 @@ const Statistics = () => {
 
   const categorySelectorWatcher = watch("categorySelector");
   const yearSelectorWatcher = watch("yearSelector");
+
   const { isLoading: isStatisticsLoading, statistics } = useStatistics(categorySelectorWatcher, yearSelectorWatcher);
 
   return (
     <Layout>
-      <div className="flex flex-col gap-y-8 mt-20 p-2">
-        <div className="flex flex-col space-y-2">
+      <div className="flex flex-col gap-y-8 mt-20 p-2 w-full">
+        <div className="flex flex-col space-y-2 w-full">
           <Controller
             name="yearSelector"
             control={control}
@@ -185,12 +187,14 @@ const Statistics = () => {
           </div>
         </div>
 
-        <div className="bg-grey0 p-4 rounded">
-          <PFABarCharts data={statistics} year={initialYear.value} />
-        </div>
+        <div className="w-full flex flex-col lg:flex-row lg:justify-between space-y-4 lg:space-y-0 lg:space-x-4">
+          <div className="bg-grey0 p-4 rounded w-full lg:w-1/2 h-[500px]">
+            <PFABarCharts data={statistics} year={initialYear.value} />
+          </div>
 
-        <div className="bg-grey0 p-4 rounded">
-         <PFALineCharts data={chartsData} />
+          <div className="bg-grey0 p-4 rounded w-full lg:w-1/2 h-[500px]">
+           <PFALineCharts data={chartsData} />
+          </div>
         </div>
 
       </div>
