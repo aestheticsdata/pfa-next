@@ -15,7 +15,6 @@ const PFABarCharts = ({ data, year }) => {
   if (!currentYearData) {
     return <div className="">pas de données.</div>;
   }
-  console.log("currentYearData", currentYearData);
 
   const categoryKeys = currentYearData.length > 0 ? Object.keys(currentYearData[0]).filter(key => key !== 'month') : [];
 
@@ -37,19 +36,21 @@ const PFABarCharts = ({ data, year }) => {
           animationDuration={200}
         />
         <Legend />
-        {data?.data && categoryKeys.map((key, i) => {
-          return <Bar
-            key={key}
-            dataKey={key}
-            fill={data.colors[key]}
-          >
-            <LabelList
+        {data?.data && categoryKeys.map((key) => {
+          return (
+            <Bar
+              key={key}
               dataKey={key}
-              position="top"
-              formatter={(label: number) => label > 0 ? `${label}€` : null}
-              fontSize="12px"
-            />
-          </Bar>
+              fill={data.colors[key]}
+            >
+              <LabelList
+                dataKey={key}
+                position="top"
+                formatter={(label: number) => label > 0 ? `${label}€` : null}
+                fontSize="12px"
+              />
+            </Bar>
+          )
         })}
       </BarChart>
     </ResponsiveContainer>

@@ -8,6 +8,7 @@ import useStatisticsCategories from "@components/statistics/helpers/useStatistic
 import useStatistics from "@components/statistics/services/useStatistics";
 import PFABarCharts from "@components/statistics/PFABarCharts";
 import PFALineCharts from "@components/statistics/PFALineCharts";
+import PFAResponsiveChartsContainer from "@components/statistics/PFAResponsiveChartsContainer";
 
 const chartsData = {
   colors: {
@@ -28,18 +29,18 @@ const chartsData = {
       },
       {
         "month": "Mars",
-        "alimentation": 2000,
-        "foo": 2388,
+        "alimentation": null,
+        "foo": 5388,
       },
       {
         "month": "Avril",
         "alimentation": 2780,
-        "foo": 2388,
+        "foo": null,
       },
       {
         "month": "Mai",
         "alimentation": 1890,
-        "foo": 2388,
+        "foo": 588,
       },
       {
         "month": "Juin",
@@ -49,7 +50,7 @@ const chartsData = {
       {
         "month": "Juillet",
         "alimentation": 3490,
-        "foo": 2388,
+        "foo": 1333,
       },
       {
         "month": "Aout",
@@ -188,13 +189,13 @@ const Statistics = () => {
         </div>
 
         <div className="w-full flex flex-col lg:flex-row lg:justify-between space-y-4 lg:space-y-0 lg:space-x-4">
-          <div className="bg-grey0 p-4 rounded w-full lg:w-1/2 h-[500px]">
+          <PFAResponsiveChartsContainer>
             <PFABarCharts data={statistics} year={initialYear.value} />
-          </div>
+          </PFAResponsiveChartsContainer>
 
-          <div className="bg-grey0 p-4 rounded w-full lg:w-1/2 h-[500px]">
+          <PFAResponsiveChartsContainer>
            <PFALineCharts data={chartsData} />
-          </div>
+          </PFAResponsiveChartsContainer>
         </div>
 
       </div>
