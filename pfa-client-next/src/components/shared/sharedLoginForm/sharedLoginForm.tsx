@@ -82,7 +82,7 @@ const SharedLoginForm = ({
               type="submit"
               // @ts-ignore
               disabled={isSubmitting || errors.email || errors.password}
-              className="h-8 w-11/12 rounded border border-formsGlobalColor bg-transparent bg-grey01alpha text-2xl
+              className="h-8 w-11/12 rounded border border-formsGlobalColor bg-grey01alpha text-2xl
                 font-medium uppercase text-formsGlobalColor transition-all hover:text-formsGlobalColorHover
                 hover:shadow-login focus:outline-none"
             >

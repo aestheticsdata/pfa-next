@@ -1,9 +1,10 @@
 const dbConnection = require('../../../db/dbinitmysql');
 const sharp = require('sharp-m1');
+//const sharp = require('sharp'); // uncomment for Debian
 const { access, unlink } = require('fs').promises;
 const { constants } = require('fs');
 const getImage = require('./helpers/getImage');
-
+const sshCopy = require('../../../helpers/sshRaw').copy;
 
 module.exports = async (req, res, _next) => {
   const {
@@ -40,19 +41,33 @@ module.exports = async (req, res, _next) => {
   // save filename to db
   const resizedFilename = filename.slice(0, filename.search(/\./)) + '-r.' + fileExtension;
   if (req.body.itemType === 'spending') {
+    if (process.env.NODE_ENV === "production") {
+      console.log("outputPath", outputPath);
+      const pathSplitted = outputPath.split('/');
+      const userID = pathSplitted[4];
+      const fileName = pathSplitted[5];
+      const dest = `${process.env.PFA_BACKUP_INVOICES_SERVER_PATH}${userID}/${fileName}`;
+      console.log("dest", dest);
+      sshCopy(outputPath, dest);
+      console.log("after sshCopy");
+    }
     const sqlSpending = `
       UPDATE Spendings
       SET invoicefile="${resizedFilename}"
       WHERE ID="${req.body.spendingID}"
     `;
-    dbConnection.query(
-      sqlSpending,
-      async () => {
-        const [invoiceImageString, contentType] = await getImage(resizedFilename, req.body.userID);
-        res.setHeader('content-type', contentType);
-        res.send(invoiceImageString);
-      }
-    );
+    try {
+      dbConnection.query(
+        sqlSpending,
+        async () => {
+          const [invoiceImageString, contentType] = await getImage(resizedFilename, req.body.userID);
+          res.setHeader('content-type', contentType);
+          res.send(invoiceImageString);
+        }
+      );
+    } catch (e) {
+      console.log("error updating spending image");
+    }
   }
   // if (req.body.itemType === 'recurring') {
     // await prisma.recurrings.updateMany({

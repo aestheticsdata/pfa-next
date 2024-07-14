@@ -20,7 +20,6 @@ app.use(helmet.hidePoweredBy());
 app.use(cors());
 
 if (process.env.NODE_ENV === "production") {
-  invoicesImagesBackup();
   cronMysql();
 }
 

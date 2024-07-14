@@ -12,6 +12,8 @@ module.exports = async (req, res, _next) => {
     invoicefile,
   } = req.body;
 
+  console.log("file to delete : ", uploadPath + userID + '/' + invoicefile);
+
   await unlink(uploadPath + userID + '/' + invoicefile);
 
   const sqlSpending = `
@@ -23,7 +25,7 @@ module.exports = async (req, res, _next) => {
     dbConnection.query(
       sqlSpending,
       () => {
-        if (process.env.PROD) {
+        if (process.env.NODE_ENV === "production") {
           sshDeleteFile(process.env.PFA_BACKUP_INVOICES_SERVER_PATH + userID + '/' + invoicefile);
         }
         res.status(200).json({ msg: 'INVOICE_IMAGE_DELETED'});

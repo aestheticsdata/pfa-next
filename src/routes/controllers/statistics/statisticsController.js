@@ -59,16 +59,13 @@ module.exports = async (req, res) => {
     //   }
     // }
 
-    const output = {
-      colors: {},
-      data: {}
-    };
+    const output = { colors: {}, data: {} };
     const categoryTemplate = {};
 
     result.forEach(row => {
       if (!output.colors[row.categoryName.toLowerCase()]) {
         output.colors[row.categoryName.toLowerCase()] = row.categoryColor;
-        categoryTemplate[row.categoryName.toLowerCase()] = null;
+        categoryTemplate[row.categoryName.toLowerCase()] = 0;
       }
     });
 
