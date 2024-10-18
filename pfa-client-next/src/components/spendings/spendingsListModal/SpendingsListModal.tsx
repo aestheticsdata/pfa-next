@@ -3,6 +3,8 @@ import {
   useRef, useState
 } from "react";
 import useOnClickOutside from "use-onclickoutside";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCalendarDay, faChartLine, faChartSimple } from "@fortawesome/free-solid-svg-icons";
 import parseISO from "date-fns/parseISO";
 import formatISO from "date-fns/formatISO";
 import format from "date-fns/format";
@@ -10,19 +12,16 @@ import fr from "date-fns/locale/fr";
 import Period from "@components/spendings/spendingDashboard/common/Period";
 import CategoryComponent from "@components/common/Category";
 import useSpendings from "@components/spendings/services/useSpendings";
-import Input from "@components/common/form/Input";
 import { MONTHLY } from "@components/spendings/spendingDashboard/common/widgetHeaderConstants";
 import texts from "@components/spendings/config/text";
 
 import type { CategoryProps } from "@src/interfaces/category";
 import type { SpendingType } from "@components/spendings/types";
-import { SpendingCompoundType } from "@components/spendings/types";
-
 
 interface SpendingsListModalProps {
   handleClickOutside: any;
   periodType: string;
-  categoryInfos: Category;
+  categoryInfos: CategoryProps;
   total: number;
 }
 
@@ -53,41 +52,109 @@ const SpendingsListModal = ({ handleClickOutside, periodType, categoryInfos, tot
   }
 
   const displaySpendingsList = () => {
-    const spendingsList = (spendings, i: number) =>
-      <div
-        key={i}
-        className="text-sm mt-2 mb-2 px-3"
-      >
-        {
-          periodType === MONTHLY ?
+    const getAllPreviousEntries = (currentIndex: number): SpendingType[] => {
+      if (periodType === MONTHLY && spendingsByMonth) {
+        const filteredSpendings = spendingsByMonth.filter((spending) =>
+          spending.category === categoryInfos.category && spending.label.includes(searchTerm)
+        );
+        const grouped = groupByDate(filteredSpendings);
+        const entries = Object.entries(grouped);
+        return entries
+          .slice(0, currentIndex + 1)
+          .reduce((acc: SpendingType[], [_, daySpendings]) => [...acc, ...daySpendings as SpendingType[]], []);
+      } else if (spendingsByWeek) {
+        const flattenedSpendings = spendingsByWeek
+          .filter(spending => spending.length > 0)
+          .flat()
+          .filter(spending =>
+            spending.category === categoryInfos.category && spending.label.includes(searchTerm)
+          );
+        const grouped = groupByDate(flattenedSpendings);
+        const entries = Object.entries(grouped);
+        return entries
+          .slice(0, currentIndex + 1)
+          .reduce((acc: SpendingType[], [_, daySpendings]) => [...acc, ...daySpendings as SpendingType[]], []);
+      }
+      return [];
+    };
+
+    const calculateDayTotal = (daySpendings: SpendingType[]): number => {
+      return daySpendings.reduce((acc, spending) => acc + Number(spending.amount), 0);
+    };
+
+    const spendingsList = (spendings: [string, SpendingType[]], i: number) => {
+      const dayTotal = calculateDayTotal(spendings[1]);
+      const cumulativeTotal = getAllPreviousEntries(i)
+        .reduce((acc, spending) => acc + Number(spending.amount), 0);
+
+      return (
+        <div
+          key={i}
+          className="text-sm mt-2 mb-2 px-3"
+        >
+          {periodType === MONTHLY ? (
             <div
               className="cursor-pointer"
               onClick={() => {
                 const dateISO = formatISO(new Date(spendings[0]), { representation: "date" });
-                // TODO : update react-day-picker to v8, but
-                // there is a lot of breaking changes
-                // so location.replace for the time being
                 window.location.replace(`/?currentDate=${dateISO}`);
               }}
             >
-              <div className="uppercase font-medium bg-grey01 p-1 mb-1 text-grey3 hover:bg-spendingItemHover transition-colors ease-linear duration-200">
-                {format(parseISO(spendings[0]), "EEEE dd MMMM", { locale: fr })}
+              <div className="flex justify-between font-medium bg-grey01 rounded p-1 mb-1 text-grey3 hover:bg-spendingItemHover transition-colors ease-linear duration-200">
+                <div className="uppercase">
+                  {format(parseISO(spendings[0]), "EEEE dd MMMM", { locale: fr })}
+                </div>
+                <div className="flex text-xxs space-x-3">
+
+                  <div className="flex flex-col items-end pb-1 border border-grey1 rounded px-2">
+                    <div className="flex items-center space-x-1">
+                      <div className="underline">Total jour</div>
+                      <FontAwesomeIcon icon={faCalendarDay}/>
+                    </div>
+                    <div>{dayTotal.toFixed(1)} €</div>
+                  </div>
+
+                  <div className="flex flex-col items-end pb-1 border border-grey1 rounded px-2">
+                    <div className="flex items-center space-x-1">
+                      <div className="underline">Total cumulé</div>
+                      <FontAwesomeIcon icon={faChartLine}/>
+                    </div>
+                    <div className="flex w-full justify-end pr-1 rounded bg-gray-500 text-green-300">
+                      {cumulativeTotal.toFixed(1)} €
+                    </div>
+                  </div>
+
+
+                  <div className="flex flex-col items-end pb-1 border border-grey1 rounded px-2">
+                    <div className="flex items-center space-x-1">
+                      <div className="underline">Cumulé (% du mois)</div>
+                      <FontAwesomeIcon icon={faChartSimple}/>
+                    </div>
+                    <div className="flex w-full justify-end pr-1 rounded bg-gray-500 text-fuchsia-100">
+                      {((cumulativeTotal / total) * 100).toFixed(0)}%
+                    </div>
+                  </div>
+
+                </div>
               </div>
             </div>
-            :
+          ) : (
             <div className="uppercase font-medium bg-grey01 p-1 mb-1 text-grey3">
-              {format(parseISO(spendings[0]), "EEEE dd MMMM", { locale: fr })}
+              {format(parseISO(spendings[0]), "EEEE dd MMMM", {locale: fr})}
             </div>
-        }
-        {spendings[1].map((spending: SpendingType, j: number) =>
-          <div
-            key={i+j}
-            className="ml-2"
-          >
-            - {spending.label} : {Number(spending.amount).toFixed(2)} €
-          </div>
-      )}
-      </div>;
+          )}
+
+          {spendings[1].map((spending: SpendingType, j: number) => (
+            <div
+              key={i + j}
+              className="ml-2"
+            >
+              - {spending.label} : {Number(spending.amount).toFixed(2)} €
+            </div>
+          ))}
+        </div>
+      );
+    };
 
     if (periodType === MONTHLY) {
       return spendingsByMonth &&
