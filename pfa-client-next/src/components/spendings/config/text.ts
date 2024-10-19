@@ -41,6 +41,9 @@ const spendings = {
     total: "total",
     filter: "filtrer",
     noCategoryLabel: "sans catégorie",
+    dayTotal: "Total jour",
+    cumulativeTotal: "Total cumulé",
+    monthPercentage: "(% du mois)",
   },
 };
 

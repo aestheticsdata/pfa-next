@@ -106,35 +106,26 @@ const SpendingsListModal = ({ handleClickOutside, periodType, categoryInfos, tot
                 </div>
                 <div className="flex text-xxs space-x-3">
 
-                  <div className="flex flex-col items-end pb-1 border border-grey1 rounded px-2">
+                  <div className="flex flex-col items-center pb-1 border border-grey1 rounded px-2">
+
                     <div className="flex items-center space-x-1">
-                      <div className="underline">Total jour</div>
+                      <div className="underline">{spendingsListModalTexts.dayTotal}</div>
                       <FontAwesomeIcon icon={faCalendarDay}/>
                     </div>
-                    <div>{dayTotal.toFixed(1)} €</div>
+
+                    <div className="flex items-center h-full text-sm">{dayTotal.toFixed(1)} €</div>
                   </div>
 
                   <div className="flex flex-col items-end pb-1 border border-grey1 rounded px-2">
                     <div className="flex items-center space-x-1">
-                      <div className="underline">Total cumulé</div>
+                      <div className="underline">{spendingsListModalTexts.cumulativeTotal}</div>
                       <FontAwesomeIcon icon={faChartLine}/>
                     </div>
                     <div className="flex w-full justify-end pr-1 rounded bg-gray-500 text-green-300">
                       {cumulativeTotal.toFixed(1)} €
                     </div>
+                    <div className="text-fuchsia-700">{spendingsListModalTexts.monthPercentage} {((cumulativeTotal / total) * 100).toFixed(0)}%</div>
                   </div>
-
-
-                  <div className="flex flex-col items-end pb-1 border border-grey1 rounded px-2">
-                    <div className="flex items-center space-x-1">
-                      <div className="underline">Cumulé (% du mois)</div>
-                      <FontAwesomeIcon icon={faChartSimple}/>
-                    </div>
-                    <div className="flex w-full justify-end pr-1 rounded bg-gray-500 text-fuchsia-100">
-                      {((cumulativeTotal / total) * 100).toFixed(0)}%
-                    </div>
-                  </div>
-
                 </div>
               </div>
             </div>
