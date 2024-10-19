@@ -4,7 +4,7 @@ import {
 } from "react";
 import useOnClickOutside from "use-onclickoutside";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCalendarDay, faChartLine, faChartSimple } from "@fortawesome/free-solid-svg-icons";
+import { faCalendarDay, faChartSimple } from "@fortawesome/free-solid-svg-icons";
 import parseISO from "date-fns/parseISO";
 import formatISO from "date-fns/formatISO";
 import format from "date-fns/format";
@@ -90,7 +90,7 @@ const SpendingsListModal = ({ handleClickOutside, periodType, categoryInfos, tot
       return (
         <div
           key={i}
-          className="text-sm mt-2 mb-2 px-3"
+          className="rounded border-2 border-grey1 p-1 m-4 text-sm bg-gray-100"
         >
           {periodType === MONTHLY ? (
             <div
@@ -119,7 +119,7 @@ const SpendingsListModal = ({ handleClickOutside, periodType, categoryInfos, tot
                   <div className="flex flex-col items-end pb-1 border border-grey1 rounded px-2">
                     <div className="flex items-center space-x-1">
                       <div className="underline">{spendingsListModalTexts.cumulativeTotal}</div>
-                      <FontAwesomeIcon icon={faChartLine}/>
+                      <FontAwesomeIcon icon={faChartSimple}/>
                     </div>
                     <div className="flex w-full justify-end pr-1 rounded bg-gray-500 text-green-300">
                       {cumulativeTotal.toFixed(1)} €
@@ -155,7 +155,9 @@ const SpendingsListModal = ({ handleClickOutside, periodType, categoryInfos, tot
               .filter((spending) => {
                 return (spending.category === categoryInfos.category) && (spending.label.includes(searchTerm))
               })))
-          .map((spendings, i) => spendingsList(spendings, i))
+          .map((spendings, i) => {
+            return spendingsList(spendings, i)
+          })
       }
     else {
       return spendingsByWeek &&
@@ -198,7 +200,7 @@ const SpendingsListModal = ({ handleClickOutside, periodType, categoryInfos, tot
           />
         </div>
 
-        <div className="flex flex-col my-1 overflow-y-auto h-[420px]">
+        <div className="flex flex-col my-1 overflow-y-auto h-[420px] space-y-4">
           {displaySpendingsList()}
         </div>
 
