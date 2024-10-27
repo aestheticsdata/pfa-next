@@ -63,5 +63,6 @@
   },
   "optionalDependencies": {
     "sharp-prod": "npm:sharp@^0.27.2"
-  }
+  },
+  "packageManager": "pnpm@9.12.2"
 }
