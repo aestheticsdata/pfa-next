@@ -8,42 +8,44 @@ interface CategoryComponentProps {
   isClicked?: boolean;
 }
 
-const CategoryComponent = ({item, isDynamic = false, isClicked = false}: CategoryComponentProps) => {
-  const getColor = () => {
-    if (isDynamic) {
-      if(isClicked) {
-        return adjustFontColor(item.categoryColor)
-      } else {
-        return item.category ? "#fff" : adjustFontColor(item.categoryColor);
-      }
-    } else {
-      return adjustFontColor(item.categoryColor)
-    }
-  }
-
-  const getBackgroundcolor = () => {
-    if (isDynamic) {
-      if (isClicked) {
-        return item.categoryColor;
-      } else {
-        return item.category ? "#aaa" : item.categoryColor;
-      }
-    } else {
+const CategoryComponent = ({ item, isDynamic = false, isClicked = false }: CategoryComponentProps) => {
+  const getBackgroundColor = () => {
+    if (isDynamic && isClicked) {
       return item.categoryColor;
+    } else if (isDynamic) {
+      return item.categoryColor;
+    } else {
+      return "#efefef";
     }
-  }
+  };
+
+  const getTextColor = () => {
+    return isDynamic ? adjustFontColor(item.categoryColor) : "#000";
+  };
 
   return (
     <div
-      className={`flex justify-center px-0.5 rounded ${isDynamic ? "text-tiny" : "text-xxs"} uppercase`}
+      className={`relative flex items-center px-0.5 rounded ${isDynamic ? "text-tiny" : "text-xxs"} uppercase`}
       style={{
-        color: `${getColor()}`,
-        backgroundColor: `${getBackgroundcolor()}`,
+        // border: `1px solid ${item.categoryColor}`,
+        // borderRadius: "4px",
+        color: getTextColor(),
+        backgroundColor: getBackgroundColor(),
       }}
-      onMouseOver={(el) => el.target.style.boxShadow = "0 0 1px 1px rgb(10, 10, 10)"}
-      onMouseOut={(el) => el.target.style.boxShadow = "initial"}
     >
-      {item.category || "sans catégorie"}
+      {!isDynamic && (
+        <span
+          className="absolute left-0 top-0 bottom-0"
+          style={{
+            border: item.categoryColor,
+            backgroundColor: item.categoryColor,
+            width: "10px",
+            borderTopLeftRadius: "inherit",
+            borderBottomLeftRadius: "inherit",
+          }}
+        ></span>
+      )}
+      <span className="mx-auto z-10">{item.category || "sans catégorie"}</span>
     </div>
   );
 };
