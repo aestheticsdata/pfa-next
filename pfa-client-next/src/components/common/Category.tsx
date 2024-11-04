@@ -39,7 +39,7 @@ const CategoryComponent = ({ item, isDynamic = false, isClicked = false }: Categ
           style={{
             border: item.categoryColor,
             backgroundColor: item.categoryColor,
-            width: "10px",
+            width: "5px",
             borderTopLeftRadius: "inherit",
             borderBottomLeftRadius: "inherit",
           }}
