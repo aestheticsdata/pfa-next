@@ -6,8 +6,10 @@ import {
   SORT_BY_AMOUNT,
 } from "@components/spendings/helpers/sortConstants";
 
+import type { SpendingCompoundType } from "@components/spendings/types";
+
 const useClickSort = () => {
-  const [spendingsByDaySorted, setSpendingsByDaySorted] = useState([]);
+  const [spendingsByDaySorted, setSpendingsByDaySorted] = useState<SpendingCompoundType>([] as unknown as SpendingCompoundType);
   const [sortOrder, setSortOrder] = useState('asc');
 
   const onClickSort = (name) => {

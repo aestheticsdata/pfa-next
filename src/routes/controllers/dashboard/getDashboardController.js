@@ -12,6 +12,10 @@ module.exports = async (req, res, _next) => {
   dbConnection.query(
     sql,
     (err, results) => {
+      if (err) {
+        console.error("Erreur SQL getDashboardController :", err.message);
+        return res.status(500).json({ error: err.message });
+      }
       if (results.length > 0) {
         const dashboard = {
           ...results[0],

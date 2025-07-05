@@ -43,7 +43,6 @@ const useCategories = () => {
     }
   };
   const updateCategory = useMutation(({ singleCategory: category }) => {
-    console.log("WTF", category);
     return updateCategoryService(category);
   }, {
     onSuccess: async () => { await invalidation() },

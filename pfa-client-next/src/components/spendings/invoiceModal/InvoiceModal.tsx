@@ -228,6 +228,7 @@ const InvoiceModal = ({ handleClickOutside, spending }) => {
                 :
                 <>
                   <input
+                    className="hidden"
                     type="file"
                     id="invoicefileinputid"
                     name="invoicefile"
