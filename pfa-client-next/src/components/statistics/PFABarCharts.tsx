@@ -45,9 +45,10 @@ const PFABarCharts = ({ data, year }) => {
             >
               <LabelList
                 dataKey={key}
+                fill="#111"
                 position="top"
                 formatter={(label: number) => label > 0 ? `${label}€` : null}
-                fontSize="12px"
+                fontSize="10px"
               />
             </Bar>
           )

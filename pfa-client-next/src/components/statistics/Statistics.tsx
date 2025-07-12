@@ -10,111 +10,8 @@ import PFABarCharts from "@components/statistics/PFABarCharts";
 import PFALineCharts from "@components/statistics/PFALineCharts";
 import PFAResponsiveChartsContainer from "@components/statistics/PFAResponsiveChartsContainer";
 
-const chartsData = {
-  colors: {
-    "alimentation": "#ff339A",
-    "foo": "#4756AB",
-  },
-  data: {
-    2022: [
-      {
-        "month": "Jan 2022",
-        "alimentation": 4000,
-        "foo": 2388,
-      },
-      {
-        "month": "Fev",
-        "alimentation": 3000,
-        "foo": 2388,
-      },
-      {
-        "month": "Mars",
-        "alimentation": null,
-        "foo": 5388,
-      },
-      {
-        "month": "Avril",
-        "alimentation": 2780,
-        "foo": null,
-      },
-      {
-        "month": "Mai",
-        "alimentation": 1890,
-        "foo": 588,
-      },
-      {
-        "month": "Juin",
-        "alimentation": 2390,
-        "foo": 2388,
-      },
-      {
-        "month": "Juillet",
-        "alimentation": 3490,
-        "foo": 1333,
-      },
-      {
-        "month": "Aout",
-        "alimentation": 3090,
-        "foo": 2388,
-      },
-      {
-        "month": "Sep",
-        "alimentation": 3110,
-        "foo": 3726,
-      },
-      {
-        "month": "Oct",
-        "alimentation": 3400,
-        "foo": 2388,
-      },
-      {
-        "month": "Nov",
-        "alimentation": 1490,
-        "foo": 1388,
-      },
-      {
-        "month": "Dec",
-        "alimentation": 0,
-        "foo": 2388,
-      },
-    ]
-  }
-}
-const chartsDataAlt = {
-  "colors": {
-    "aliments": "#87086a",
-    "fsfs": "#e7453a"
-  },
-  "data": {
-    "2022": [
-      {
-        "month": "mars",
-        "aliments": "60.00",
-        "fsfs": "0"
-      },
-      {
-        "month": "avr.",
-        "aliments": "55.00",
-        "fsfs": "210.00"
-      },
-      {
-        "month": "mai",
-        "aliments": "40.00",
-        "fsfs": "210.00"
-      },
-      {
-        "month": "juin",
-        "aliments": "78.00",
-        "fsfs": "210.00"
-      },
-      {
-        "month": "déc.",
-        "aliments": "106.90",
-        "fsfs": "40.00"
-      }
-    ]
-  }
-};
+
+const firstYearAvailable = 2018;
 
 const Statistics = () => {
   const { categories } = useCategories();
@@ -123,7 +20,10 @@ const Statistics = () => {
 
   const makeYearsOptions = () => {
     const currentYear = new Date().getFullYear();
-    const years = new Array(currentYear - 2018 + 1).fill(2018).map((start, index) => start + index);
+    const years = Array.from(
+      { length: currentYear - firstYearAvailable + 1 },
+      (_, i) => firstYearAvailable + i
+    );
     return years.map(year => ({ value: year, label: year }));
   };
 
@@ -194,7 +94,7 @@ const Statistics = () => {
           </PFAResponsiveChartsContainer>
 
           <PFAResponsiveChartsContainer>
-           <PFALineCharts data={chartsData} />
+            <PFALineCharts data={statistics} year={initialYear.value} />
           </PFAResponsiveChartsContainer>
         </div>
 
