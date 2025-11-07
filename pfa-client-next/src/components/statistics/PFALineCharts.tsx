@@ -24,7 +24,17 @@ const PFALineCharts = ({ data, year }) => {
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="month" />
         <YAxis />
-        <Tooltip />
+        <Tooltip
+          labelFormatter={label => `${label} ${year}`}
+          labelClassName="bg-gray-200 p-1 rounded font-semibold"
+          formatter={(value: number) => `${value} €`}
+          offset={7}
+          contentStyle={{
+            fontSize: "0.8rem",
+            borderRadius: "5px",
+          }}
+          animationDuration={200}
+        />
         <Legend />
         {categories.map((cat) => (
           <Line
