@@ -11,9 +11,10 @@
   "dependencies": {
     "@emotion/react": "^11.10.0",
     "@emotion/styled": "^11.10.0",
-    "@fortawesome/fontawesome-svg-core": "^6.1.1",
-    "@fortawesome/free-solid-svg-icons": "^6.1.1",
-    "@fortawesome/react-fontawesome": "^0.1.18",
+    "@fortawesome/free-brands-svg-icons": "^7.1.0",
+    "@fortawesome/free-regular-svg-icons": "^7.1.0",
+    "@fortawesome/free-solid-svg-icons": "^7.1.0",
+    "@fortawesome/react-fontawesome": "^3.1.0",
     "@hookform/resolvers": "^2.9.7",
     "@mui/material": "^5.10.1",
     "@types/js-cookie": "^3.0.1",
@@ -40,6 +41,7 @@
     "zustand": "^3.7.1"
   },
   "devDependencies": {
+    "@fortawesome/fontawesome-svg-core": "^7.1.0",
     "@types/node": "17.0.14",
     "@types/react": "19.2.2",
     "@types/react-dom": "^19.2.2",
