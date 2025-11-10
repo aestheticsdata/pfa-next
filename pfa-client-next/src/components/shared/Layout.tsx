@@ -9,9 +9,9 @@ interface LayoutProps {
 
 const Layout = ({ isLogin, children }: LayoutProps) => {
   return (
-    <div className={`flex flex-col ${isLogin ? "items-center" : "items-start"} bg-grey1 w-full`}>
+    <div className={`flex flex-col ${isLogin ? "items-center" : "items-center"} bg-grey1 w-full`}>
       <NavBar />
-      <div className="w-full">
+      <div className={isLogin ? "" : "w-full"}>
         {children}
       </div>
     </div>
