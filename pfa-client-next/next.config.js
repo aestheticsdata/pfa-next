@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // output: 'export' uniquement pour les builds de production (pas en dev)
+  ...(process.env.NODE_ENV !== 'development' && { output: 'export' }),
   typescript: {
     // !! WARN !!
     // Dangerously allow production builds to successfully complete even if
@@ -8,14 +10,8 @@ const nextConfig = {
     // !! WARN !!
     ignoreBuildErrors: true
   },
-  async rewrites() {
-    return [
-      {
-        source: '/api/:path*',
-        destination: 'http://localhost:5000/:path*',
-      },
-    ];
-  },
+  // Les rewrites Next.js ne fonctionnent pas pour les requêtes client-side (Axios)
+  // Les requêtes API sont gérées directement dans useRequestHelper.js
 };
 
 module.exports = nextConfig;

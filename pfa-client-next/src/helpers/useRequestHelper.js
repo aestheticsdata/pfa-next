@@ -12,17 +12,25 @@ const useRequestHelper = () => {
 
   const getRequestURL = (url) => {
     // En développement local, utiliser directement le backend
+    // Les rewrites Next.js ne fonctionnent pas pour les requêtes client-side (Axios)
     if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
       return `http://localhost:5000${url}`;
     }
     
-    // En production, utiliser le préfixe /api
+    // En production, utiliser le préfixe /api (sera proxifié par nginx ou autre)
     return `/api${url}`;
   };
 
   const privateRequest = (url, options, config) => {
     // Lire le token à chaque appel pour avoir la valeur la plus récente
     const token = useAuthStore.getState().token;
+
+    // Ne pas faire de requête si le token n'est pas disponible
+    // Les vérifications enabled dans les hooks devraient empêcher cela,
+    // mais c'est une sécurité supplémentaire
+    if (!token) {
+      return Promise.reject(new Error("Token not available"));
+    }
 
     const tokenBearer = {
       headers: {
