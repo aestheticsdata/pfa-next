@@ -8,7 +8,8 @@ import startOfMonth from "date-fns/startOfMonth";
 
 const useInitialAmount = () => {
   const { privateRequest } = useRequestHelper();
-  const userID = useUserStore((state) => state.user!.id);
+  const user = useUserStore((state) => state.user);
+  const userID = user?.id;
   const { from } = useDatePickerWrapperStore();
   const monthBeginning = startOfMonth(from!);
 
@@ -23,7 +24,7 @@ const useInitialAmount = () => {
 
   return useQuery([QUERY_KEYS.INITIAL_AMOUNT, monthBeginning], getInitialAmount, {
     retry: false,
-    enabled: !!from,
+    enabled: !!from && !!userID,
     ...QUERY_OPTIONS,
   });
 }

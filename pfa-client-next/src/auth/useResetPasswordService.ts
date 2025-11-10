@@ -1,4 +1,6 @@
-import { useRouter } from "next/router";
+"use client";
+
+import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 import useRequestHelper from "@helpers/useRequestHelper";
 import { useAuthStore } from "@auth/store/authStore";

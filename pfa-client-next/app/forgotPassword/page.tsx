@@ -1,14 +1,17 @@
+"use client";
+
 import Layout from "@src/components/shared/Layout";
 import SharedLoginForm from "@src/components/shared/sharedLoginForm/sharedLoginForm";
 import useResetPasswordService from "@auth/useResetPasswordService";
 
 import type { LoginValues } from "@components/shared/sharedLoginForm/interfaces";
 
-const ForgotPassword = () => {
+export default function ForgotPassword() {
   const { resetPasswordService } = useResetPasswordService();
+  
   const onSubmit = async (values: LoginValues) => {
     await resetPasswordService(values.email!);
-  }
+  };
 
   return (
     <Layout isLogin>
@@ -21,6 +24,5 @@ const ForgotPassword = () => {
       </div>
     </Layout>
   );
-};
+}
 
-export default ForgotPassword;

@@ -1,3 +1,5 @@
+"use client";
+
 import NavBar from "@src/components/shared/navBar/NavBar";
 
 interface LayoutProps {
@@ -7,9 +9,11 @@ interface LayoutProps {
 
 const Layout = ({ isLogin, children }: LayoutProps) => {
   return (
-    <div className={`flex flex-col ${isLogin ? "items-center" : "items-start"} bg-grey1`}>
+    <div className={`flex flex-col ${isLogin ? "items-center" : "items-start"} bg-grey1 w-full`}>
       <NavBar />
-      {children}
+      <div className="w-full">
+        {children}
+      </div>
     </div>
   );
 };

@@ -12,7 +12,8 @@ import useDatePickerWrapperStore from "@components/datePickerWrapper/store";
 const useCharts = (periodType: string) => {
   const { privateRequest } = useRequestHelper();
   const { from, to } = useDatePickerWrapperStore();
-  const userID = useUserStore((state) => state.user!.id);
+  const user = useUserStore((state) => state.user);
+  const userID = user?.id;
   const [startDate, setStartDate] = useState<Date | null>();
   const [endDate, setEndDate] = useState<Date | null>();
 
@@ -32,7 +33,7 @@ const useCharts = (periodType: string) => {
 
   return useQuery([QUERY_KEYS.CHARTS, startDate, endDate], getCharts, {
     retry: false,
-    enabled: !!startDate,
+    enabled: !!startDate && !!userID,
     ...QUERY_OPTIONS,
   });
 };

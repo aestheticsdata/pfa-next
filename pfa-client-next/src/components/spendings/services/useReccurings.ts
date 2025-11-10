@@ -27,7 +27,8 @@ interface CreateRecurring {
 
 const useReccurings = () => {
   const { privateRequest } = useRequestHelper();
-  const userID = useUserStore((state) => state.user!.id);
+  const user = useUserStore((state) => state.user);
+  const userID = user?.id;
   const { from } = useDatePickerWrapperStore();
   const monthBeginning = startOfMonth(from!);
   const [recurrings, setRecurrings] = useState();
@@ -52,7 +53,7 @@ const useReccurings = () => {
 
   const { data, isLoading } = useQuery([QUERY_KEYS.RECURRINGS, monthBeginning], getRecurrings, {
     retry: false,
-    enabled: !!from,
+    enabled: !!from && !!userID,
     ...QUERY_OPTIONS,
   });
 

@@ -19,7 +19,8 @@ const InvoiceModal = ({ handleClickOutside, spending }) => {
   const { privateRequest } = useRequestHelper();
   const queryClient = useQueryClient();
   const { invoiceModal: invoiceModalTexts } = texts;
-  const userID = useUserStore((state) => state.user!.id);
+  const user = useUserStore((state) => state.user);
+  const userID = user?.id;
   const fileSizeLimit = 32_097_152;
   const [invoicefile, setInvoicefile] = useState<string | File>("");
   const [invoiceImage, setInvoiceImage] = useState(null);

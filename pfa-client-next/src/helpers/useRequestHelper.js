@@ -1,7 +1,9 @@
+"use client";
+
 import axios from "axios";
 import _ from "lodash";
 import Swal from "sweetalert2";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useAuthStore } from "@auth/store/authStore";
 
 

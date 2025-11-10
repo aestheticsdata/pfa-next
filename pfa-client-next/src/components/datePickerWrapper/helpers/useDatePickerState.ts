@@ -1,5 +1,7 @@
+"use client";
+
 import { useState } from "react";
-import { useRouter } from "next/router";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import formatISO from "date-fns/formatISO";
 import {
   getWeekDays,
@@ -19,6 +21,8 @@ const useDatePickerState = () => {
   const [selectedDays, setSelectedDays] = useState<Days>([]);
 
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   const { setFrom, setTo, setRange } = useDatePickerWrapperStore();
 
@@ -34,9 +38,11 @@ const useDatePickerState = () => {
 
   const handleDayChange = (date: Date) => {
     const dateISO = formatISO(date, { representation: "date" });
-    router.pathname === "/" && router.push({
-      query: { currentDate: dateISO },
-    });
+    if (pathname === "/") {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("currentDate", dateISO);
+      router.push(`/?${params.toString()}`);
+    }
 
     const weekRange = getWeekRange(date);
     const dateRange: Date[] = getWeekDays(weekRange.from, date);
