@@ -17,7 +17,8 @@ const useSpendings = () => {
   const [spendingsByWeek, setSpendingsByWeek] = useState<SpendingCompoundType[]>();
   const [spendingsByMonth, setSpendingsByMonth] = useState<SpendingCompoundType>();
   const { privateRequest } = useRequestHelper();
-  const userID = useUserStore((state) => state.user!.id);
+  const user = useUserStore((state) => state.user);
+  const userID = user?.id;
   const { from, to, range } = useDatePickerWrapperStore();
   const monthBeginning = startOfMonth(from!);
 
@@ -67,7 +68,7 @@ const useSpendings = () => {
     // Spendings mounts before DatePickerWrapper, causing from to be undefined and
     // hence this query to fail
     // so enable below
-    enabled: !!from,
+    enabled: !!from && !!userID,
     ...QUERY_OPTIONS,
   });
 

@@ -93,14 +93,14 @@ const SpendingModal = ({
     if (!values.category) { // it's a category deletion
       tempCategory = {
         ID: null,
-        userID: user!.id,
+        userID: user?.id || null,
         name: "",
         color: null, // if there is a name, it's a new category, else it's a category deletion
       }
     } else if ((!selectedCategory?.name || !selectedCategory) && !!values.category) { // so it's a new category. 1) !selectedCategory?.name: pas de catégorie vers une nouvelle catégorie qui n'existe pas encore. 2) !selectedCategory: on passe d'une catégorie qui existe à une nouvelle catégorie qui n'existe pas encore
       tempCategory = {
         ID: null,
-        userID: user!.id,
+        userID: user?.id || null,
         name: values.category,
         color: `#${getRandomHexColor()}` // if there is a name, it's a new category, else it's a category deletion
       }
@@ -113,6 +113,11 @@ const SpendingModal = ({
   }
 
   const onSubmit = (values: SpendingForm) => {
+    if (!user) {
+      console.error("User is not available");
+      return;
+    }
+
     // https://github.com/bugwheels94/math-expression-evaluator
     const mexp = new Mexp();
     const lexed = mexp.lex(String(values.spendingAmount));
@@ -128,8 +133,8 @@ const SpendingModal = ({
       label: values.spendingLabel,
       amount: amountEvaluatedExpr,
       category: processCategory(values),
-      currency: user!.baseCurrency,
-      userID: user!.id,
+      currency: user.baseCurrency,
+      userID: user.id,
       id: spending.ID,
     };
 
@@ -227,8 +232,12 @@ const SpendingModal = ({
               type="button"
               label="Copier les recurrings du mois précédent"
               onClick={() => {
+                if (!user) {
+                  console.error("User is not available");
+                  return;
+                }
                 closeModal();
-                copyRecurrings.mutate({ userID: user!.id, dates: {
+                copyRecurrings.mutate({ userID: user.id, dates: {
                     start: format(month.start, DATE_FORMAT),
                     end: format(month.end, DATE_FORMAT),
                     previousMonthStart: format(subMonths(month.start, 1), DATE_FORMAT),

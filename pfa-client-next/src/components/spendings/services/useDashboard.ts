@@ -35,7 +35,8 @@ interface UseDashboard {
 
 const useDashboard = (): UseDashboard => {
   const { privateRequest } = useRequestHelper();
-  const userID = useUserStore((state) => state.user!.id);
+  const user = useUserStore((state) => state.user);
+  const userID = user?.id;
   const { from } = useDatePickerWrapperStore();
   const monthBeginning = startOfMonth(from!);
   const queryClient = useQueryClient();
@@ -77,7 +78,7 @@ const useDashboard = (): UseDashboard => {
 
   const get = useQuery([QUERY_KEYS.DASHBOARD, monthBeginning], getDashboard, {
     retry: false,
-    enabled: !!from,
+    enabled: !!from && !!userID,
     ...QUERY_OPTIONS,
   });
 

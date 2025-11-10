@@ -10,7 +10,8 @@ import { endOfMonth } from "date-fns";
 
 const useWeeklyStats = () => {
   const { privateRequest } = useRequestHelper();
-  const userID = useUserStore((state) => state.user!.id);
+  const user = useUserStore((state) => state.user);
+  const userID = user?.id;
   const { get: { data: dashboard } } = useDashboard();
   const { from } = useDatePickerWrapperStore();
   const monthBeginning = startOfMonth(from!);
@@ -42,7 +43,7 @@ const useWeeklyStats = () => {
 
   const get = useQuery([QUERY_KEYS.WEEKLY_STATS, monthBeginning], getWeeklyStats, {
     retry: false,
-    enabled: !!from,
+    enabled: !!from && !!userID,
     ...QUERY_OPTIONS,
   });
 
