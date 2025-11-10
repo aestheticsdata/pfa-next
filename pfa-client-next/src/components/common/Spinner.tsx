@@ -1,5 +1,7 @@
+import Image from 'next/image';
+
 const Spinner = () => (
-  <img
+  <Image
     alt="spinner"
     src="/assets/Wedges-3s-200px.svg"
     width={60}

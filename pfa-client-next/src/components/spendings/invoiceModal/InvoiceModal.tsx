@@ -3,6 +3,7 @@ import { useQueryClient } from "react-query";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileUpload } from "@fortawesome/free-solid-svg-icons";
 import useOnClickOutside from "use-onclickoutside";
+import Image from "next/image";
 import Button from "@components/common/form/Button";
 import useRequestHelper from "@helpers/useRequestHelper";
 import { useUserStore } from "@auth/store/userStore";
@@ -176,11 +177,14 @@ const InvoiceModal = ({ handleClickOutside, spending }) => {
               </div>
               :
               invoiceImage ?
-                <img
+                <Image
                   src={invoiceImage}
-                  width="30%"
+                  width={300}
+                  height={250}
                   alt="invoice"
                   onClick={() => {setIsClickOnThumbnail(!isClickOnThumbnail)}}
+                  className="cursor-pointer"
+                  unoptimized
                 />
                 :
                 <div className="flex justify-center items-center border-2 border-grey1 rounded w-3/4 h-3/4 text-3xl font-extralight">
