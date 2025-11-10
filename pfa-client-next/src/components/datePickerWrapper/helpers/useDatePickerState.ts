@@ -39,9 +39,13 @@ const useDatePickerState = () => {
   const handleDayChange = (date: Date) => {
     const dateISO = formatISO(date, { representation: "date" });
     if (pathname === "/") {
-      const params = new URLSearchParams(searchParams.toString());
-      params.set("currentDate", dateISO);
-      router.push(`/?${params.toString()}`);
+      const currentDateInUrl = searchParams.get("currentDate");
+      // Ne faire router.push que si la date a vraiment changé
+      if (currentDateInUrl !== dateISO) {
+        const params = new URLSearchParams(searchParams.toString());
+        params.set("currentDate", dateISO);
+        router.push(`/?${params.toString()}`);
+      }
     }
 
     const weekRange = getWeekRange(date);
