@@ -1,5 +1,6 @@
 import useRequestHelper from "@helpers/useRequestHelper";
 import { useUserStore } from "@auth/store/userStore";
+import { useAuthStore } from "@auth/store/authStore";
 import useDatePickerWrapperStore from "@components/datePickerWrapper/store";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { QUERY_KEYS, QUERY_OPTIONS } from "@components/spendings/config/constants";
@@ -12,6 +13,7 @@ const useWeeklyStats = () => {
   const { privateRequest } = useRequestHelper();
   const user = useUserStore((state) => state.user);
   const userID = user?.id;
+  const token = useAuthStore((state) => state.token);
   const { get: { data: dashboard } } = useDashboard();
   const { from } = useDatePickerWrapperStore();
   const monthBeginning = startOfMonth(from!);
@@ -43,7 +45,7 @@ const useWeeklyStats = () => {
 
   const get = useQuery([QUERY_KEYS.WEEKLY_STATS, monthBeginning], getWeeklyStats, {
     retry: false,
-    enabled: !!from && !!userID,
+    enabled: !!from && !!userID && !!token,
     ...QUERY_OPTIONS,
   });
 

@@ -6,6 +6,7 @@ import endOfMonth from "date-fns/endOfMonth";
 import useInitialAmount from "@components/spendings/services/useInitialAmount";
 import useRequestHelper from "@src/helpers/useRequestHelper";
 import { useUserStore } from "@auth/store/userStore";
+import { useAuthStore } from "@auth/store/authStore";
 import useDatePickerWrapperStore from "@components/datePickerWrapper/store";
 import { QUERY_KEYS, QUERY_OPTIONS } from "@components/spendings/config/constants";
 
@@ -37,6 +38,7 @@ const useDashboard = (): UseDashboard => {
   const { privateRequest } = useRequestHelper();
   const user = useUserStore((state) => state.user);
   const userID = user?.id;
+  const token = useAuthStore((state) => state.token);
   const { from } = useDatePickerWrapperStore();
   const monthBeginning = startOfMonth(from!);
   const queryClient = useQueryClient();
@@ -78,7 +80,7 @@ const useDashboard = (): UseDashboard => {
 
   const get = useQuery([QUERY_KEYS.DASHBOARD, monthBeginning], getDashboard, {
     retry: false,
-    enabled: !!from && !!userID,
+    enabled: !!from && !!userID && !!token,
     ...QUERY_OPTIONS,
   });
 
