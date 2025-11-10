@@ -9,7 +9,6 @@ import { useAuthStore } from "@auth/store/authStore";
 
 const useRequestHelper = () => {
   const router = useRouter();
-  const token = useAuthStore((state) => state.token);
 
   const getRequestURL = (url) => {
     // En développement local, utiliser directement le backend
@@ -22,11 +21,8 @@ const useRequestHelper = () => {
   };
 
   const privateRequest = (url, options, config) => {
-    // Ne pas faire de requête si le token n'est pas disponible
-    // On ne vérifie plus isMounted car cela empêcherait les requêtes de se faire
-    if (!token) {
-      return Promise.reject(new Error("Token not available"));
-    }
+    // Lire le token à chaque appel pour avoir la valeur la plus récente
+    const token = useAuthStore.getState().token;
 
     const tokenBearer = {
       headers: {
