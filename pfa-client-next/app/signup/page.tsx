@@ -1,3 +1,5 @@
+"use client";
+
 import SharedLoginForm from "@components/shared/sharedLoginForm/sharedLoginForm";
 import Layout from "@components/shared/Layout";
 import useSignupService from "@auth/useSignupService";
@@ -5,7 +7,7 @@ import useCredentials from "@auth/helpers/useCredentials";
 
 import type { LoginValues } from "@components/shared/sharedLoginForm/interfaces";
 
-const SignUp = () => {
+export default function SignUp() {
   const { signupService } = useSignupService();
   const { setCredentials } = useCredentials();
 
@@ -26,8 +28,5 @@ const SignUp = () => {
       </div>
     </Layout>
   );
-};
+}
 
-SignUp.auth = false;
-
-export default SignUp;

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/router";
+import { useRouter, usePathname } from "next/navigation";
 import { useAuthStore } from "@auth/store/authStore";
 import DatePickerWrapper from "@components/datePickerWrapper/DatePickerWrapper";
 import useGlobalStore from "@components/shared/globalStore";
@@ -15,13 +15,14 @@ const NavBar = () => {
   const token = useAuthStore((state) => state.token);
   const { isCalendarVisible } = useGlobalStore();
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     setClient(true);
   }, []);
 
   const getActivePath = (route: string) =>
-    route === router.pathname ? "bg-spendingItemHover rounded text-blueNavy" : "";
+    route === pathname ? "bg-spendingItemHover rounded text-blueNavy" : "";
 
   const getLinkItem = (route: { path: string; label: string }) => (
     <Link

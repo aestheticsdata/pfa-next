@@ -1,3 +1,5 @@
+"use client";
+
 import NavBar from "@src/components/shared/navBar/NavBar";
 
 interface LayoutProps {

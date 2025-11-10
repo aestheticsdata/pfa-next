@@ -1,6 +1,8 @@
+"use client";
+
 import Layout from "@src/components/shared/Layout";
 
-const About = () => {
+export default function About() {
   return (
     <Layout isLogin>
       <div className="flex flex-col items-center w-96 space-y-8 mt-28 rounded bg-gradient-to-br from-teal-300 to-sky-500 py-3 font-smooch shadow-lg">
@@ -11,6 +13,5 @@ const About = () => {
       </div>
     </Layout>
   );
-};
+}
 
-export default About;

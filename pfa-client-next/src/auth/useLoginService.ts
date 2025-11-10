@@ -1,3 +1,5 @@
+"use client";
+
 import useRequestHelper from "@helpers/useRequestHelper";
 import Swal from "sweetalert2";
 

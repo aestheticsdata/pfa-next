@@ -7,14 +7,6 @@ const nextConfig = {
     // your project has type errors.
     // !! WARN !!
     ignoreBuildErrors: true
-  },
-  async rewrites() {
-    return [
-      {
-        source: "/changepassword",
-        destination: "/forgotPassword",
-      }
-    ]
   }
 };
 

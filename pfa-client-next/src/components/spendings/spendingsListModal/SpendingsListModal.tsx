@@ -1,7 +1,10 @@
+"use client";
+
 import {
   useEffect,
   useRef, useState
 } from "react";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import useOnClickOutside from "use-onclickoutside";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarDay, faChartSimple } from "@fortawesome/free-solid-svg-icons";
@@ -30,6 +33,9 @@ const SpendingsListModal = ({ handleClickOutside, periodType, categoryInfos, tot
   const ref = useRef(null);
   const [searchTerm, setsearchTerm] = useState("");
   const { spendingsListModal: spendingsListModalTexts } = texts;
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   useOnClickOutside(ref, handleClickOutside);
 
@@ -97,7 +103,14 @@ const SpendingsListModal = ({ handleClickOutside, periodType, categoryInfos, tot
               className="cursor-pointer"
               onClick={() => {
                 const dateISO = formatISO(new Date(spendings[0]), { representation: "date" });
-                window.location.replace(`/?currentDate=${dateISO}`);
+                if (pathname === "/") {
+                  const params = new URLSearchParams(searchParams.toString());
+                  params.set("currentDate", dateISO);
+                  router.push(`/?${params.toString()}`);
+                } else {
+                  router.push(`/?currentDate=${dateISO}`);
+                }
+                handleClickOutside();
               }}
             >
               <div className="flex justify-between font-medium bg-grey01 rounded p-1 mb-1 text-grey3 hover:bg-spendingItemHover transition-colors ease-linear duration-200">

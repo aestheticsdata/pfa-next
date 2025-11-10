@@ -1,16 +1,24 @@
+"use client";
+
 import { useEffect } from "react";
 import Statistics from "@components/statistics/Statistics";
 import useGlobalStore from "@components/shared/globalStore";
+import Layout from "@src/components/shared/Layout";
+import Auth from "@app/components/Auth";
 
-const  StatisticsPage = () => {
+export default function StatisticsPage() {
   const { setIsCalendarVisible } = useGlobalStore();
+  
   useEffect(() => {
     setIsCalendarVisible(false);
   }, [setIsCalendarVisible]);
 
   return (
-    <Statistics />
+    <Auth>
+      <Layout>
+        <Statistics />
+      </Layout>
+    </Auth>
   );
 }
 
-export default StatisticsPage;
