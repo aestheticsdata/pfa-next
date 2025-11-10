@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import DayPicker from "react-day-picker";
 import "react-day-picker/lib/style.css";
@@ -23,7 +23,11 @@ const DatePickerWrapper = () => {
   } = useDatePickerState();
 
   const searchParams = useSearchParams();
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
+  
+  // Mémoriser la valeur de currentDate pour éviter les re-renders inutiles
+  // Utiliser searchParams.toString() pour obtenir une représentation stable
+  const currentDate = useMemo(() => searchParams.get("currentDate"), [searchParams.toString()]);
 
   const daysAreSelected = selectedDays.length > 0;
 
@@ -39,10 +43,9 @@ const DatePickerWrapper = () => {
     selectedRangeEnd: daysAreSelected && selectedDays[selectedDays.length - 1],
   };
 
-  useOnClickOutside(ref, handleClickOutside);
+  useOnClickOutside(ref as React.RefObject<HTMLElement>, handleClickOutside);
 
   useEffect(() => {
-    const currentDate = searchParams.get("currentDate");
     if (currentDate) {
       const date = new Date(currentDate as string);
       // Vérifier si la date a vraiment changé pour éviter les boucles infinies
@@ -54,7 +57,7 @@ const DatePickerWrapper = () => {
       handleDayChange(new Date());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams]);
+  }, [currentDate]);
 
   return (
     <div

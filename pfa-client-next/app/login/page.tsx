@@ -27,7 +27,7 @@ export default function Login() {
           displayPasswordField
         />
         <div className="text-formsGlobalColor hover:text-generalWarningBackground hover:underline">
-          <Link href="/forgotPassword">
+          <Link href="/forgotPassword" prefetch={false}>
             mot de passe oublié ?
           </Link>
         </div>

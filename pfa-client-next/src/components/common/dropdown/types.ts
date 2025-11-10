@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 
 export interface Dropdown {
-  children: ReactElement[];
+  children: ReactElement<any>[];
   displayCaret?: boolean;
 }

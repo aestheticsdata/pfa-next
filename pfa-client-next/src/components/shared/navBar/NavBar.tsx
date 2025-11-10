@@ -24,16 +24,24 @@ const NavBar = () => {
   const getActivePath = (route: string) =>
     route === pathname ? "bg-spendingItemHover rounded text-blueNavy" : "";
 
-  const getLinkItem = (route: { path: string; label: string }) => (
-    <Link
-      href={route.path}
-      className={`outline-hidden p-1 ${getActivePath(
-        route.path
-      )} hover:cursor-pointer hover:bg-spendingItemHover hover:text-blueNavy hover:rounded`}
-    >
-      {route.label}
-    </Link>
-  );
+  const getLinkItem = (route: { path: string; label: string }) => {
+    // Désactiver le prefetch pour les routes qui causent des erreurs 403 ou Mixed Content
+    // avec l'export statique de Next.js (routes protégées et certaines routes publiques)
+    const routesWithoutPrefetch = ['/', '/statistics', '/categories', '/about', '/signup', '/login', '/forgotPassword'];
+    const shouldDisablePrefetch = routesWithoutPrefetch.includes(route.path);
+    
+    return (
+      <Link
+        href={route.path}
+        prefetch={!shouldDisablePrefetch}
+        className={`outline-hidden p-1 ${getActivePath(
+          route.path
+        )} hover:cursor-pointer hover:bg-spendingItemHover hover:text-blueNavy hover:rounded`}
+      >
+        {route.label}
+      </Link>
+    );
+  };
 
   const isLogged = client ? !!token : false;
 
