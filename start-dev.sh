@@ -26,7 +26,7 @@ echo "⏳ Waiting for API to start..."
 sleep 2
 
 echo "🚀 Starting Next.js client..."
-cd pfa-client-next
+cd front
 pnpm dev &
 CLIENT_PID=$!
 cd ..
