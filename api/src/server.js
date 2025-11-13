@@ -24,7 +24,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 // Bodyparser Middleware
-app.use(express.json());
+app.use(express.json({ limit: '200kb' }));
 
 
 app.use('/users', require('./routes/api/users'));
@@ -40,4 +40,8 @@ app.use(errorHandlerMiddleware);
 
 const port = process.env.PORT || 5000;
 
-app.listen(port, () => console.log(`Server started on port ${port}`));
+const server = app.listen(port, () => console.log(`Server started on port ${port}`));
+server.headersTimeout = 15_000;
+server.requestTimeout = 15_000;
+server.keepAliveTimeout = 15_000;
+server.maxRequestsPerSocket = 100;
