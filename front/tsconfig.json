@@ -1,25 +1,22 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2022",
     "lib": [
       "dom",
       "dom.iterable",
       "esnext"
     ],
-    "allowJs": true,
-    "skipLibCheck": true,
+    "jsx": "react-jsx",
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "strict": true,
     "noImplicitAny": false,
-    "forceConsistentCasingInFileNames": true,
+    "allowJs": true,
     "noEmit": true,
     "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "react-jsx",
-    "sourceMap": true,
-    "incremental": true,
+    "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
       "@pages/*": [
@@ -45,7 +42,8 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "incremental": true
   },
   "include": [
     "next-env.d.ts",
