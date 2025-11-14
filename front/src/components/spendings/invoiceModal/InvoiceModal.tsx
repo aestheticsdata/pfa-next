@@ -183,7 +183,7 @@ const InvoiceModal = ({ handleClickOutside, spending }) => {
                   height={250}
                   alt="invoice"
                   onClick={() => {setIsClickOnThumbnail(!isClickOnThumbnail)}}
-                  className="cursor-pointer"
+                  className="cursor-pointer max-w-full max-h-full object-contain"
                   unoptimized
                 />
                 :
