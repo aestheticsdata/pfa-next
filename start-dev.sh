@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Fonction pour nettoyer les processus à l'arrêt
+# clean up stopped processes
 cleanup() {
     echo ""
     echo "🛑 Stopping services..."
@@ -11,7 +11,7 @@ cleanup() {
     exit 0
 }
 
-# Capturer Ctrl+C
+# Capture Ctrl+C
 trap cleanup SIGINT SIGTERM
 
 echo "⏹️  Stopping previous pm2 processes..."
@@ -38,5 +38,5 @@ echo "✅ API running on http://localhost:5000"
 echo "✅ Next.js client running on http://localhost:3000"
 echo "💡 Press Ctrl+C to stop both services"
 
-# Attendre que les processus se terminent
+# Wait for client process to exit
 wait $CLIENT_PID
