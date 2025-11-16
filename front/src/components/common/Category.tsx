@@ -4,11 +4,12 @@ import type { CategoryProps } from "@src/interfaces/category";
 
 interface CategoryComponentProps {
   item: CategoryProps;
+  customCss?: string;
   isDynamic?: boolean;
   isClicked?: boolean;
 }
 
-const CategoryComponent = ({ item, isDynamic = false, isClicked = false }: CategoryComponentProps) => {
+const CategoryComponent = ({ item, customCss = "", isDynamic = false, isClicked = false }: CategoryComponentProps) => {
   const getBackgroundColor = () => {
     if (isDynamic && isClicked) {
       return item.categoryColor;
@@ -25,7 +26,7 @@ const CategoryComponent = ({ item, isDynamic = false, isClicked = false }: Categ
 
   return (
     <div
-      className={`relative flex items-center px-0.5 rounded ${isDynamic ? "text-tiny" : "text-xxs"} uppercase`}
+      className={`relative flex items-center px-0.5 rounded ${isDynamic ? "text-tiny" : "text-xxs"} uppercase ${customCss}`}
       style={{
         // border: `1px solid ${item.categoryColor}`,
         // borderRadius: "4px",
