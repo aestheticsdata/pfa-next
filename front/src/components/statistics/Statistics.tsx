@@ -19,8 +19,8 @@ const Statistics = () => {
   const categoriesMarshalled = useStatisticsCategories(categories);
   const [initialCategories, setinitialCategories] = useState();
 
+  const currentYear = new Date().getFullYear();
   const makeYearsOptions = () => {
-    const currentYear = new Date().getFullYear();
     const years = Array.from(
       { length: currentYear - firstYearAvailable + 1 },
       (_, i) => firstYearAvailable + i
@@ -28,12 +28,14 @@ const Statistics = () => {
     return years.map(year => ({ value: year, label: year }));
   };
 
-  const [initialYear, setinitialYear] = useState<number | { value: number; label: number }>(new Date().getFullYear());
+  const defaultYear = { value: currentYear, label: currentYear };
+  const [initialYear, setinitialYear] = useState<number | { value: number; label: number }>(defaultYear);
 
   const { control, watch } = useForm<any>({
     mode: "onChange",
     defaultValues: {
       categories: [],
+      yearSelector: defaultYear,
     }
   });
 

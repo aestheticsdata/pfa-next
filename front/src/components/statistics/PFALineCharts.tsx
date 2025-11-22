@@ -15,11 +15,11 @@ const PFALineCharts = ({ data, year }) => {
   const categories = Object.keys(colors).sort();
 
   if (!lineData) {
-    return <div className="">pas de données.</div>;
+    return <div className="text-center text-sm text-gray-500">pas de données.</div>;
   }
   
   return (
-    <ResponsiveContainer width="100%" height="100%">
+    <ResponsiveContainer width="100%" height="100%" minHeight={400} minWidth={0}>
       <LineChart data={lineData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="month" />

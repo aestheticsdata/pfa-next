@@ -13,13 +13,13 @@ import {
 const PFABarCharts = ({ data, year }) => {
   const currentYearData = data?.data?.[year] ?? 0;
   if (!currentYearData) {
-    return <div className="">pas de données.</div>;
+    return <div className="text-center text-sm text-gray-500">pas de données.</div>;
   }
 
   const categoryKeys = currentYearData.length > 0 ? Object.keys(currentYearData[0]).filter(key => key !== 'month') : [];
 
   return (
-    <ResponsiveContainer width="100%" height="100%">
+    <ResponsiveContainer width="100%" height="100%" minHeight={400} minWidth={0}>
       <BarChart data={currentYearData}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="month" />
