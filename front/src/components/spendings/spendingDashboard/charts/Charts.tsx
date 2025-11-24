@@ -21,27 +21,21 @@ interface ChartsProps {
   periodType: periodType;
 }
 
-const getMaxValue = (data: CategoryProps[]) => Math.max(...data.map(category => +category.value));
-const getTotal = (data: CategoryProps[]) => data.reduce((acc, curr) => acc + +curr.value, 0);
+const getMaxValue = (data: CategoryProps[]) => Math.max(...data.map(category => +(category.value ?? 0)));
+const getTotal = (data: CategoryProps[]) => data.reduce((acc, curr) => acc + +(curr.value ?? 0), 0);
 
 const widthOfContainer = 290; // 300 - (border width * 2)
 
 const Charts = ({ title, periodType }: ChartsProps) => {
-  const [maxv, setMaxv] = useState(0);
-  const [total, setTotal] = useState(0);
   const [categoryTotal, setCategoryTotal] = useState(0);
   const [isTooltipVisible, setIsTooltipVisible] = useState(false);
   const [isInvoiceModalVisible, setIsInvoiceModalVisible] = useState(false);
   const [tooltipPos, setTooltipPos] = useState({x: 0, y: 0});
-  const [categoryInfos, setCategoryInfos] = useState<Category>();
+  const [categoryInfos, setCategoryInfos] = useState<CategoryProps>();
   const { data: charts } = useCharts(periodType);
 
-  useEffect(() => {
-    if (charts?.data.length > 0) {
-      setMaxv(getMaxValue(charts!.data));
-      setTotal(getTotal(charts!.data));
-    }
-  }, [charts]);
+  const maxv = charts?.data && charts.data.length > 0 ? getMaxValue(charts.data) : 0;
+  const total = charts?.data && charts.data.length > 0 ? getTotal(charts.data) : 0;
 
   // https://keyholesoftware.com/2022/07/13/cancel-a-react-modal-with-escape-key-or-external-click/
   const handleEscKey = useCallback((event) => {
@@ -98,30 +92,30 @@ const Charts = ({ title, periodType }: ChartsProps) => {
             charts.data.map((category: CategoryProps) => {
               return (
                 <div
-                  key={category.category + Math.random()}
+                  key={`cat-${category.category}`}
                   className="flex items-center gap-x-1"
                   onClick={() => {
                     setIsInvoiceModalVisible(!isInvoiceModalVisible);
-                    setCategoryTotal(category.value);
+                    setCategoryTotal(category.value ?? 0);
                   }}
                 >
                   <div
                     className="h-[15px] cursor-pointer"
                     style={{
-                      width: getWidth(category.value),
+                      width: getWidth(category.value ?? 0),
                       backgroundColor: category.categoryColor ?? "#ffffff",
                       borderTopRightRadius: "3px",
                       borderBottomRightRadius: "3px",
                     }}
-                    onMouseEnter={() => setIsTooltipVisible(true)}
-                    onMouseLeave={() => setIsTooltipVisible(false)}
+                    onMouseEnter={() => {setIsTooltipVisible(true)}}
+                    onMouseLeave={() => {setIsTooltipVisible(false)}}
                     onMouseMove={e => {
                       setTooltipPos({x: e.clientX, y: e.clientY});
                       setCategoryInfos(category);
                     }}
                   />
                   <div className="text-tiny">
-                    {Number((category.value / total) * 100).toFixed(1)}%
+                    {Number(((category.value ?? 0) / total) * 100).toFixed(1)}%
                   </div>
                 </div>
               )

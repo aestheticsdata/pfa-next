@@ -7,9 +7,11 @@ interface AutocompleteListProps {
 }
 
 const AutocompleteItem = ({ props, color, name }: AutocompleteListProps) => {
+  const { key, ...restProps } = props;
   return (
     <span
-      {...props}
+      key={key}
+      {...restProps}
       style={{
         display: "flex",
         justifyContent: "center",
