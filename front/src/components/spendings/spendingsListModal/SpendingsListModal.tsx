@@ -59,9 +59,12 @@ const SpendingsListModal = ({ handleClickOutside, periodType, categoryInfos, tot
 
   const displaySpendingsList = () => {
     const getAllPreviousEntries = (currentIndex: number): SpendingType[] => {
+      const normalizedSearchTerm = searchTerm.toLowerCase();
+
       if (periodType === MONTHLY && spendingsByMonth) {
         const filteredSpendings = spendingsByMonth.filter((spending) =>
-          spending.category === categoryInfos.category && spending.label.includes(searchTerm)
+          spending.category === categoryInfos.category &&
+          spending.label.toLowerCase().includes(normalizedSearchTerm)
         );
         const grouped = groupByDate(filteredSpendings);
         const entries = Object.entries(grouped);
@@ -73,7 +76,8 @@ const SpendingsListModal = ({ handleClickOutside, periodType, categoryInfos, tot
           .filter(spending => spending.length > 0)
           .flat()
           .filter(spending =>
-            spending.category === categoryInfos.category && spending.label.includes(searchTerm)
+            spending.category === categoryInfos.category &&
+            spending.label.toLowerCase().includes(normalizedSearchTerm)
           );
         const grouped = groupByDate(flattenedSpendings);
         const entries = Object.entries(grouped);
@@ -171,18 +175,23 @@ const SpendingsListModal = ({ handleClickOutside, periodType, categoryInfos, tot
     };
 
     if (periodType === MONTHLY) {
+      const normalizedSearchTerm = searchTerm.toLowerCase();
+
       return spendingsByMonth &&
         Object.entries(
           groupByDate(
             spendingsByMonth
               .filter((spending) => {
-                return (spending.category === categoryInfos.category) && (spending.label.includes(searchTerm))
+                return (spending.category === categoryInfos.category) &&
+                  spending.label.toLowerCase().includes(normalizedSearchTerm);
               })))
           .map((spendings, i) => {
             return spendingsList(spendings, i)
           })
       }
     else {
+      const normalizedSearchTerm = searchTerm.toLowerCase();
+
       return spendingsByWeek &&
         Object.entries(
           groupByDate(
@@ -190,7 +199,8 @@ const SpendingsListModal = ({ handleClickOutside, periodType, categoryInfos, tot
               .filter((spending) => spending.length > 0)
               .flat()
               ?.filter((spending) => {
-                return (spending.category === categoryInfos.category) && (spending.label.includes(searchTerm))
+                return (spending.category === categoryInfos.category) &&
+                  spending.label.toLowerCase().includes(normalizedSearchTerm);
               })))
           .map((spendings, i) => spendingsList(spendings, i))
     }
