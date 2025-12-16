@@ -131,6 +131,7 @@ EOF
     --exclude=".git" \
     --exclude="node_modules" \
     --exclude=".DS_Store" \
+    --exclude="deploy-api.sh" \
     "$SCRIPT_DIR"/ \
     "$REMOTE_USER_HOST":"$RELEASE_DIR_REMOTE/"
 
